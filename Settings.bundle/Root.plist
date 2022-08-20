@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Autosave</string>
+			<key>Key</key>
+			<string>autosave</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Finger Action</string>
+			<key>Key</key>
+			<string>fingerAction</string>
+			<key>DefaultValue</key>
+			<string>ignore</string>
+			<key>Titles</key>
+			<array>
+				<string>Move</string>
+				<string>Eyedrop</string>
+				<string>Ignore</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>move</string>
+				<string>eyedrop</string>
+				<string>ignore</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>2 Finger Undo</string>
+			<key>Key</key>
+			<string>twoFingerUndoEnabled</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Show HEX Notifications</string>
+			<key>Key</key>
+			<string>showColorNotifications</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>File</key>
+			<string>Usage</string>
+			<key>Title</key>
+			<string>Usage</string>
+		</dict>
+	</array>
+</dict>
+</plist>

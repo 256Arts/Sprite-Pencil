@@ -1,0 +1,115 @@
+/* 
+  Local.strings
+  Sprite Pencil
+
+  Created by Jayden Irwin on 2020-04-29.
+  Copyright © 2020 Jayden Irwin. All rights reserved.
+*/
+
+// Welcome
+"Apple Pencil Support" = "Apple Pencil Support";
+"Use your Apple Pencil to draw and change tools." = "Use your Apple Pencil to draw and change tools.";
+"Shading Tools" = "Shading Tools";
+"Draw highlights and shadows." = "Draw highlights and shadows.";
+"Sprite Catalog" = "Sprite Catalog";
+"Try our new pixel asset application." = "Try our new pixel asset application.";
+
+// Document Browser
+"Import Failed" = "Import Failed";
+"Failed to import your sprite." = "Failed to import your sprite.";
+"OK" = "OK";
+"Square" = "Square";
+"Templates" = "Templates";
+"New Sprite" = "New Sprite";
+"Create" = "Create";
+"Color" = "Color";
+"Colors" = "Colors";
+"Sprite" = "Sprite";
+"Cancel" = "Cancel";
+"Width" = "Width";
+"Height" = "Height";
+
+// General
+"Permanent Edits" = "Permanent Edits";
+"While drawing you can undo edits. Closing the sprite saves edits permanently." = "While drawing you can undo edits. Closing the sprite saves edits permanently.";
+"Ask To Save" = "Ask To Save";
+"Continue" = "Continue";
+"Save Changes?" = "Save Changes?";
+"Discard Changes" = "Discard Changes";
+"Failed to create image from data." = "Failed to create image from data.";
+"Created in @SpritePencil." = "Created in @SpritePencil.";
+"Created in Sprite Pencil." = "Created in Sprite Pencil.";
+"Pixel Art" = "Pixel Art";
+"Document Conflict" = "Document Conflict";
+"The document was changed in iCloud." = "The document was changed in iCloud.";
+"Saving Error" = "Saving Error";
+"The document could not be saved." = "The document could not be saved.";
+"Sprites" = "Sprites";
+"Share" = "Share";
+"Document" = "Document";
+"Mode" = "Mode";
+"Done" = "Done";
+
+// Palettes
+"Palette" = "Palette";
+"Color Palette" = "Color Palette";
+"Choose Palette" = "Choose Palette";
+"Save as Palette" = "Save as Palette";
+"My Palette" = "My Palette";
+"Add Palette" = "Add Palette";
+"Your Palettes" = "Your Palettes";
+"Drop palette images here." = "Drop palette images here.";
+"Handpicked" = "Handpicked";
+"Basic" = "Basic";
+"Failed To Load Palette" = "Failed To Load Palette";
+"Palette images must have a height of 1px, and not contain clear pixels." = "Palette images must have a height of 1px, and not contain clear pixels.";
+"from lospec.com" = "from lospec.com";
+"Name:" = "Name:";
+
+// Actions
+"Flip Horizontal" = "Flip Horizontal";
+"Flip Vertical" = "Flip Vertical";
+"Rotate" = "Rotate";
+"Outline" = "Outline";
+"Posterize" = "Posterize";
+"Actions" = "Actions";
+"Canvas" = "Canvas";
+"Tile Grid" = "Tile Grid";
+"Pixel Grid" = "Pixel Grid";
+"Sidebar" = "Sidebar";
+"V Symmetry" = "V Symmetry";
+"H Symmetry" = "H Symmetry";
+"Outline Color" = "Outline Color";
+"Use Brush Color" = "Use Brush Color";
+"Use Automatic Colors" = "Use Automatic Colors";
+"Format:" = "Format:";
+"Background:" = "Background:";
+"White" = "White";
+"Black" = "Black";
+"Scale:" = "Scale:";
+"Tools" = "Tools";
+
+// Help
+"Create A Palette" = "Create A Palette";
+"Use Widget" = "Use Widget";
+"Support Indie Development" = "Support Indie Development";
+"Help" = "Help";
+"Brush" = "Brush";
+"Eraser" = "Eraser";
+"Fill" = "Fill";
+"Move" = "Move";
+"Highlight" = "Highlight";
+"Shadow" = "Shadow";
+"Eyedropper" = "Eyedropper";
+"Dithering Mode" = "Dithering Mode";
+"Helps drawing gradients by editing every other pixel." = "Helps drawing gradients by editing every other pixel.";
+"Create a new sprite with a width equal to the number of colors you want, and a height of 1px." = "Create a new sprite with a width equal to the number of colors you want, and a height of 1px.";
+"Paint each pixel with a color for your palette." = "Paint each pixel with a color for your palette.";
+"Tap \"Save as Palette\"." = "Tap \"Save as Palette\".";
+"Open the sprite." = "Open the sprite.";
+"Tap \"Set Widget Sprite\"." = "Tap \"Set Widget Sprite\".";
+"Widget Updated" = "Widget Updated";
+"View App Page" = "View App Page";
+"Tap \"Gift App…\"." = "Tap \"Gift App…\".";
+"Send your gift to a friend." = "Send your gift to a friend.";
+"Gift The App" = "Gift The App";

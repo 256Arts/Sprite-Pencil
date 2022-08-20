@@ -1,0 +1,73 @@
+/* 
+  Local.strings
+  Sprite Pencil
+
+  Created by Jayden Irwin on 2020-04-29.
+  Copyright © 2020 Jayden Irwin. All rights reserved.
+*/
+"Apple Pencil Support" = "Apple Pencil支持";
+"Use your Apple Pencil to draw and change tools." = "使用Apple Pencil绘制和更改工具。";
+"Custom Palettes" = "定制调色板";
+"Create or import your own palettes." = "创建或导入自己的调色板。";
+"Checkered Drawing" = "方格图";
+"Great for shading sprites." = "非常适合着色精灵。";
+"Import Failed" = "导入失败";
+"Failed to import your sprite." = "无法导入您的精灵。";
+"OK" = "好";
+"New Sprite" = "新精灵";
+"Create" = "创造";
+"Tile Size" = "瓷砖尺寸";
+"Sprite Size" = "精灵大小";
+"Color Palette" = "调色板";
+"Color" = "颜色";
+"Colors" = "色彩";
+"Sprite" = "雪碧";
+"Cancel" = "取消";
+"Width" = "宽度";
+"Height" = "高度";
+"Permanent Edits" = "永久编辑";
+"While drawing you can undo edits. Closing the sprite saves edits permanently." = "在绘制时，您可以撤消编辑。关闭精灵将永久保存编辑。";
+"Continue" = "继续";
+"Failed to create image from data." = "无法从数据创建图像。";
+"Created in @SpritePencil." = "在@SpritePencil中创建。";
+"Created in Sprite Pencil." = "用Sprite Pencil创建。";
+"Pixel Art" = "像素艺术";
+"Save as Palette" = "另存为调色板";
+"My Palette" = "我的调色板";
+"Add Palette" = "添加调色板";
+"from lospec.com" = "来自lospec.com";
+"Name:" = "名称：";
+"Document Conflict" = "文件冲突";
+"The document was changed in iCloud." = "该文档已在iCloud中更改。";
+"Saving Error" = "保存错误";
+"The document could not be saved." = "无法保存该文档。";
+"Sprites" = "精灵";
+"Share" = "分享";
+"Document" = "文件";
+"Palette" = "调色板";
+"Mode" = "模式";
+"Choose Palette" = "选择调色板";
+"My Palettes" = "我的调色板";
+"Handpicked" = "精选";
+"Basic" = "基本的";
+"Failed To Load Palette" = "无法加载调色板";
+"Palette images must have a height of 1px, and not contain clear pixels." = "调色板图像的高度必须为1px，并且不能包含清晰的像素。";
+"Flip Horizontal" = "水平翻转";
+"Flip Vertical" = "垂直翻转";
+"Rotate" = "旋转";
+"Outline" = "大纲";
+"Posterize" = "海报化";
+"Actions" = "动作";
+"Canvas" = "帆布";
+"Tile Grid" = "瓷砖网格";
+"Pixel Grid" = "像素网格";
+"Vertical Symmetry" = "垂直对称";
+"Horizontal Symmetry" = "水平对称";
+"Outline Color" = "轮廓色";
+"Use Brush Color" = "使用画笔颜色";
+"Use Automatic Colors" = "使用自动颜色";
+"Format:" = "格式：";
+"Background:" = "背景：";
+"White" = "白色";
+"Black" = "黑色";
+"Scale:" = "规模：";

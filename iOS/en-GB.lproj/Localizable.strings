@@ -1,0 +1,73 @@
+/* 
+  Local.strings
+  Sprite Pencil
+
+  Created by Jayden Irwin on 2020-04-29.
+  Copyright © 2020 Jayden Irwin. All rights reserved.
+*/
+"Apple Pencil Support" = "Apple Pencil Support";
+"Use your Apple Pencil to draw and change tools." = "Use your Apple Pencil to draw and change tools.";
+"Custom Palettes" = "Custom Palettes";
+"Create or import your own palettes." = "Create or import your own palettes.";
+"Checkered Drawing" = "Checkered Drawing";
+"Great for shading sprites." = "Great for shading sprites.";
+"Import Failed" = "Import Failed";
+"Failed to import your sprite." = "Failed to import your sprite.";
+"OK" = "OK";
+"New Sprite" = "New Sprite";
+"Create" = "Create";
+"Tile Size" = "Tile Size";
+"Sprite Size" = "Sprite Size";
+"Color Palette" = "Colour Palette";
+"Color" = "Colour";
+"Colors" = "Colours";
+"Sprite" = "Sprite";
+"Cancel" = "Cancel";
+"Width" = "Width";
+"Height" = "Height";
+"Permanent Edits" = "Permanent Edits";
+"While drawing you can undo edits. Closing the sprite saves edits permanently." = "While drawing you can undo edits. Closing the sprite saves edits permanently.";
+"Continue" = "Continue";
+"Failed to create image from data." = "Failed to create image from data.";
+"Created in @SpritePencil." = "Created in @SpritePencil.";
+"Created in Sprite Pencil." = "Created in Sprite Pencil.";
+"Pixel Art" = "Pixel Art";
+"Save as Palette" = "Save as Palette";
+"My Palette" = "My Palette";
+"Add Palette" = "Add Palette";
+"from lospec.com" = "from lospec.com";
+"Name:" = "Name:";
+"Document Conflict" = "Document Conflict";
+"The document was changed in iCloud." = "The document was changed in iCloud.";
+"Saving Error" = "Saving Error";
+"The document could not be saved." = "The document could not be saved.";
+"Sprites" = "Sprites";
+"Share" = "Share";
+"Document" = "Document";
+"Palette" = "Palette";
+"Mode" = "Mode";
+"Choose Palette" = "Choose Palette";
+"My Palettes" = "My Palettes";
+"Handpicked" = "Handpicked";
+"Basic" = "Basic";
+"Failed To Load Palette" = "Failed To Load Palette";
+"Palette images must have a height of 1px, and not contain clear pixels." = "Palette images must have a height of 1px, and not contain clear pixels.";
+"Flip Horizontal" = "Flip Horizontal";
+"Flip Vertical" = "Flip Vertical";
+"Rotate" = "Rotate";
+"Outline" = "Outline";
+"Posterize" = "Posterize";
+"Actions" = "Actions";
+"Canvas" = "Canvas";
+"Tile Grid" = "Tile Grid";
+"Pixel Grid" = "Pixel Grid";
+"Vertical Symmetry" = "Vertical Symmetry";
+"Horizontal Symmetry" = "Horizontal Symmetry";
+"Outline Color" = "Outline Colour";
+"Use Brush Color" = "Use Brush Colour";
+"Use Automatic Colors" = "Use Automatic Colours";
+"Format:" = "Format:";
+"Background:" = "Background:";
+"White" = "White";
+"Black" = "Black";
+"Scale:" = "Scale:";

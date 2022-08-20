@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ObA-dk-sSI">
+    <device id="retina5_9" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Messages View Controller-->
+        <scene sceneID="7MM-of-jgj">
+            <objects>
+                <viewController id="ObA-dk-sSI" customClass="MessagesViewController" customModule="Sprite_Pencil_Messages" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zMn-AG-sqS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="256"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0V1-zp-kCt">
+                                <rect key="frame" x="0.0" y="44" width="375" height="212"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="25i-3X-6aS" customClass="CanvasView" customModule="SpritePencilKit">
+                                        <rect key="frame" x="0.0" y="0.0" width="212" height="212"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="25i-3X-6aS" secondAttribute="height" multiplier="1:1" id="wN5-vU-xUA"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="yzN-sh-6hb">
+                                        <rect key="frame" x="212" y="0.0" width="163" height="212"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e0C-oA-2Va">
+                                                <rect key="frame" x="0.0" y="0.0" width="163" height="212"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="h9m-Vz-Yub">
+                                                        <rect key="frame" x="8" y="8" width="147" height="196"/>
+                                                        <subviews>
+                                                            <button clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="60T-CI-18m">
+                                                                <rect key="frame" x="0.0" y="0.0" width="69.666666666666671" height="196"/>
+                                                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <state key="normal" title="Clear">
+                                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                </state>
+                                                                <attributedString key="userComments">
+                                                                    <fragment content="removes all content on canvas"/>
+                                                                </attributedString>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                        <real key="value" value="15"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="clearTapped:" destination="ObA-dk-sSI" eventType="touchUpInside" id="gMY-4b-fou"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rXA-4T-qma">
+                                                                <rect key="frame" x="77.666666666666686" y="0.0" width="69.333333333333314" height="196"/>
+                                                                <color key="backgroundColor" name="Brand"/>
+                                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                                <state key="normal" title="Done">
+                                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                </state>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                        <real key="value" value="15"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="insertTapped" destination="ObA-dk-sSI" eventType="touchUpInside" id="wU6-S4-e84"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="h9m-Vz-Yub" firstAttribute="leading" secondItem="e0C-oA-2Va" secondAttribute="leading" constant="8" id="6GX-QP-GaL"/>
+                                                    <constraint firstAttribute="trailing" secondItem="h9m-Vz-Yub" secondAttribute="trailing" constant="8" id="BrG-LP-eZh"/>
+                                                    <constraint firstAttribute="bottom" secondItem="h9m-Vz-Yub" secondAttribute="bottom" constant="8" id="CBg-3q-j90"/>
+                                                    <constraint firstItem="h9m-Vz-Yub" firstAttribute="top" secondItem="e0C-oA-2Va" secondAttribute="top" constant="8" id="KJK-zB-twE"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="qht-0V-TnZ"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="0V1-zp-kCt" firstAttribute="bottom" secondItem="LDy-ih-0nr" secondAttribute="bottom" id="1vD-AF-8iw"/>
+                            <constraint firstItem="0V1-zp-kCt" firstAttribute="top" secondItem="LDy-ih-0nr" secondAttribute="top" id="Di9-Go-bNK"/>
+                            <constraint firstItem="0V1-zp-kCt" firstAttribute="width" secondItem="zMn-AG-sqS" secondAttribute="width" priority="500" id="Yet-zF-glx"/>
+                            <constraint firstItem="0V1-zp-kCt" firstAttribute="centerX" secondItem="zMn-AG-sqS" secondAttribute="centerX" id="rRI-KY-skm"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="LDy-ih-0nr"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="256"/>
+                    <connections>
+                        <outlet property="canvasView" destination="25i-3X-6aS" id="cww-3f-KeG"/>
+                        <outlet property="stackView" destination="0V1-zp-kCt" id="NKC-fy-zMJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X47-rx-isc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="117.59999999999999" y="143.92803598200899"/>
+        </scene>
+    </scenes>
+    <color key="tintColor" name="Brand"/>
+    <resources>
+        <namedColor name="Brand">
+            <color red="0.89899998903274536" green="0.80800002813339233" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21179.7" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="dark"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21169.4"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Editor View Controller-->
+        <scene sceneID="9yM-4x-E6V">
+            <objects>
+                <viewController storyboardIdentifier="DocumentViewController" id="UVk-yP-mmw" customClass="EditorViewController" customModule="Sprite_Pencil" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="NZE-fh-vxa">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sc7-tM-ECa">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="972"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cvU-Y2-jMm" customClass="CanvasView" customModule="SpritePencilKit">
+                                        <rect key="frame" x="0.0" y="0.0" width="768" height="972"/>
+                                    </imageView>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="3pE-vP-xi8">
+                                        <rect key="frame" x="365.5" y="467.5" width="37" height="37"/>
+                                        <color key="color" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="3pE-vP-xi8" firstAttribute="centerX" secondItem="sc7-tM-ECa" secondAttribute="centerX" id="Ass-bB-qz5"/>
+                                    <constraint firstItem="cvU-Y2-jMm" firstAttribute="centerX" secondItem="sc7-tM-ECa" secondAttribute="centerX" id="BJi-VN-MKy"/>
+                                    <constraint firstItem="cvU-Y2-jMm" firstAttribute="width" secondItem="sc7-tM-ECa" secondAttribute="width" priority="500" id="DI2-x8-Gep"/>
+                                    <constraint firstItem="cvU-Y2-jMm" firstAttribute="height" secondItem="sc7-tM-ECa" secondAttribute="height" priority="500" id="HfP-yf-x5i"/>
+                                    <constraint firstItem="cvU-Y2-jMm" firstAttribute="centerY" secondItem="sc7-tM-ECa" secondAttribute="centerY" id="MSc-EQ-weS"/>
+                                    <constraint firstItem="cvU-Y2-jMm" firstAttribute="width" relation="lessThanOrEqual" secondItem="sc7-tM-ECa" secondAttribute="width" id="Qdt-bG-wXl"/>
+                                    <constraint firstItem="3pE-vP-xi8" firstAttribute="centerY" secondItem="sc7-tM-ECa" secondAttribute="centerY" id="dGy-XX-lKX"/>
+                                    <constraint firstItem="cvU-Y2-jMm" firstAttribute="height" relation="lessThanOrEqual" secondItem="sc7-tM-ECa" secondAttribute="height" id="eIB-jQ-W76"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="640" id="pQN-0s-SmJ"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S0W-6A-Guz">
+                                <rect key="frame" x="0.0" y="972" width="768" height="52"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="TDv-ut-Avk"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="S0W-6A-Guz" firstAttribute="top" secondItem="sc7-tM-ECa" secondAttribute="bottom" id="04w-Zy-cOA"/>
+                            <constraint firstItem="S0W-6A-Guz" firstAttribute="leading" secondItem="NZE-fh-vxa" secondAttribute="leading" id="1nW-qJ-LsS"/>
+                            <constraint firstItem="sc7-tM-ECa" firstAttribute="width" secondItem="NZE-fh-vxa" secondAttribute="width" id="22B-zJ-nf5"/>
+                            <constraint firstItem="S0W-6A-Guz" firstAttribute="top" secondItem="TDv-ut-Avk" secondAttribute="bottom" constant="-52" id="3jo-oR-J4Q"/>
+                            <constraint firstItem="sc7-tM-ECa" firstAttribute="centerX" secondItem="NZE-fh-vxa" secondAttribute="centerX" id="9hG-fr-eyg"/>
+                            <constraint firstItem="S0W-6A-Guz" firstAttribute="bottom" secondItem="NZE-fh-vxa" secondAttribute="bottom" id="MBK-LX-SfM"/>
+                            <constraint firstItem="sc7-tM-ECa" firstAttribute="top" secondItem="NZE-fh-vxa" secondAttribute="top" id="uUr-3K-l9G"/>
+                            <constraint firstItem="S0W-6A-Guz" firstAttribute="trailing" secondItem="NZE-fh-vxa" secondAttribute="trailing" id="xZ7-wj-Ks1"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="3jo-oR-J4Q"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" id="Ake-hV-Qa3">
+                        <leftBarButtonItems>
+                            <barButtonItem title="Sprites" image="chevron.left" catalog="system" style="plain" id="jkQ-gw-uHP">
+                                <color key="tintColor" name="Brand"/>
+                                <connections>
+                                    <action selector="spritesTapped" destination="UVk-yP-mmw" id="1OE-b7-i87"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem enabled="NO" style="plain" id="mBo-MY-hzr">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Usd-KB-2SS" userLabel="Undo">
+                                    <rect key="frame" x="85" y="11.5" width="30" height="27"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" image="arrow.uturn.left.circle" catalog="system">
+                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="undoTapped" destination="UVk-yP-mmw" eventType="touchUpInside" id="nmg-Ao-vKr"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                            <barButtonItem enabled="NO" style="plain" id="Sxz-tb-RYs">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="68a-zp-ISl" userLabel="Redo">
+                                    <rect key="frame" x="123" y="11.5" width="30" height="27"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" image="arrow.uturn.right.circle" catalog="system">
+                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="redoTapped" destination="UVk-yP-mmw" eventType="touchUpInside" id="duo-eR-oip"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Item" style="plain" id="K9v-PA-lZa">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="N7y-Sh-acq">
+                                    <rect key="frame" x="704" y="13" width="44" height="24"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" image="sidebar.right" catalog="system">
+                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="sidebarButtonTapped:" destination="UVk-yP-mmw" eventType="touchUpInside" id="xlN-8v-z5U"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                            <barButtonItem style="plain" systemItem="action" id="aqZ-S0-TLm">
+                                <connections>
+                                    <action selector="shareTapped:" destination="UVk-yP-mmw" id="hNL-CW-Ukw"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="canvasView" destination="cvU-Y2-jMm" id="vB2-3W-AmB"/>
+                        <outlet property="redoButton" destination="68a-zp-ISl" id="BSV-Bt-fje"/>
+                        <outlet property="shareButton" destination="aqZ-S0-TLm" id="GmP-1B-eYv"/>
+                        <outlet property="sidebarButton" destination="N7y-Sh-acq" id="59y-x0-k2H"/>
+                        <outlet property="spinner" destination="3pE-vP-xi8" id="ifB-VM-ZKa"/>
+                        <outlet property="toolbarView" destination="S0W-6A-Guz" id="lo4-re-abX"/>
+                        <outlet property="undoButton" destination="Usd-KB-2SS" id="BJs-pg-Fbt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I2z-Gn-0t7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1723.4375" y="651.5625"/>
+        </scene>
+    </scenes>
+    <color key="tintColor" name="Brand"/>
+    <resources>
+        <image name="arrow.uturn.left.circle" catalog="system" width="128" height="123"/>
+        <image name="arrow.uturn.right.circle" catalog="system" width="128" height="123"/>
+        <image name="chevron.left" catalog="system" width="97" height="128"/>
+        <image name="sidebar.right" catalog="system" width="128" height="93"/>
+        <namedColor name="Brand">
+            <color red="0.83921568627450982" green="0.76470588235294112" blue="0.16862745098039217" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
