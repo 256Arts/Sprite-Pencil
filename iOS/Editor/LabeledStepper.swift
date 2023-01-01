@@ -20,9 +20,10 @@ struct LabeledStepper: View {
         HStack(spacing: 0) {
             Text(String(value))
                 .font(.body)
-                .frame(width: 16)
+                .frame(width: 18, alignment: .leading)
                 .accessibilityHidden(true)
             Stepper("Brush Size", value: $value, in: min...max)
+                .labelsHidden()
         }
         #else
         HStack {

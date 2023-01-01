@@ -132,6 +132,7 @@
 		1B3373FF21F4FC7B00C620E4 /* EditorDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorDetailViewController.swift; sourceTree = "<group>"; };
 		1B4A293A2459CCD10019A429 /* ShareOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareOptionsView.swift; sourceTree = "<group>"; };
 		1B4A29402459F0F70019A429 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1B63356D296244D2008DD13A /* SpritePencilKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpritePencilKit; path = "../../../Swift Packages/SpritePencilKit"; sourceTree = "<group>"; };
 		1B6507E2250F07D5009B57C5 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
 		1B6507E4250F3A9A009B57C5 /* LabeledStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledStepper.swift; sourceTree = "<group>"; };
 		1B6B18B2250FED4600D0E71A /* ColorComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorComponents.swift; sourceTree = "<group>"; };
@@ -159,7 +160,6 @@
 		1BAB1D4B22825B4700AEA0CC /* UIWindowExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowExt.swift; sourceTree = "<group>"; };
 		1BAB1D4D2282686F00AEA0CC /* AppNotificationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotificationRequest.swift; sourceTree = "<group>"; };
 		1BAB1D532283871C00AEA0CC /* AppNotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNotificationView.swift; sourceTree = "<group>"; };
-		1BADA2392960E4460067BE27 /* SpritePencilKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpritePencilKit; path = "../../../Swift Packages/SpritePencilKit"; sourceTree = "<group>"; };
 		1BADA23A2960ECA00067BE27 /* DitherToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DitherToggle.swift; sourceTree = "<group>"; };
 		1BB285A12545FBE000CA3690 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		1BC0DC20251AF43500B51FDD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -272,7 +272,7 @@
 		1B9C755F215FE88500C3470F = {
 			isa = PBXGroup;
 			children = (
-				1BADA2392960E4460067BE27 /* SpritePencilKit */,
+				1B63356D296244D2008DD13A /* SpritePencilKit */,
 				1BC7AF012526DEA100AFB499 /* SpriteWidgetExtension.entitlements */,
 				1BAA064E2322DD8700608399 /* Sprite Pencil.entitlements */,
 				1BEEC5C821EEF3F000AB83C3 /* Settings.bundle */,
