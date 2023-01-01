@@ -22,7 +22,7 @@ struct TemplatePickerView: View {
     @State var selectedSize = SpriteSize.defaultSize
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(alignment: .leading) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Square")
@@ -81,7 +81,6 @@ struct TemplatePickerView: View {
                 }
             }
         }
-        .navigationViewStyle(StackNavigationViewStyle()) // For mac catalyst
     }
 }
 

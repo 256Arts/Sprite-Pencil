@@ -21,7 +21,7 @@ struct HelpView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 Section {
                     NavigationLink("Tools", destination: ToolsHelpView())
@@ -62,7 +62,15 @@ struct HelpView: View {
                         }
                     }
                     .foregroundColor(Color("Brand"))
-                    Link("Developer Website", destination: URL(string: "https://www.jaydenirwin.com/")!)
+                    Link(destination: URL(string: "https://www.jaydenirwin.com/")!) {
+                        Label("Developer Website", systemImage: "safari")
+                    }
+                    Link(destination: URL(string: "https://www.256arts.com/joincommunity/")!) {
+                        Label("Join Community", systemImage: "bubble.left.and.bubble.right")
+                    }
+                    Link(destination: URL(string: "https://github.com/256Arts/Sprite-Pencil")!) {
+                        Label("Contribute on GitHub", systemImage: "chevron.left.forwardslash.chevron.right")
+                    }
                 }
             }
             .listStyle(InsetGroupedListStyle())

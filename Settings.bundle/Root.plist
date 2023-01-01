@@ -20,6 +20,30 @@
 			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
+			<string>Canvas Color</string>
+			<key>Key</key>
+			<string>canvasBackgroundColor</string>
+			<key>DefaultValue</key>
+			<string>default</string>
+			<key>Titles</key>
+			<array>
+				<string>Default</string>
+				<string>White</string>
+				<string>Pink</string>
+				<string>Green</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>default</string>
+				<string>white</string>
+				<string>pink</string>
+				<string>green</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
 			<string>Finger Action</string>
 			<key>Key</key>
 			<string>fingerAction</string>

@@ -27,7 +27,7 @@ struct PalettePickerView: View, DropDelegate {
     @State var showingImportError = false
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 20) {
                     Text("Your Palettes")

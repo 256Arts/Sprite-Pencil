@@ -119,6 +119,9 @@ class EditorViewController: SplitChildViewController, ObservableObject, ToolDele
             UIMenu(children: suggestedActions)
         }
         navigationItem.documentProperties = UIDocumentProperties(url: document.fileURL)
+        navigationItem.documentProperties?.activityViewControllerProvider = {
+            self.makeShareSheet(asPNG: true, backgroundColor: nil, scale: 1) ?? UIActivityViewController(activityItems: [], applicationActivities: nil)
+        }
         
         let screenScale = view.window?.screen.scale ?? UIScreen.main.scale
         toolStackBorder.frame = CGRect(x: 0, y: 0, width: 9999.0, height: 1.0/screenScale)
@@ -252,7 +255,7 @@ class EditorViewController: SplitChildViewController, ObservableObject, ToolDele
         }
         guard Int(image.size.width) <= SpriteSize.maxSize.width, Int(image.size.height) <= SpriteSize.maxSize.height else {
             self.spinner.stopAnimating()
-            let alert = UIAlertController(title: NSLocalizedString("Import Failed", comment: ""), message: NSLocalizedString("Image is too large. (Max. \(SpriteSize.maxSize.width) x \(SpriteSize.maxSize.height)", comment: ""), preferredStyle: .alert)
+            let alert = UIAlertController(title: NSLocalizedString("Import Failed", comment: ""), message: NSLocalizedString("Image is too large. (Max. \(SpriteSize.maxSize.width) x \(SpriteSize.maxSize.height))", comment: ""), preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { (action) in
                 self.dismiss(animated: true, completion: nil)
             }))
@@ -264,6 +267,21 @@ class EditorViewController: SplitChildViewController, ObservableObject, ToolDele
         
         UIGraphicsBeginImageContext(image.size)
         image.draw(at: .zero)
+        
+        let canvasBackgroundColor = UserDefaults.standard.string(forKey: UserDefaults.Key.canvasBackgroundColor)
+        switch canvasBackgroundColor {
+        case "white":
+            canvasView.checkerboardColor1 = UIColor(white: 1.0, alpha: 1.0)
+            canvasView.checkerboardColor2 = UIColor(white: 0.93, alpha: 1.0)
+        case "pink":
+            canvasView.checkerboardColor1 = .systemPink
+            canvasView.checkerboardColor2 = .systemPink.withAlphaComponent(0.9)
+        case "green":
+            canvasView.checkerboardColor1 = .systemGreen
+            canvasView.checkerboardColor2 = .systemGreen.withAlphaComponent(0.9)
+        default:
+            break
+        }
         
         canvasView.canvasDelegate = self
         canvasView.nonDrawingFingerAction = CanvasView.FingerAction(rawValue: UserDefaults.standard.string(forKey: UserDefaults.Key.fingerAction)!) ?? .ignore
@@ -486,30 +504,32 @@ class EditorViewController: SplitChildViewController, ObservableObject, ToolDele
     @objc func dismissShareOptions(notification: Notification) {
         presentedViewController?.dismiss(animated: false, completion: nil)
     }
-    @objc func showShareSheet(notification: Notification) {
+    private func makeShareSheet(asPNG: Bool, backgroundColor: UIColor?, scale: CGFloat) -> UIActivityViewController? {
+        guard let uiImage = canvasView.documentController.export(scale: scale, backgroundColor: backgroundColor) else { return nil }
         
-        func share(asPNG: Bool, backgroundColor: UIColor?, scale: CGFloat) {
-            guard let uiImage = canvasView.documentController.export(scale: scale, backgroundColor: backgroundColor) else { return }
-            let shareImage: Any
-            if asPNG {
-                shareImage = uiImage
-            } else {
-                shareImage = uiImage.jpegData(compressionQuality: 0.85) ?? uiImage
-            }
-            let previewScale: CGFloat = (canvasView.documentController.context.width * canvasView.documentController.context.height) <= (32*32) ? 4 : 2
-            let previewImage = canvasView.documentController.export(scale: previewScale, backgroundColor: backgroundColor)
-            
-            let items: [Any] = [shareImage, ShareTextSource(image: previewImage, documentURL: document.fileURL)]
-            let shareSheet = UIActivityViewController(activityItems: items, applicationActivities: [SaveAsPaletteActivity(), SetWidgetSpriteActivity()])
-            shareSheet.popoverPresentationController?.barButtonItem = shareButton
-            present(shareSheet, animated: true, completion: nil)
+        let shareImage: Any
+        if asPNG {
+            shareImage = uiImage
+        } else {
+            shareImage = uiImage.jpegData(compressionQuality: 0.85) ?? uiImage
         }
+        let previewScale: CGFloat = (canvasView.documentController.context.width * canvasView.documentController.context.height) <= (32*32) ? 4 : 2
+        let previewImage = canvasView.documentController.export(scale: previewScale, backgroundColor: backgroundColor)
         
+        let items: [Any] = [shareImage, ShareTextSource(image: previewImage, documentURL: document.fileURL)]
+        return UIActivityViewController(activityItems: items, applicationActivities: [SaveAsPaletteActivity(), SetWidgetSpriteActivity()])
+    }
+    @objc func showShareSheet(notification: Notification) {
         presentedViewController?.dismiss(animated: false, completion: nil)
+        
         let asPNG = notification.userInfo?["asPNG"] as? Bool ?? true
         let backgroundColor = notification.userInfo?["backgroundColor"] as? UIColor
         let scale = notification.userInfo?["scale"] as? CGFloat ?? 1.0
-        share(asPNG: asPNG, backgroundColor: backgroundColor, scale: scale)
+        
+        if let shareSheet = makeShareSheet(asPNG: asPNG, backgroundColor: backgroundColor, scale: scale) {
+            shareSheet.popoverPresentationController?.barButtonItem = shareButton
+            present(shareSheet, animated: true, completion: nil)
+        }
     }
     
     @IBAction func sidebarButtonTapped(_ sender: Any) {
@@ -638,6 +658,17 @@ class EditorViewController: SplitChildViewController, ObservableObject, ToolDele
 #if targetEnvironment(macCatalyst)
 extension EditorViewController: MacToolbarActionsDelegate {
     
+    var documentMenu: UIMenu? {
+        UIMenu(children: [
+            UIAction(title: "V Symmetry", image: UIImage(systemName: "square.split.2x1")) { _ in
+                self.vSymmetryClicked()
+            },
+            UIAction(title: "H Symmetry", image: UIImage(systemName: "square.split.1x2")) { _ in
+                self.hSymmetryClicked()
+            }
+        ])
+    }
+    
     func spritesClicked(_ sender: UIBarButtonItem) {
         spritesTapped()
     }
@@ -651,10 +682,10 @@ extension EditorViewController: MacToolbarActionsDelegate {
         doSidebarButtonAction()
     }
     func vSymmetryClicked() {
-        canvasView.documentController.flip(vertically: true)
+        canvasView.documentController.verticalSymmetry.toggle()
     }
     func hSymmetryClicked() {
-        canvasView.documentController.flip(vertically: false)
+        canvasView.documentController.horizontalSymmetry.toggle()
     }
     func pixelGridClicked() {
         canvasView.pixelGridEnabled.toggle()

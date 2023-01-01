@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let appGroupDefaults = UserDefaults(suiteName: AppDelegate.spritePencilAppGroupID)
         appGroupDefaults?.set(true, forKey: "ownsSpritePencil")
         
-//        if UserDefaults.standard.integer(forKey: UserDefaults.Key.whatsNewVersion) == 0 {
+        if UserDefaults.standard.integer(forKey: UserDefaults.Key.whatsNewVersion) == 0 {
             // Create a file manually to get iCloud Drive to show up
             if let iCloudDriveURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents") {
                 do {
@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             } else {
                 print("unable to get icloud url")
             }
-//        }
+        }
         
         return true
     }

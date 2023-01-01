@@ -10,20 +10,28 @@ import SwiftUI
 
 struct ToolsView: View {
     
-    static let unselectedColor = Color(UIColor.systemGray)
-    
-    #if targetEnvironment(macCatalyst)
-    let isCatalyst = true
-    #else
-    let isCatalyst = false
-    #endif
+    static var selectedForeground: Color {
+        #if targetEnvironment(macCatalyst)
+        Color(uiColor: .systemBackground)
+        #else
+        Color("Brand")
+        #endif
+    }
+    static var selectedBackground: Color {
+        #if targetEnvironment(macCatalyst)
+        Color(uiColor: .systemGray)
+        #else
+        Color("Selected Background")
+        #endif
+    }
+    static let unselectedForeground = Color(uiColor: .systemGray)
     
     @ObservedObject var editorVC: EditorViewController
     
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 6)
-                .foregroundColor(Color("Selected Background"))
+                .foregroundColor(Self.selectedBackground)
                 .frame(width: 36, height: 36, alignment: .center)
                 .offset(x: CGFloat(self.editorVC.selectedToolIndex-3)*49.75 - 0.6666, y: 0)
             HStack(spacing: 26) {
@@ -33,7 +41,10 @@ struct ToolsView: View {
                     }
                     self.editorVC.canvasView.tool = self.editorVC.canvasView.documentController.pencilTool
                 }, label: { Image("Brush") })
-                    .accentColor(self.editorVC.selectedToolIndex == 0 ? Color("Brand") : ToolsView.unselectedColor)
+                    #if targetEnvironment(macCatalyst)
+                    .buttonStyle(.borderless)
+                    #endif
+                    .accentColor(self.editorVC.selectedToolIndex == 0 ? Self.selectedForeground : Self.unselectedForeground)
                     .help("Brush")
                 Button(action: {
                     withAnimation(Animation.easeInOut(duration: 0.2)) {
@@ -41,7 +52,10 @@ struct ToolsView: View {
                     }
                     self.editorVC.canvasView.tool = self.editorVC.canvasView.documentController.eraserTool
                 }, label: { Image("Eraser") })
-                    .accentColor(self.editorVC.selectedToolIndex == 1 ? Color("Brand") : ToolsView.unselectedColor)
+                    #if targetEnvironment(macCatalyst)
+                    .buttonStyle(.borderless)
+                    #endif
+                    .accentColor(self.editorVC.selectedToolIndex == 1 ? Self.selectedForeground : Self.unselectedForeground)
                     .help("Eraser")
                 Button(action: {
                     withAnimation(Animation.easeInOut(duration: 0.2)) {
@@ -49,7 +63,10 @@ struct ToolsView: View {
                     }
                     self.editorVC.canvasView.tool = self.editorVC.canvasView.documentController.fillTool
                 }, label: { Image("Bucket") })
-                    .accentColor(self.editorVC.selectedToolIndex == 2 ? Color("Brand") : ToolsView.unselectedColor)
+                    #if targetEnvironment(macCatalyst)
+                    .buttonStyle(.borderless)
+                    #endif
+                    .accentColor(self.editorVC.selectedToolIndex == 2 ? Self.selectedForeground : Self.unselectedForeground)
                     .help("Fill")
                 Button(action: {
                     withAnimation(Animation.easeInOut(duration: 0.2)) {
@@ -63,7 +80,10 @@ struct ToolsView: View {
                     Image(systemName: "arrow.up.and.down.and.arrow.left.and.right").frame(width: 24)
                     #endif
                 })
-                    .accentColor(self.editorVC.selectedToolIndex == 3 ? Color("Brand") : ToolsView.unselectedColor)
+                    #if targetEnvironment(macCatalyst)
+                    .buttonStyle(.borderless)
+                    #endif
+                    .accentColor(self.editorVC.selectedToolIndex == 3 ? Self.selectedForeground : Self.unselectedForeground)
                     .help("Move")
                 Button(action: {
                     withAnimation(Animation.easeInOut(duration: 0.2)) {
@@ -71,7 +91,10 @@ struct ToolsView: View {
                     }
                     self.editorVC.canvasView.tool = self.editorVC.canvasView.documentController.highlightTool
                 }, label: { Image("Highlight") })
-                    .accentColor(self.editorVC.selectedToolIndex == 4 ? Color("Brand") : ToolsView.unselectedColor)
+                    #if targetEnvironment(macCatalyst)
+                    .buttonStyle(.borderless)
+                    #endif
+                    .accentColor(self.editorVC.selectedToolIndex == 4 ? Self.selectedForeground : Self.unselectedForeground)
                     .help("Highlight")
                 Button(action: {
                     withAnimation(Animation.easeInOut(duration: 0.2)) {
@@ -79,7 +102,10 @@ struct ToolsView: View {
                     }
                     self.editorVC.canvasView.tool = self.editorVC.canvasView.documentController.shadowTool
                 }, label: { Image("Shadow") })
-                    .accentColor(self.editorVC.selectedToolIndex == 5 ? Color("Brand") : ToolsView.unselectedColor)
+                    #if targetEnvironment(macCatalyst)
+                    .buttonStyle(.borderless)
+                    #endif
+                    .accentColor(self.editorVC.selectedToolIndex == 5 ? Self.selectedForeground : Self.unselectedForeground)
                     .help("Shadow")
                 Button(action: {
                     withAnimation(Animation.easeInOut(duration: 0.2)) {
@@ -93,7 +119,10 @@ struct ToolsView: View {
                     Image(systemName: "eyedropper").frame(width: 24)
                     #endif
                 })
-                    .accentColor(self.editorVC.selectedToolIndex == 6 ? Color("Brand") : ToolsView.unselectedColor)
+                    #if targetEnvironment(macCatalyst)
+                    .buttonStyle(.borderless)
+                    #endif
+                    .accentColor(self.editorVC.selectedToolIndex == 6 ? Self.selectedForeground : Self.unselectedForeground)
                     .help("Eyedropper")
             }
         }

@@ -20,6 +20,7 @@ extension UserDefaults {
         static let colorPalette = "colorPalette"
         static let showPalette = "showPalette"
         static let currentColor = "currentColor"
+        static let canvasBackgroundColor = "canvasBackgroundColor"
         static let premium = "premium"
         
         static let fingerAction = "fingerAction"
@@ -37,6 +38,7 @@ extension UserDefaults {
             Key.documentsClosedCount: 0,
             Key.showPalette: true,
             Key.colorPalette: Palette.defaultPalette.name,
+            Key.canvasBackgroundColor: "default",
             Key.premium: false,
             
             Key.fingerAction: "ignore",

@@ -12,51 +12,56 @@ struct LabeledStepper: View {
     
     let min: Int
     let max: Int
-    #if targetEnvironment(macCatalyst)
-    let cornerRadius: CGFloat = 6.0
-    #else
-    let cornerRadius: CGFloat = 10.0
-    #endif
     
     @Binding var value: Int
     
     var body: some View {
-        HStack {
-            Button(action: {
-                self.value -= 1
-            }, label: {
-                Image(systemName: "minus")
-            })
-                .buttonStyle(StepperButtonStyle())
-                .disabled(self.value <= min)
-            Button(action: {
-                self.value += 1
-            }, label: {
-                Image(systemName: "plus")
-            })
-                .buttonStyle(StepperButtonStyle())
-                .disabled(max <= self.value)
+        #if targetEnvironment(macCatalyst)
+        HStack(spacing: 0) {
+            Text(String(value))
+                .font(.body)
+                .frame(width: 16)
+                .accessibilityHidden(true)
+            Stepper("Brush Size", value: $value, in: min...max)
         }
-        .background(Color(UIColor.secondarySystemBackground))
-        .overlay(Text(String(self.value)))
-        .cornerRadius(cornerRadius)
+        #else
+        HStack {
+            Button {
+                self.value -= 1
+            } label: {
+                Image(systemName: "minus")
+            }
+            .buttonStyle(StepperButtonStyle())
+            .disabled(self.value <= min)
+            
+            Button {
+                self.value += 1
+            } label: {
+                Image(systemName: "plus")
+            }
+            .buttonStyle(StepperButtonStyle())
+            .disabled(max <= self.value)
+        }
+        .background(Color(UIColor.secondarySystemFill), in: RoundedRectangle(cornerRadius: 10))
+        .overlay {
+            Text(String(self.value))
+        }
         .accentColor(Color(UIColor.label))
+        #endif
     }
 }
 
+#if !targetEnvironment(macCatalyst)
 private struct StepperButtonStyle: ButtonStyle {
-    #if targetEnvironment(macCatalyst)
-    let paddingInsets = EdgeInsets()
-    #else
-    let paddingInsets = EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16)
-    #endif
-    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .padding(paddingInsets)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 12)
             .frame(minWidth: 32, minHeight: 32)
+            .contentShape(Rectangle())
     }
 }
+#endif
 
 struct LabeledStepper_Previews: PreviewProvider {
     static var previews: some View {

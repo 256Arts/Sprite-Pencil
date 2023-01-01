@@ -66,31 +66,23 @@ struct BottomToolbarView: View {
                         .frame(maxWidth: 32, maxHeight: 32)
                     }
                     .frame(height: 44)
-                    .overlay(self.editorVC.currentBrushWidth == nil ? nil :
-                        HStack {
-                            LabeledStepper(min: 1, max: 10, value: Binding(get: {
-                                self.editorVC.currentBrushWidth ?? 1
-                            }, set: { newValue in
-                                self.editorVC.currentBrushWidth = newValue
-                            }))
-                            Button(action: {
-                                self.editorVC.objectWillChange.send()
-                                self.editorVC.canvasView.documentController.checkeredDrawingMode.toggle()
-                            }, label: {
-                                #if targetEnvironment(macCatalyst)
-                                Image(uiImage: BottomToolbarView.largeSymbol(systemName: "checkerboard.rectangle")!)
-                                #else
-                                Image(systemName: "checkerboard.rectangle")
-                                #endif
-                            })
-                                .frame(width: 32, height: 32)
-                                .foregroundColor(self.editorVC.canvasView?.documentController?.checkeredDrawingMode ?? false ? Color(UIColor.systemBackground) : Color.accentColor)
-                                .background(self.editorVC.canvasView?.documentController?.checkeredDrawingMode ?? false ? Color.accentColor : nil)
-                                .cornerRadius(6)
-                                .help("Dithering Mode")
-                                .keyboardShortcut("D")
+                    .overlay {
+                        if editorVC.currentBrushWidth != nil {
+                            HStack {
+                                LabeledStepper(min: 1, max: 10, value: Binding(get: {
+                                    self.editorVC.currentBrushWidth ?? 1
+                                }, set: { newValue in
+                                    self.editorVC.currentBrushWidth = newValue
+                                }))
+                                DitherToggle(isOn: Binding(get: {
+                                    editorVC.canvasView?.documentController?.checkeredDrawingMode ?? false
+                                }, set: { newValue in
+                                    editorVC.objectWillChange.send()
+                                    editorVC.canvasView?.documentController?.checkeredDrawingMode = newValue
+                                }))
+                            }
                         }
-                    )
+                    }
                 }
                 .font(Font.system(size: 21))
                 .padding(.vertical, 4)
@@ -116,22 +108,12 @@ struct BottomToolbarView: View {
                                 self.editorVC.currentBrushWidth = newValue
                             }))
                         }
-                        Button(action: {
-                            self.editorVC.objectWillChange.send()
-                            self.editorVC.canvasView.documentController.checkeredDrawingMode.toggle()
-                        }, label: {
-                            #if targetEnvironment(macCatalyst)
-                            Image(uiImage: BottomToolbarView.largeSymbol(systemName: "checkerboard.rectangle")!)
-                            #else
-                            Image(systemName: "checkerboard.rectangle")
-                            #endif
-                        })
-                            .frame(width: 32, height: 32)
-                            .foregroundColor(self.editorVC.canvasView?.documentController?.checkeredDrawingMode ?? false ? Color(UIColor.systemBackground) : Color.accentColor)
-                            .background(self.editorVC.canvasView?.documentController?.checkeredDrawingMode ?? false ? Color.accentColor : nil)
-                            .cornerRadius(6)
-                            .help("Dithering Mode")
-                            .keyboardShortcut("D")
+                        DitherToggle(isOn: Binding(get: {
+                            editorVC.canvasView?.documentController?.checkeredDrawingMode ?? false
+                        }, set: { newValue in
+                            editorVC.objectWillChange.send()
+                            editorVC.canvasView?.documentController?.checkeredDrawingMode = newValue
+                        }))
                     }
                     if self.editorVC.autoSplitViewController?.showDetail == true && self.editorVC.autoSplitViewController?.splitStack.axis == .vertical {
                         Button(action: {
@@ -157,7 +139,7 @@ struct BottomToolbarView: View {
                 .overlay(ToolsView(editorVC: self.editorVC))
             }
         }
-        .onAppear() {
+        .onAppear {
             BottomToolbarView.subscription = colorSubject
                 .debounce(for: .milliseconds(250), scheduler: DispatchQueue.main)
                 .sink { (components) in
