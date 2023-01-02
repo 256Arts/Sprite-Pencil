@@ -8,86 +8,21 @@
 
 import SwiftUI
 
-enum AppID: Int {
-    case spritePencil = 1437835952
-    case spriteCatalog = 1560692872
-    case spriteFonts = 1554027877
-}
-
 struct HelpView: View {
-    
-    let editorVC: EditorViewController
-    
-    @Environment(\.dismiss) var dismiss
-    
     var body: some View {
-        NavigationStack {
-            List {
-                Section {
-                    NavigationLink("Tools", destination: ToolsHelpView())
-                    NavigationLink("Create A Palette", destination: CreatePaletteHelpView())
-                    NavigationLink("Use Widget", destination: WidgetHelpView())
-                }
-                Section(header: Text("More".uppercased())) {
-                    NavigationLink("Support Indie Development", destination: GiftAppHelpView(editorVC: editorVC))
-                    Button {
-                        editorVC.showAppStorePage()
-                    } label: {
-                        Label {
-                            VStack(alignment: .leading) {
-                                Text("Try Sprite Catalog")
-                                Text("2000+ Pixel Art Assets")
-                                    .font(.subheadline)
-                                    .foregroundColor(Color(UIColor.secondaryLabel))
-                            }
-                        } icon: {
-                            Image(systemName: "arrow.down.app")
-                                .imageScale(.large)
-                        }
-                    }
-                    .foregroundColor(Color("Brand"))
-                    Button {
-                        editorVC.showAppStorePage2()
-                    } label: {
-                        Label {
-                            VStack(alignment: .leading) {
-                                Text("Try Sprite Fonts")
-                                Text("Install Pixel Fonts")
-                                    .font(.subheadline)
-                                    .foregroundColor(Color(UIColor.secondaryLabel))
-                            }
-                        } icon: {
-                            Image(systemName: "arrow.down.app")
-                                .imageScale(.large)
-                        }
-                    }
-                    .foregroundColor(Color("Brand"))
-                    Link(destination: URL(string: "https://www.jaydenirwin.com/")!) {
-                        Label("Developer Website", systemImage: "safari")
-                    }
-                    Link(destination: URL(string: "https://www.256arts.com/joincommunity/")!) {
-                        Label("Join Community", systemImage: "bubble.left.and.bubble.right")
-                    }
-                    Link(destination: URL(string: "https://github.com/256Arts/Sprite-Pencil")!) {
-                        Label("Contribute on GitHub", systemImage: "chevron.left.forwardslash.chevron.right")
-                    }
-                }
+        List {
+            NavigationLink("Tools") {
+                ToolsHelpView()
             }
-            .listStyle(InsetGroupedListStyle())
-            .navigationTitle("Help")
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
+            NavigationLink("Create A Palette") {
+                CreatePaletteHelpView()
+            }
+            NavigationLink("Use Widget") {
+                WidgetHelpView()
             }
         }
+        .navigationTitle("Help")
         .imageScale(.large)
-        .onAppear() {
-            editorVC.loadAppStorePage(id: .spriteCatalog)
-            editorVC.loadAppStorePage2(id: .spriteFonts)
-        }
     }
 }
 
@@ -129,13 +64,12 @@ struct ToolsHelpView: View {
                     Image(systemName: "checkerboard.rectangle")
                     VStack(alignment: .leading) {
                         Text("Dithering Mode")
-                        Text("Helps drawing gradients by editing every other pixel.")
+                        Text("Helps drawing gradients by only editing every other pixel.")
                             .foregroundColor(Color(UIColor.secondaryLabel))
                     }
                 }
             }
         }
-        .listStyle(GroupedListStyle())
         .navigationTitle("Tools")
     }
 }
@@ -194,42 +128,8 @@ struct WidgetHelpView: View {
     }
 }
 
-struct GiftAppHelpView: View {
-    
-    let editorVC: EditorViewController
-    
-    var body: some View {
-        List {
-            HStack {
-                Image(systemName: "1.circle.fill")
-                Button("View App Page", action: {
-                    editorVC.showAppStorePage()
-                })
-                .foregroundColor(Color("Brand"))
-            }
-            HStack {
-                Image(systemName: "2.circle.fill")
-                Text("Tap \(Image(systemName: "square.and.arrow.up")).")
-                    .imageScale(.medium)
-            }
-            HStack {
-                Image(systemName: "3.circle.fill")
-                Text("Tap \"Gift App…\".")
-            }
-            HStack {
-                Image(systemName: "4.circle.fill")
-                Text("Send your gift to a friend.")
-            }
-        }
-        .navigationTitle("Gift The App")
-        .onAppear() {
-            editorVC.loadAppStorePage(id: .spritePencil)
-        }
-    }
-}
-
 struct HelpView_Previews: PreviewProvider {
     static var previews: some View {
-        HelpView(editorVC: EditorViewController())
+        HelpView()
     }
 }

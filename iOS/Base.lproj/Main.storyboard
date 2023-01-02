@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21179.7" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21169.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -64,40 +64,12 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="Ake-hV-Qa3">
-                        <leftBarButtonItems>
-                            <barButtonItem title="Sprites" image="chevron.left" catalog="system" style="plain" id="jkQ-gw-uHP">
-                                <color key="tintColor" name="Brand"/>
-                                <connections>
-                                    <action selector="spritesTapped" destination="UVk-yP-mmw" id="1OE-b7-i87"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem enabled="NO" style="plain" id="mBo-MY-hzr">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Usd-KB-2SS" userLabel="Undo">
-                                    <rect key="frame" x="85" y="11.5" width="30" height="27"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <state key="normal" image="arrow.uturn.left.circle" catalog="system">
-                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="undoTapped" destination="UVk-yP-mmw" eventType="touchUpInside" id="nmg-Ao-vKr"/>
-                                    </connections>
-                                </button>
-                            </barButtonItem>
-                            <barButtonItem enabled="NO" style="plain" id="Sxz-tb-RYs">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="68a-zp-ISl" userLabel="Redo">
-                                    <rect key="frame" x="123" y="11.5" width="30" height="27"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <state key="normal" image="arrow.uturn.right.circle" catalog="system">
-                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="redoTapped" destination="UVk-yP-mmw" eventType="touchUpInside" id="duo-eR-oip"/>
-                                    </connections>
-                                </button>
-                            </barButtonItem>
-                        </leftBarButtonItems>
+                        <barButtonItem key="leftBarButtonItem" title="Sprites" image="chevron.left" catalog="system" style="plain" id="jkQ-gw-uHP">
+                            <color key="tintColor" name="Brand"/>
+                            <connections>
+                                <action selector="spritesTapped" destination="UVk-yP-mmw" id="1OE-b7-i87"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem title="Item" style="plain" id="K9v-PA-lZa">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="N7y-Sh-acq">
@@ -122,12 +94,10 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="canvasView" destination="cvU-Y2-jMm" id="vB2-3W-AmB"/>
-                        <outlet property="redoButton" destination="68a-zp-ISl" id="BSV-Bt-fje"/>
                         <outlet property="shareButton" destination="aqZ-S0-TLm" id="GmP-1B-eYv"/>
                         <outlet property="sidebarButton" destination="N7y-Sh-acq" id="59y-x0-k2H"/>
                         <outlet property="spinner" destination="3pE-vP-xi8" id="ifB-VM-ZKa"/>
                         <outlet property="toolbarView" destination="S0W-6A-Guz" id="lo4-re-abX"/>
-                        <outlet property="undoButton" destination="Usd-KB-2SS" id="BJs-pg-Fbt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I2z-Gn-0t7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -137,8 +107,6 @@
     </scenes>
     <color key="tintColor" name="Brand"/>
     <resources>
-        <image name="arrow.uturn.left.circle" catalog="system" width="128" height="123"/>
-        <image name="arrow.uturn.right.circle" catalog="system" width="128" height="123"/>
         <image name="chevron.left" catalog="system" width="97" height="128"/>
         <image name="sidebar.right" catalog="system" width="128" height="93"/>
         <namedColor name="Brand">

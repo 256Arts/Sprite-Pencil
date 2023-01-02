@@ -20,13 +20,13 @@ extension UserDefaults {
         static let colorPalette = "colorPalette"
         static let showPalette = "showPalette"
         static let currentColor = "currentColor"
-        static let canvasBackgroundColor = "canvasBackgroundColor"
-        static let premium = "premium"
         
+        static let autosave = "autosave"
+        static let canvasBackgroundColor = "canvasBackgroundColor"
         static let fingerAction = "fingerAction"
         static let twoFingerUndoEnabled = "twoFingerUndoEnabled"
         static let showColorNotifications = "showColorNotifications"
-        static let autosave = "autosave"
+        
     }
     
     func register() {
@@ -38,13 +38,12 @@ extension UserDefaults {
             Key.documentsClosedCount: 0,
             Key.showPalette: true,
             Key.colorPalette: Palette.defaultPalette.name,
-            Key.canvasBackgroundColor: "default",
-            Key.premium: false,
             
+            Key.autosave: true,
+            Key.canvasBackgroundColor: "default",
             Key.fingerAction: "ignore",
             Key.twoFingerUndoEnabled: true,
             Key.showColorNotifications: false,
-            Key.autosave: true
         ])
     }
     

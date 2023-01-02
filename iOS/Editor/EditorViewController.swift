@@ -5,8 +5,6 @@ import SpritePencilKit
 
 class EditorViewController: SplitChildViewController, ObservableObject, ToolDelegate, EditorDelegate, PaletteDelegate, CanvasViewDelegate, SKStoreProductViewControllerDelegate {
     
-    @IBOutlet weak var undoButton: UIButton!
-    @IBOutlet weak var redoButton: UIButton!
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var sidebarButton: UIButton!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -52,6 +50,51 @@ class EditorViewController: SplitChildViewController, ObservableObject, ToolDele
         }
     }
     
+    var flipButton: UIBarButtonItem {
+        UIBarButtonItem(title: "Flip", image: UIImage(systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right"), primaryAction: .init(handler: { (_) in
+            self.canvasView.documentController.flip(vertically: false)
+        }), menu: UIMenu(children: [
+            UIAction(title: "Flip Horizontal", image: UIImage(systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right"), handler: { _ in
+                self.canvasView.documentController.flip(vertically: false)
+            }),
+            UIAction(title: "Flip Vertical", image: UIImage(systemName: "arrow.up.and.down.righttriangle.up.righttriangle.down"), handler: { _ in
+                self.canvasView.documentController.flip(vertically: true)
+            })
+        ]))
+    }
+    var outlineButton: UIBarButtonItem {
+        UIBarButtonItem(title: "Outline", image: UIImage(systemName: "circle.circle"), menu: UIMenu(children: [
+            UIAction(title: "Outline With Brush Color", image: UIImage(systemName: "pencil.circle"), handler: { _ in
+                self.canvasView.documentController.outline(colorComponents: self.canvasView.documentController.toolColorComponents)
+            }),
+            UIAction(title: "Outline With Automatic Colors", image: UIImage(systemName: "circle"), handler: { _ in
+                self.canvasView.documentController.outline()
+            })
+        ]))
+    }
+    var canvasButton: UIBarButtonItem {
+        UIBarButtonItem(title: "Canvas", image: UIImage(systemName: "square"), menu: UIMenu(children: [
+            UIMenu(options: .displayInline, children: [
+                UIAction(title: "Pixel Grid", image: UIImage(systemName: "squareshape.split.3x3"), handler: { _ in
+                    self.canvasView.pixelGridEnabled.toggle()
+                    self.updateControls()
+                }),
+                UIAction(title: "Tile Grid", image: UIImage(systemName: "squareshape.split.2x2"), handler: { _ in
+                    self.canvasView.tileGridEnabled.toggle()
+                    self.updateControls()
+                })
+            ]),
+            UIMenu(options: .displayInline, children: [
+                UIAction(title: "Vertical Symmetry", image: UIImage(systemName: "square.split.2x1"), handler: { _ in
+                    self.canvasView.documentController.verticalSymmetry.toggle()
+                }),
+                UIAction(title: "Horizontal Symmetry", image: UIImage(systemName: "square.split.1x2"), handler: { _ in
+                    self.canvasView.documentController.horizontalSymmetry.toggle()
+                })
+            ])
+        ]))
+    }
+    
     @Published var hoverPoint: PixelPoint?
     @Published var selectedToolIndex = 0
     
@@ -62,57 +105,38 @@ class EditorViewController: SplitChildViewController, ObservableObject, ToolDele
         
         navigationItem.customizationIdentifier = "editor"
         navigationItem.centerItemGroups = [
-            UIBarButtonItem(title: "Flip Vertical", image: UIImage(systemName: "arrow.up.and.down.righttriangle.up.righttriangle.down"), primaryAction: .init(handler: { (_) in
-                self.canvasView.documentController.flip(vertically: true)
-            })).creatingOptionalGroup(customizationIdentifier: "flipVertical", isInDefaultCustomization: false),
-            
-            UIBarButtonItem(title: "Flip Horizontal", image: UIImage(systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right"), primaryAction: .init(handler: { (_) in
-                self.canvasView.documentController.flip(vertically: false)
-            })).creatingOptionalGroup(customizationIdentifier: "flipHorizontal", isInDefaultCustomization: true),
+            flipButton.creatingOptionalGroup(customizationIdentifier: "flip", isInDefaultCustomization: true),
             
             UIBarButtonItem(title: "Rotate", image: UIImage(systemName: "rotate.left"), primaryAction: .init(handler: { (_) in
                 self.canvasView.documentController.rotate(to: .left)
-            })).creatingOptionalGroup(customizationIdentifier: "rotateLeft", isInDefaultCustomization: true),
+            })).creatingOptionalGroup(customizationIdentifier: "rotateLeft", isInDefaultCustomization: false),
             
             UIBarButtonItem(title: "Posterize", image: UIImage(systemName: "wand.and.stars.inverse"), primaryAction: .init(handler: { (_) in
                 self.canvasView.documentController.posterize()
-            })).creatingOptionalGroup(customizationIdentifier: "posterize", isInDefaultCustomization: true),
+            })).creatingOptionalGroup(customizationIdentifier: "posterize", isInDefaultCustomization: false),
             
-            UIBarButtonItemGroup.optionalGroup(customizationIdentifier: "outline", isInDefaultCustomization: false, representativeItem: UIBarButtonItem(title: "Outline", image: UIImage(systemName: "circle.circle")), items: [
-                UIBarButtonItem(title: "Outline With Brush Color", image: UIImage(systemName: "pencil.circle"), primaryAction: .init(handler: { (_) in
-                    self.canvasView.documentController.outline(colorComponents: self.canvasView.documentController.toolColorComponents)
-                })),
-                UIBarButtonItem(title: "Outline With Automatic Colors", image: UIImage(systemName: "circle"), primaryAction: .init(handler: { (_) in
-                    self.canvasView.documentController.outline()
-                }))
-            ]),
+            outlineButton.creatingOptionalGroup(customizationIdentifier: "outline", isInDefaultCustomization: true),
             
-            UIBarButtonItemGroup.optionalGroup(customizationIdentifier: "canvas", representativeItem: UIBarButtonItem(title: "Canvas", image: UIImage(systemName: "square")), items: [
-                UIBarButtonItem(title: "Tile Grid", image: UIImage(systemName: "squareshape.split.2x2"), primaryAction: .init(handler: { (_) in
-                    self.canvasView.tileGridEnabled.toggle()
-                    self.updateControls()
-                })),
-                UIBarButtonItem(title: "Pixel Grid", image: UIImage(systemName: "squareshape.split.3x3"), primaryAction: .init(handler: { (_) in
-                    self.canvasView.pixelGridEnabled.toggle()
-                    self.updateControls()
-                })),
-                UIBarButtonItem(title: "Symmetry", image: UIImage(systemName: "square.split.2x1"), primaryAction: .init(handler: { (_) in
-                    self.canvasView.documentController.verticalSymmetry.toggle()
-                    self.updateControls()
-                }))
-            ]),
-            
-            UIBarButtonItem(title: "Settings", image: UIImage(systemName: "gear"), primaryAction: .init(handler: { (_) in
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(url)
-                }
-            })).creatingOptionalGroup(customizationIdentifier: "settings", isInDefaultCustomization: true),
-            UIBarButtonItem(title: "Help", image: UIImage(systemName: "questionmark.circle"), primaryAction: .init(handler: { (_) in
-                let helpVC = UIHostingController(rootView: HelpView(editorVC: self))
-                helpVC.modalPresentationStyle = .formSheet
-                self.present(helpVC, animated: true, completion: nil)
-            })).creatingOptionalGroup(customizationIdentifier: "help", isInDefaultCustomization: true),
+            canvasButton.creatingOptionalGroup(customizationIdentifier: "canvas", isInDefaultCustomization: true)
         ]
+        navigationItem.rightBarButtonItems?.insert(UIBarButtonItem(title: "Undo", image: UIImage(systemName: "arrow.uturn.left.circle"), primaryAction: .init(handler: { _ in
+            self.undoTapped()
+        }), menu: UIMenu(children: [
+            UIAction(title: "Undo", image: UIImage(systemName: "arrow.uturn.left"), handler: { _ in
+                self.undoTapped()
+            }),
+            UIAction(title: "Redo", image: UIImage(systemName: "arrow.uturn.right"), handler: { _ in
+                self.redoTapped()
+            })
+        ])), at: 1)
+        navigationItem.additionalOverflowItems = UIDeferredMenuElement({ completion in
+            let settings = UIAction(title: "Settings", image: UIImage(systemName: "gear"), handler: { (_) in
+                let settingsVC = UIHostingController(rootView: NavigationStack { SettingsView(editorVC: self) })
+                settingsVC.modalPresentationStyle = .formSheet
+                self.present(settingsVC, animated: true, completion: nil)
+            })
+            completion([settings])
+        })
         
         navigationItem.style = .editor
         navigationItem.titleMenuProvider = { suggestedActions in
@@ -176,7 +200,7 @@ class EditorViewController: SplitChildViewController, ObservableObject, ToolDele
         toolStackBorder.backgroundColor = UIColor.opaqueSeparator.cgColor
         
         if traitCollection.horizontalSizeClass == .compact {
-            navigationItem.leftBarButtonItems?[0] = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(spritesTapped))
+            navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(spritesTapped))
         }
     }
     
@@ -268,20 +292,7 @@ class EditorViewController: SplitChildViewController, ObservableObject, ToolDele
         UIGraphicsBeginImageContext(image.size)
         image.draw(at: .zero)
         
-        let canvasBackgroundColor = UserDefaults.standard.string(forKey: UserDefaults.Key.canvasBackgroundColor)
-        switch canvasBackgroundColor {
-        case "white":
-            canvasView.checkerboardColor1 = UIColor(white: 1.0, alpha: 1.0)
-            canvasView.checkerboardColor2 = UIColor(white: 0.93, alpha: 1.0)
-        case "pink":
-            canvasView.checkerboardColor1 = .systemPink
-            canvasView.checkerboardColor2 = .systemPink.withAlphaComponent(0.9)
-        case "green":
-            canvasView.checkerboardColor1 = .systemGreen
-            canvasView.checkerboardColor2 = .systemGreen.withAlphaComponent(0.9)
-        default:
-            break
-        }
+        refreshCanvasBackground()
         
         canvasView.canvasDelegate = self
         canvasView.nonDrawingFingerAction = CanvasView.FingerAction(rawValue: UserDefaults.standard.string(forKey: UserDefaults.Key.fingerAction)!) ?? .ignore
@@ -328,11 +339,30 @@ class EditorViewController: SplitChildViewController, ObservableObject, ToolDele
     // MARK: - Funcs
     
     func refreshUndo() {
-        undoButton.isEnabled = document.undoManager.canUndo
-        redoButton.isEnabled = document.undoManager.canRedo
+//        undoButton.isEnabled = document.undoManager.canUndo
+//        redoButton.isEnabled = document.undoManager.canRedo
         if let image = canvasView.documentController.context.makeImage(), let data = UIImage(cgImage: image).pngData() {
             document?.fileData = data
         }
+    }
+    
+    func refreshCanvasBackground() {
+        let canvasBackgroundColor = UserDefaults.standard.string(forKey: UserDefaults.Key.canvasBackgroundColor)
+        switch canvasBackgroundColor {
+        case "white":
+            canvasView.checkerboardColor1 = UIColor(white: 1.0, alpha: 1.0)
+            canvasView.checkerboardColor2 = UIColor(white: 0.93, alpha: 1.0)
+        case "pink":
+            canvasView.checkerboardColor1 = .systemPink
+            canvasView.checkerboardColor2 = .systemPink.withAlphaComponent(0.9)
+        case "green":
+            canvasView.checkerboardColor1 = .systemGreen
+            canvasView.checkerboardColor2 = .systemGreen.withAlphaComponent(0.9)
+        default:
+            canvasView.checkerboardColor1 = .systemGray4
+            canvasView.checkerboardColor2 = .systemGray5
+        }
+        canvasView.makeCheckerboard()
     }
     
     func loadAppStorePage(id: AppID) {
@@ -472,10 +502,10 @@ class EditorViewController: SplitChildViewController, ObservableObject, ToolDele
         }
     }
 
-    @IBAction func undoTapped() {
+    @objc func undoTapped() {
         canvasView.doUndo()
 	}
-    @IBAction func redoTapped() {
+    @objc func redoTapped() {
         canvasView.doRedo()
     }
     
@@ -657,17 +687,6 @@ class EditorViewController: SplitChildViewController, ObservableObject, ToolDele
 
 #if targetEnvironment(macCatalyst)
 extension EditorViewController: MacToolbarActionsDelegate {
-    
-    var documentMenu: UIMenu? {
-        UIMenu(children: [
-            UIAction(title: "V Symmetry", image: UIImage(systemName: "square.split.2x1")) { _ in
-                self.vSymmetryClicked()
-            },
-            UIAction(title: "H Symmetry", image: UIImage(systemName: "square.split.1x2")) { _ in
-                self.hSymmetryClicked()
-            }
-        ])
-    }
     
     func spritesClicked(_ sender: UIBarButtonItem) {
         spritesTapped()

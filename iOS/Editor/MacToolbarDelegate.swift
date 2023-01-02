@@ -10,7 +10,9 @@
 import UIKit
 
 protocol MacToolbarActionsDelegate: AnyObject {
-    var documentMenu: UIMenu? { get }
+    var flipButton: UIBarButtonItem { get }
+    var outlineButton: UIBarButtonItem { get }
+    var canvasButton: UIBarButtonItem { get }
     
     func spritesClicked(_ sender: UIBarButtonItem)
     func shareClicked(_ sender: UIBarButtonItem)
@@ -28,15 +30,17 @@ class MacToolbarDelegate: NSObject, NSToolbarDelegate {
     
     func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
         switch itemIdentifier.rawValue {
-        case "sprites":
-            let item = NSToolbarItem(itemIdentifier: itemIdentifier, barButtonItem: UIBarButtonItem(title: NSLocalizedString("Sprites", comment: ""), style: .plain, target: self, action: #selector(spritesClicked)))
-            item.label = NSLocalizedString("Sprites", comment: "")
-            item.isNavigational = true
+        case "flip":
+            let item = NSToolbarItem(itemIdentifier: itemIdentifier, barButtonItem: delegate?.flipButton ?? UIBarButtonItem())
+            item.label = NSLocalizedString("Flip", comment: "")
             return item
-        case "document":
-            let item = NSMenuToolbarItem(itemIdentifier: itemIdentifier, barButtonItem: UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: delegate?.documentMenu))
-            item.label = NSLocalizedString("Document", comment: "")
-            item.itemMenu = delegate?.documentMenu ?? UIMenu()
+        case "outline":
+            let item = NSMenuToolbarItem(itemIdentifier: itemIdentifier, barButtonItem: delegate?.outlineButton ?? UIBarButtonItem())
+            item.label = NSLocalizedString("Outline", comment: "")
+            return item
+        case "canvas":
+            let item = NSMenuToolbarItem(itemIdentifier: itemIdentifier, barButtonItem: delegate?.canvasButton ?? UIBarButtonItem())
+            item.label = NSLocalizedString("Canvas", comment: "")
             return item
         case "share":
             let item = NSToolbarItem(itemIdentifier: itemIdentifier, barButtonItem: UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareClicked)))
@@ -73,9 +77,10 @@ class MacToolbarDelegate: NSObject, NSToolbarDelegate {
         
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         [
-//            NSToolbarItem.Identifier("sprites"), // Not needed while using 11.2 rootviewcontroller bug workaround
-            NSToolbarItem.Identifier.flexibleSpace,
-            NSToolbarItem.Identifier("document"),
+            NSToolbarItem.Identifier("flip"),
+            NSToolbarItem.Identifier("outline"),
+            NSToolbarItem.Identifier("canvas"),
+            NSToolbarItem.Identifier.space,
             NSToolbarItem.Identifier("share"),
             NSToolbarItem.Identifier("choosePalette"),
             NSToolbarItem.Identifier("sidebar")
@@ -84,15 +89,18 @@ class MacToolbarDelegate: NSObject, NSToolbarDelegate {
         
     func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         [
-            NSToolbarItem.Identifier("sprites"),
-            NSToolbarItem.Identifier("document"),
+            NSToolbarItem.Identifier("flip"),
+            NSToolbarItem.Identifier("outline"),
+            NSToolbarItem.Identifier("canvas"),
             NSToolbarItem.Identifier("share"),
             NSToolbarItem.Identifier("choosePalette"),
             NSToolbarItem.Identifier("sidebar"),
             NSToolbarItem.Identifier("vSymmetry"),
             NSToolbarItem.Identifier("hSymmetry"),
             NSToolbarItem.Identifier("pixelGrid"),
-            NSToolbarItem.Identifier("tileGrid")
+            NSToolbarItem.Identifier("tileGrid"),
+            NSToolbarItem.Identifier.space,
+            NSToolbarItem.Identifier.flexibleSpace
         ]
     }
     
