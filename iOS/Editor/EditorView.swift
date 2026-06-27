@@ -154,6 +154,10 @@ struct EditorView: View {
                 }
                 
                 Menu("Canvas", systemImage: "square") {
+                    Button("Trim Canvas", systemImage: "crop") {
+                        documentController.trimCanvas()
+                    }
+                    Divider()
                     Toggle("Pixel Grid", systemImage: "squareshape.split.3x3", isOn: $pixelGridEnabled)
                     Toggle("Tile Grid", systemImage: "squareshape.split.2x2", isOn: $tileGridEnabled)
                     Divider()
