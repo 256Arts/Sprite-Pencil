@@ -123,6 +123,9 @@ struct EditorView: View {
         }
         .safeAreaPadding(.bottom, horizontalSizeClass == .compact && showingInspector && inspectorDetent == .height(Self.inspectorPeekDetentHeight) ? Self.inspectorPeekDetentHeight : 0)
         .toolbar {
+            // Keep Undo away from the document's close button (also leading), so
+            // reaching for Undo doesn't accidentally exit the document.
+            ToolbarSpacer(.fixed, placement: .topBarLeading)
             ToolbarItemGroup(placement: .topBarLeading) {
                 Button("Undo", systemImage: "arrow.uturn.left") { canvasRef?.doUndo() }
                     .disabled(!(undoManager?.canUndo ?? false))
