@@ -1,0 +1,755 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1B2D4FB628B5765800FF9414 /* SpritePencilKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1B2D4FB528B5765800FF9414 /* SpritePencilKit */; };
+		1B2D4FB828B5765D00FF9414 /* SpritePencilKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1B2D4FB728B5765D00FF9414 /* SpritePencilKit */; };
+		1B9067E92473504500335EF5 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9067E82473504500335EF5 /* CloudKit.framework */; };
+		1B9BEDD528B2AAC700ECAD66 /* SpritePencilKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1B9BEDD428B2AAC700ECAD66 /* SpritePencilKit */; };
+		1BC0F8AA217458A30023113F /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BC0F8A9217458A30023113F /* Messages.framework */; };
+		1BC0F8B6217458A50023113F /* Sprite Pencil Messages.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1BC0F8A7217458A30023113F /* Sprite Pencil Messages.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1BC7AEF22526DEA000AFB499 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BC7AEF12526DEA000AFB499 /* WidgetKit.framework */; platformFilter = ios; };
+		1BC7AEF42526DEA000AFB499 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BC7AEF32526DEA000AFB499 /* SwiftUI.framework */; };
+		1BC7AF002526DEA100AFB499 /* SpriteWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1BC7AEF02526DEA000AFB499 /* SpriteWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1BEEC5C921EEF3F000AB83C3 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1BEEC5C821EEF3F000AB83C3 /* Settings.bundle */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1BC0F8B4217458A50023113F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1B9C7560215FE88500C3470F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1BC0F8A6217458A30023113F;
+			remoteInfo = messages;
+		};
+		1BC7AEFE2526DEA100AFB499 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1B9C7560215FE88500C3470F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1BC7AEEF2526DEA000AFB499;
+			remoteInfo = WidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1BC0F8BA217458A50023113F /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1BC7AF002526DEA100AFB499 /* SpriteWidgetExtension.appex in Embed Foundation Extensions */,
+				1BC0F8B6217458A50023113F /* Sprite Pencil Messages.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1500CC4662DE582F7D593FDD /* Pods_Today.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Today.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B9067E82473504500335EF5 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		1B9C7568215FE88500C3470F /* Sprite Pencil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sprite Pencil.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BAA064E2322DD8700608399 /* Sprite Pencil.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Sprite Pencil.entitlements"; sourceTree = "<group>"; };
+		1BC0F8A7217458A30023113F /* Sprite Pencil Messages.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Sprite Pencil Messages.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BC0F8A9217458A30023113F /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
+		1BC4D533218D54AC00660676 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		1BC7AEF02526DEA000AFB499 /* SpriteWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SpriteWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BC7AEF12526DEA000AFB499 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		1BC7AEF32526DEA000AFB499 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		1BC7AF012526DEA100AFB499 /* SpriteWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpriteWidgetExtension.entitlements; sourceTree = "<group>"; };
+		1BEEC5C821EEF3F000AB83C3 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		4B3380B5BE3688F310E1C185 /* Pods_Sprite_Pencil.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sprite_Pencil.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CD17BE1F328A5625E600EE2 /* Pods_Sprite_Pencil_Messages.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sprite_Pencil_Messages.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1B00D5E02E80EBF80007B6D6 /* Exceptions for "Messages" folder in "Sprite Pencil Messages" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1BC0F8A6217458A30023113F /* Sprite Pencil Messages */;
+		};
+		1BB201F22E2384700058834C /* Exceptions for "iOS" folder in "Sprite Pencil" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1B9C7567215FE88500C3470F /* Sprite Pencil */;
+		};
+		1BB201FF2E2384820058834C /* Exceptions for "Widget" folder in "SpriteWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1BC7AEEF2526DEA000AFB499 /* SpriteWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1B00D5DB2E80EBF80007B6D6 /* Messages */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1B00D5E02E80EBF80007B6D6 /* Exceptions for "Messages" folder in "Sprite Pencil Messages" target */,
+			);
+			path = Messages;
+			sourceTree = "<group>";
+		};
+		1BB2017C2E23846D0058834C /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		1BB201C02E2384700058834C /* iOS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1BB201F22E2384700058834C /* Exceptions for "iOS" folder in "Sprite Pencil" target */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		1BB201F82E2384820058834C /* Widget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1BB201FF2E2384820058834C /* Exceptions for "Widget" folder in "SpriteWidgetExtension" target */,
+			);
+			path = Widget;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1B9C7565215FE88500C3470F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B9BEDD528B2AAC700ECAD66 /* SpritePencilKit in Frameworks */,
+				1B9067E92473504500335EF5 /* CloudKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BC0F8A4217458A30023113F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BC0F8AA217458A30023113F /* Messages.framework in Frameworks */,
+				1B2D4FB628B5765800FF9414 /* SpritePencilKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BC7AEED2526DEA000AFB499 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BC7AEF42526DEA000AFB499 /* SwiftUI.framework in Frameworks */,
+				1B2D4FB828B5765D00FF9414 /* SpritePencilKit in Frameworks */,
+				1BC7AEF22526DEA000AFB499 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1B9C755F215FE88500C3470F = {
+			isa = PBXGroup;
+			children = (
+				1BC7AF012526DEA100AFB499 /* SpriteWidgetExtension.entitlements */,
+				1BAA064E2322DD8700608399 /* Sprite Pencil.entitlements */,
+				1BEEC5C821EEF3F000AB83C3 /* Settings.bundle */,
+				1BB2017C2E23846D0058834C /* Shared */,
+				1BB201C02E2384700058834C /* iOS */,
+				1B00D5DB2E80EBF80007B6D6 /* Messages */,
+				1BB201F82E2384820058834C /* Widget */,
+				1BC0F8A8217458A30023113F /* Frameworks */,
+				1B9C7569215FE88500C3470F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1B9C7569215FE88500C3470F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1B9C7568215FE88500C3470F /* Sprite Pencil.app */,
+				1BC0F8A7217458A30023113F /* Sprite Pencil Messages.appex */,
+				1BC7AEF02526DEA000AFB499 /* SpriteWidgetExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1BC0F8A8217458A30023113F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1B9067E82473504500335EF5 /* CloudKit.framework */,
+				1BC0F8A9217458A30023113F /* Messages.framework */,
+				1BC4D533218D54AC00660676 /* NotificationCenter.framework */,
+				4B3380B5BE3688F310E1C185 /* Pods_Sprite_Pencil.framework */,
+				9CD17BE1F328A5625E600EE2 /* Pods_Sprite_Pencil_Messages.framework */,
+				1500CC4662DE582F7D593FDD /* Pods_Today.framework */,
+				1BC7AEF12526DEA000AFB499 /* WidgetKit.framework */,
+				1BC7AEF32526DEA000AFB499 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1B9C7567215FE88500C3470F /* Sprite Pencil */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1B9C757E215FE88B00C3470F /* Build configuration list for PBXNativeTarget "Sprite Pencil" */;
+			buildPhases = (
+				1B9C7564215FE88500C3470F /* Sources */,
+				1B9C7565215FE88500C3470F /* Frameworks */,
+				1B9C7566215FE88500C3470F /* Resources */,
+				1BC0F8BA217458A50023113F /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1BC0F8B5217458A50023113F /* PBXTargetDependency */,
+				1BC7AEFF2526DEA100AFB499 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1BB2017C2E23846D0058834C /* Shared */,
+				1BB201C02E2384700058834C /* iOS */,
+			);
+			name = "Sprite Pencil";
+			packageProductDependencies = (
+				1B9BEDD428B2AAC700ECAD66 /* SpritePencilKit */,
+			);
+			productName = "Pixel Canvas";
+			productReference = 1B9C7568215FE88500C3470F /* Sprite Pencil.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1BC0F8A6217458A30023113F /* Sprite Pencil Messages */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1BC0F8B9217458A50023113F /* Build configuration list for PBXNativeTarget "Sprite Pencil Messages" */;
+			buildPhases = (
+				1BC0F8A3217458A30023113F /* Sources */,
+				1BC0F8A4217458A30023113F /* Frameworks */,
+				1BC0F8A5217458A30023113F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1B00D5DB2E80EBF80007B6D6 /* Messages */,
+				1BB2017C2E23846D0058834C /* Shared */,
+			);
+			name = "Sprite Pencil Messages";
+			packageProductDependencies = (
+				1B2D4FB528B5765800FF9414 /* SpritePencilKit */,
+			);
+			productName = messages;
+			productReference = 1BC0F8A7217458A30023113F /* Sprite Pencil Messages.appex */;
+			productType = "com.apple.product-type.app-extension.messages";
+		};
+		1BC7AEEF2526DEA000AFB499 /* SpriteWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1BC7AF042526DEA100AFB499 /* Build configuration list for PBXNativeTarget "SpriteWidgetExtension" */;
+			buildPhases = (
+				1BC7AEEC2526DEA000AFB499 /* Sources */,
+				1BC7AEED2526DEA000AFB499 /* Frameworks */,
+				1BC7AEEE2526DEA000AFB499 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1BB201F82E2384820058834C /* Widget */,
+			);
+			name = SpriteWidgetExtension;
+			packageProductDependencies = (
+				1B2D4FB728B5765D00FF9414 /* SpritePencilKit */,
+			);
+			productName = WidgetExtension;
+			productReference = 1BC7AEF02526DEA000AFB499 /* SpriteWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1B9C7560215FE88500C3470F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 1200;
+				LastUpgradeCheck = 1520;
+				ORGANIZATIONNAME = "";
+				TargetAttributes = {
+					1B9C7567215FE88500C3470F = {
+						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1020;
+					};
+					1BC0F8A6217458A30023113F = {
+						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1020;
+					};
+					1BC7AEEF2526DEA000AFB499 = {
+						CreatedOnToolsVersion = 12.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 1B9C7563215FE88500C3470F /* Build configuration list for PBXProject "Sprite Pencil" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				ru,
+				"en-GB",
+				"zh-Hans",
+			);
+			mainGroup = 1B9C755F215FE88500C3470F;
+			packageReferences = (
+				1B9BEDD328B2AAC700ECAD66 /* XCRemoteSwiftPackageReference "SpritePencilKit" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1B9C7569215FE88500C3470F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1B9C7567215FE88500C3470F /* Sprite Pencil */,
+				1BC0F8A6217458A30023113F /* Sprite Pencil Messages */,
+				1BC7AEEF2526DEA000AFB499 /* SpriteWidgetExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1B9C7566215FE88500C3470F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BEEC5C921EEF3F000AB83C3 /* Settings.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BC0F8A5217458A30023113F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BC7AEEE2526DEA000AFB499 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1B9C7564215FE88500C3470F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BC0F8A3217458A30023113F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BC7AEEC2526DEA000AFB499 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1BC0F8B5217458A50023113F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 1BC0F8A6217458A30023113F /* Sprite Pencil Messages */;
+			targetProxy = 1BC0F8B4217458A50023113F /* PBXContainerItemProxy */;
+		};
+		1BC7AEFF2526DEA100AFB499 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1BC7AEEF2526DEA000AFB499 /* SpriteWidgetExtension */;
+			targetProxy = 1BC7AEFE2526DEA100AFB499 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1B9C757C215FE88B00C3470F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CODE_SIGN_FLAGS = "";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Debug;
+		};
+		1B9C757D215FE88B00C3470F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_CODE_SIGN_FLAGS = "";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
+		1B9C757F215FE88B00C3470F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = App;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CODE_SIGN_ENTITLEMENTS = "Sprite Pencil.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 66;
+				DEVELOPMENT_TEAM = VA3SY54YU8;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 4.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaydenirwin.spritepencil;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6,7";
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		1B9C7580215FE88B00C3470F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = App;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CODE_SIGN_ENTITLEMENTS = "Sprite Pencil.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 66;
+				DEVELOPMENT_TEAM = VA3SY54YU8;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 4.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaydenirwin.spritepencil;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6,7";
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+		1BC0F8B7217458A50023113F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 66;
+				DEVELOPMENT_TEAM = VA3SY54YU8;
+				INFOPLIST_FILE = messages/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 4.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaydenirwin.spritepencil.messages;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1BC0F8B8217458A50023113F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 66;
+				DEVELOPMENT_TEAM = VA3SY54YU8;
+				INFOPLIST_FILE = messages/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 4.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaydenirwin.spritepencil.messages;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1BC7AF022526DEA100AFB499 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = SpriteWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 66;
+				DEVELOPMENT_TEAM = VA3SY54YU8;
+				INFOPLIST_FILE = Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 18;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 4.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaydenirwin.spritepencil.SpriteWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Debug;
+		};
+		1BC7AF032526DEA100AFB499 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = SpriteWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 66;
+				DEVELOPMENT_TEAM = VA3SY54YU8;
+				INFOPLIST_FILE = Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 18;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 4.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaydenirwin.spritepencil.SpriteWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1B9C7563215FE88500C3470F /* Build configuration list for PBXProject "Sprite Pencil" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1B9C757C215FE88B00C3470F /* Debug */,
+				1B9C757D215FE88B00C3470F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1B9C757E215FE88B00C3470F /* Build configuration list for PBXNativeTarget "Sprite Pencil" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1B9C757F215FE88B00C3470F /* Debug */,
+				1B9C7580215FE88B00C3470F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1BC0F8B9217458A50023113F /* Build configuration list for PBXNativeTarget "Sprite Pencil Messages" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BC0F8B7217458A50023113F /* Debug */,
+				1BC0F8B8217458A50023113F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1BC7AF042526DEA100AFB499 /* Build configuration list for PBXNativeTarget "SpriteWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BC7AF022526DEA100AFB499 /* Debug */,
+				1BC7AF032526DEA100AFB499 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1B9BEDD328B2AAC700ECAD66 /* XCRemoteSwiftPackageReference "SpritePencilKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/256Arts/SpritePencilKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1B2D4FB528B5765800FF9414 /* SpritePencilKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B9BEDD328B2AAC700ECAD66 /* XCRemoteSwiftPackageReference "SpritePencilKit" */;
+			productName = SpritePencilKit;
+		};
+		1B2D4FB728B5765D00FF9414 /* SpritePencilKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B9BEDD328B2AAC700ECAD66 /* XCRemoteSwiftPackageReference "SpritePencilKit" */;
+			productName = SpritePencilKit;
+		};
+		1B9BEDD428B2AAC700ECAD66 /* SpritePencilKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B9BEDD328B2AAC700ECAD66 /* XCRemoteSwiftPackageReference "SpritePencilKit" */;
+			productName = SpritePencilKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1B9C7560215FE88500C3470F /* Project object */;
+}

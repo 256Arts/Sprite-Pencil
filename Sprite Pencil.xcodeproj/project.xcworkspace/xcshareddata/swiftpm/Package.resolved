@@ -1,0 +1,15 @@
+{
+  "originHash" : "df6290e3ebc293a2c0b0232287f65cf2a56b7a28c0761901328960315ccbe274",
+  "pins" : [
+    {
+      "identity" : "spritepencilkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/256Arts/SpritePencilKit",
+      "state" : {
+        "revision" : "cec50b25b6dce378c340d3e71c9cca4b140837a3",
+        "version" : "1.5.0"
+      }
+    }
+  ],
+  "version" : 3
+}
