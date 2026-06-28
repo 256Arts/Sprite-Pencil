@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/256Arts/SpritePencilKit",
       "state" : {
-        "revision" : "fdde6bad514c716719b320f6cda6667592d3191e",
-        "version" : "1.6.0"
+        "revision" : "80fce0f31a37bedcc81911c9d95b7d1b2b369a95",
+        "version" : "1.6.1"
       }
     }
   ],
