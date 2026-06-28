@@ -153,13 +153,11 @@ struct EditorView: View {
                     }
                 }
                 
-                Menu("Rotate", systemImage: "rotate.left") {
-                    Button("Rotate Left", systemImage: "rotate.left") {
-                        documentController.rotate(to: .left)
-                    }
-                    Button("Rotate Right", systemImage: "rotate.right") {
-                        documentController.rotate(to: .right)
-                    }
+                // Only one rotation direction is exposed: rotating is a rare
+                // action, so a single button beats a menu. To rotate the other
+                // way, tap it three times.
+                Button("Rotate", systemImage: "rotate.left") {
+                    documentController.rotate(to: .left)
                 }
                 
                 Menu("Outline", systemImage: "circle.circle") {
