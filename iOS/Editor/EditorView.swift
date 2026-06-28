@@ -119,21 +119,17 @@ struct EditorView: View {
             }
         )
         .safeAreaInset(edge: .bottom) {
-            if horizontalSizeClass == .compact {
-                VStack {
-                    leadingAndTrailingBottomBarItems()
+            // Compact stacks the edge items above the tool bar; regular has the
+            // horizontal room to overlay the centered tool bar on top of them.
+            // `AnyLayout` (vs. an if/else) keeps the subviews' identity across a
+            // size-class change, so their state survives rotation / Split View.
+            let layout = horizontalSizeClass == .compact ? AnyLayout(VStackLayout()) : AnyLayout(ZStackLayout())
+            layout {
+                leadingAndTrailingBottomBarItems()
 
-                    ToolSelectionBar(selectedTool: $selectedTool)
-                }
-                .padding(6)
-            } else {
-                ZStack {
-                    leadingAndTrailingBottomBarItems()
-
-                    ToolSelectionBar(selectedTool: $selectedTool)
-                }
-                .padding(6)
+                ToolSelectionBar(selectedTool: $selectedTool)
             }
+            .padding(6)
         }
         .safeAreaPadding(.bottom, horizontalSizeClass == .compact && showingInspector && inspectorDetent == .height(Self.inspectorPeekDetentHeight) ? Self.inspectorPeekDetentHeight : 0)
         .toolbar {
