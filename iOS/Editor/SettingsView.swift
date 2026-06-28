@@ -16,8 +16,8 @@ enum AppID: Int {
 
 struct SettingsView: View {
     
-    @AppStorage(UserDefaults.Key.canvasBackgroundColor) var canvasBackgroundColor = "default"
-    @AppStorage(UserDefaults.Key.fingerAction) var fingerAction = "ignore"
+    @AppStorage(UserDefaults.Key.canvasBackgroundColor) var canvasBackgroundColor: CanvasBackground = .default
+    @AppStorage(UserDefaults.Key.fingerAction) var fingerAction: CanvasUIView.FingerAction = .ignore
     @AppStorage(UserDefaults.Key.twoFingerUndoEnabled) var twoFingerUndoEnabled = true
     @AppStorage(UserDefaults.Key.showColorNotifications) var showColorNotifications = false
     
@@ -30,13 +30,13 @@ struct SettingsView: View {
                 Picker("Canvas Background", selection: $canvasBackgroundColor) {
                     ForEach(CanvasBackground.allCases) { background in
                         Text(background.displayName)
-                            .tag(background.rawValue)
+                            .tag(background)
                     }
                 }
                 Picker("Finger Action", selection: $fingerAction) {
                     ForEach(CanvasUIView.FingerAction.userSelectableCases, id: \.self) { action in
                         Text(action.displayName)
-                            .tag(action.rawValue)
+                            .tag(action)
                     }
                 }
                 Toggle("2 Finger Undo", isOn: $twoFingerUndoEnabled)

@@ -14,10 +14,7 @@ struct EditorView: View {
     @AppStorage(UserDefaults.Key.showPixelGrid) private var pixelGridEnabled: Bool = false
     @AppStorage(UserDefaults.Key.showTileGrid) private var tileGridEnabled: Bool = false
     @AppStorage(UserDefaults.Key.twoFingerUndoEnabled) private var twoFingerUndoEnabled: Bool = false
-    @AppStorage(UserDefaults.Key.fingerAction) private var fingerActionRaw: String = "ignore"
-    private var nonDrawingFingerAction: CanvasUIView.FingerAction {
-        CanvasUIView.FingerAction(storageValue: fingerActionRaw)
-    }
+    @AppStorage(UserDefaults.Key.fingerAction) private var nonDrawingFingerAction: CanvasUIView.FingerAction = .ignore
     
     static let inspectorPeekDetentHeight: CGFloat = 200
 
@@ -27,7 +24,7 @@ struct EditorView: View {
 
     // Additional @AppStorage properties for UserDefaults keys used later
     @AppStorage(UserDefaults.Key.currentColor) private var currentColorHex: String = ""
-    @AppStorage(UserDefaults.Key.canvasBackgroundColor) private var canvasBackgroundColorKey: String = ""
+    @AppStorage(UserDefaults.Key.canvasBackgroundColor) private var canvasBackground: CanvasBackground = .default
     @AppStorage(UserDefaults.Key.colorPalette) private var colorPaletteName: String = ""
     @AppStorage(UserDefaults.Key.documentsClosedCount) private var documentsClosedCount: Int = 0
 
@@ -312,10 +309,6 @@ struct EditorView: View {
     }
 
     // MARK: - Helpers
-
-    private var canvasBackground: CanvasBackground {
-        CanvasBackground(storageValue: canvasBackgroundColorKey)
-    }
 
     private var currentPalette: Palette {
         if !colorPaletteName.isEmpty {

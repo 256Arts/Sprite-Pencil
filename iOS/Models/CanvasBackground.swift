@@ -19,12 +19,6 @@ enum CanvasBackground: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
-    /// Resolves a persisted raw value, falling back to `.default` for unknown or
-    /// empty strings.
-    init(storageValue: String) {
-        self = CanvasBackground(rawValue: storageValue) ?? .default
-    }
-
     var displayName: LocalizedStringKey {
         switch self {
         case .default: "Default"

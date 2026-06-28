@@ -22,12 +22,6 @@ extension CanvasUIView.FingerAction {
     /// not a user-selectable option.
     static let userSelectableCases: [Self] = [.move, .eyedrop, .ignore]
 
-    /// Resolves a persisted raw value, falling back to `.ignore` for unknown or
-    /// empty strings.
-    init(storageValue: String) {
-        self = Self(rawValue: storageValue) ?? .ignore
-    }
-
     var displayName: LocalizedStringKey {
         switch self {
         case .draw: "Draw"
