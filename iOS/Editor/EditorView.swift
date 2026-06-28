@@ -46,6 +46,13 @@ struct EditorView: View {
     @State private var pendingPalette: Palette?
     
     @State private var subscriptions: Set<AnyCancellable> = []
+
+    // Coalesces document re-encodes. The kit fires `.drawingDidChange` on every
+    // touch-move sample, so encoding the full PNG inline on each one stutters
+    // larger canvases. Instead we keep at most one encode in flight and re-run
+    // once more if the canvas changed meanwhile, so the final state is always saved.
+    @State private var isEncodingDocument = false
+    @State private var documentNeedsReencode = false
     
     init(document: Binding<SpriteImageDocument>) {
         self._document = document
@@ -165,13 +172,11 @@ struct EditorView: View {
                     Toggle("Tile Grid", systemImage: "squareshape.split.2x2", isOn: $tileGridEnabled)
                     Divider()
                     Toggle("Vertical Symmetry", systemImage: "square.split.2x1", isOn: $documentController.verticalSymmetry)
-                        .onChange(of: documentController.verticalSymmetry) { _, newValue in
-                            documentController.verticalSymmetry = newValue
+                        .onChange(of: documentController.verticalSymmetry) { _, _ in
                             canvasRef?.refreshGrid()
                         }
                     Toggle("Horizontal Symmetry", systemImage: "square.split.1x2", isOn: $documentController.horizontalSymmetry)
-                        .onChange(of: documentController.horizontalSymmetry) { _, newValue in
-                            documentController.horizontalSymmetry = newValue
+                        .onChange(of: documentController.horizontalSymmetry) { _, _ in
                             canvasRef?.refreshGrid()
                         }
                 }
@@ -282,9 +287,6 @@ struct EditorView: View {
             default: break
             }
         }
-        .onChange(of: documentController.checkeredDrawingMode) { _, newValue in
-            documentController.checkeredDrawingMode = newValue
-        }
         .onChange(of: documentController.brushShape) { _, _ in
             // Re-render the hover outline (square vs. round) for the active brush.
             guard let canvasRef, let width = currentBrushWidth else { return }
@@ -379,13 +381,27 @@ struct EditorView: View {
     }
 
     private func refreshDocumentDataFromContext() {
-        guard let ctx = documentController.context, let image = ctx.makeImage() else { return }
-        
-        if let data = UIImage(cgImage: image).pngData() {
-            Task {
-                // Added `Task` becuase this should not be done during view updates (crash)
-                document.data = data
+        // Coalesce bursts: if an encode is already scheduled/running, just mark the
+        // canvas dirty so one final encode runs when it finishes.
+        guard !isEncodingDocument else {
+            documentNeedsReencode = true
+            return
+        }
+        isEncodingDocument = true
+        documentNeedsReencode = false
+
+        // A `Task` hop also keeps this off the view-update pass (mutating during
+        // a view update crashes), and re-snapshots the latest context each run.
+        Task { @MainActor in
+            defer {
+                isEncodingDocument = false
+                if documentNeedsReencode {
+                    refreshDocumentDataFromContext()
+                }
             }
+            guard let ctx = documentController.context, let image = ctx.makeImage(),
+                  let data = UIImage(cgImage: image).pngData() else { return }
+            document.data = data
         }
     }
 
