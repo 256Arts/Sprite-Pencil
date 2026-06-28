@@ -6,6 +6,7 @@
 //  Copyright © 2023 256 Arts Developer. All rights reserved.
 //
 
+import SpritePencilKit
 import SwiftUI
 
 enum AppID: Int {
@@ -33,12 +34,10 @@ struct SettingsView: View {
                     }
                 }
                 Picker("Finger Action", selection: $fingerAction) {
-                    Text("Move")
-                        .tag("move")
-                    Text("Eyedrop")
-                        .tag("eyedrop")
-                    Text("Ignore")
-                        .tag("ignore")
+                    ForEach(CanvasUIView.FingerAction.userSelectableCases, id: \.self) { action in
+                        Text(action.displayName)
+                            .tag(action.rawValue)
+                    }
                 }
                 Toggle("2 Finger Undo", isOn: $twoFingerUndoEnabled)
                 Toggle("Show HEX Notifications", isOn: $showColorNotifications)

@@ -16,8 +16,7 @@ struct EditorView: View {
     @AppStorage(UserDefaults.Key.twoFingerUndoEnabled) private var twoFingerUndoEnabled: Bool = false
     @AppStorage(UserDefaults.Key.fingerAction) private var fingerActionRaw: String = "ignore"
     private var nonDrawingFingerAction: CanvasUIView.FingerAction {
-        get { CanvasUIView.FingerAction(rawValue: fingerActionRaw) ?? .ignore }
-        set { fingerActionRaw = newValue.rawValue }
+        CanvasUIView.FingerAction(storageValue: fingerActionRaw)
     }
     
     static let inspectorPeekDetentHeight: CGFloat = 200
