@@ -106,6 +106,13 @@ struct EditorView: View {
                     canvasView.makeCheckerboard()
                     canvasView.refreshGrid()
                     zoomableView.zoomToFit()
+
+                    // Seed recent colors now that the context exists. `configure`
+                    // runs once, exactly when the context is first set, so this is
+                    // the precise readiness signal (vs. guessing with a delay). The
+                    // `Task` hop keeps the `paletteController` mutation off this
+                    // view-update pass (see `refreshDocumentDataFromContext`).
+                    Task { @MainActor in addImageColorsToRecentColors() }
                 }
 
                 canvasView.tool = documentController.pencilTool
@@ -240,11 +247,6 @@ struct EditorView: View {
                         }
                     }
                     .store(in: &subscriptions)
-            }
-
-            // Seed palette with image colors once the canvas is ready
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                addImageColorsToRecentColors()
             }
         }
         .onDisappear {
