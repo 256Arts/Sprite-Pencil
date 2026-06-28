@@ -67,4 +67,23 @@ enum EditorTool: Int, CaseIterable, Identifiable {
         default: nil
         }
     }
+
+    /// Sets `width` (clamped to the tool's own max) on this case's backing tool
+    /// and makes it the controller's active tool. Writing the width back to the
+    /// stored struct is what restores it when the user returns to this tool;
+    /// assigning `controller.tool` pushes the new size to the canvas via its
+    /// `didSet`. No-op for tools with no brush width (fill, move, eyedropper).
+    @MainActor func setWidth(_ width: Int, in controller: DocumentController) {
+        func apply<T: SizableTool>(_ keyPath: ReferenceWritableKeyPath<DocumentController, T>) {
+            controller[keyPath: keyPath].width = min(width, controller[keyPath: keyPath].maxWidth)
+            controller.tool = controller[keyPath: keyPath]
+        }
+        switch self {
+        case .pencil: apply(\.pencilTool)
+        case .eraser: apply(\.eraserTool)
+        case .highlight: apply(\.highlightTool)
+        case .shadow: apply(\.shadowTool)
+        default: break
+        }
+    }
 }

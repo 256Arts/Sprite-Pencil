@@ -260,23 +260,11 @@ struct EditorView: View {
             currentBrushWidth = newTool.sizableTool(in: documentController)?.width
         }
         .onChange(of: currentBrushWidth) { _, width in
-            guard let width, let canvasRef else { return }
-
-            // Clamp to the tool's own max, write the width back to its stored
-            // instance (so it's restored when the user returns to this tool),
-            // then make it the active tool.
-            @MainActor func apply<T: SizableTool>(_ tool: inout T) {
-                tool.width = min(width, tool.maxWidth)
-                documentController.tool = tool
-                canvasRef.toolSizeChanged(size: tool.size)
-            }
-            switch documentController.tool {
-            case is PencilTool: apply(&documentController.pencilTool)
-            case is EraserTool: apply(&documentController.eraserTool)
-            case is HighlightTool: apply(&documentController.highlightTool)
-            case is ShadowTool: apply(&documentController.shadowTool)
-            default: break
-            }
+            // Apply the stepper's value to the active tool. `selectedTool` is the
+            // source of truth for which tool the stepper drives, and assigning the
+            // controller's tool pushes the new size to the canvas (see EditorTool).
+            guard let width else { return }
+            selectedTool.setWidth(width, in: documentController)
         }
         .onChange(of: documentController.brushShape) { _, _ in
             // Re-render the hover outline (square vs. round) for the active brush.
