@@ -153,8 +153,13 @@ struct EditorView: View {
                     }
                 }
                 
-                Button("Rotate", systemImage: "rotate.left") {
-                    documentController.rotate(to: .left)
+                Menu("Rotate", systemImage: "rotate.left") {
+                    Button("Rotate Left", systemImage: "rotate.left") {
+                        documentController.rotate(to: .left)
+                    }
+                    Button("Rotate Right", systemImage: "rotate.right") {
+                        documentController.rotate(to: .right)
+                    }
                 }
                 
                 Menu("Outline", systemImage: "circle.circle") {
