@@ -34,12 +34,12 @@ struct ToolSelectionButtonToggleStyle: ToggleStyle {
 }
 
 struct ToolSelectionBar: View {
-    
-    @Binding var selectedToolIndex: Int
-    
+
+    @Binding var selectedTool: EditorTool
+
     var body: some View {
         HStack {
-            ToolSelectionButtons(selectedToolIndex: $selectedToolIndex)
+            ToolSelectionButtons(selectedTool: $selectedTool)
                 .toggleStyle(ToolSelectionButtonToggleStyle())
                 .labelStyle(.iconOnly)
                 .padding(.horizontal, -2)
@@ -51,78 +51,22 @@ struct ToolSelectionBar: View {
 
 /// The buttons are separated into their own view in case we want to show them in a `.toolbar` in the future
 struct ToolSelectionButtons: View {
-    
-    static var selectedForeground: Color {
-        #if targetEnvironment(macCatalyst)
-        Color(uiColor: .systemBackground)
-        #else
-        Color.yellowAccent
-        #endif
-    }
-    static var selectedBackground: Color {
-        #if targetEnvironment(macCatalyst)
-        Color(uiColor: .systemGray)
-        #else
-        Color("Selected Background")
-        #endif
-    }
-    static let unselectedForeground = Color(uiColor: .systemGray)
-    
-    @Binding var selectedToolIndex: Int
-    
+
+    @Binding var selectedTool: EditorTool
+
     var body: some View {
-        Toggle("Brush", image: .brush, isOn: Binding(get: {
-            selectedToolIndex == 0
-        }, set: { newValue in
-            if newValue {
-                selectedToolIndex = 0
+        ForEach(EditorTool.allCases) { tool in
+            Toggle(isOn: Binding(get: {
+                selectedTool == tool
+            }, set: { isOn in
+                if isOn { selectedTool = tool }
+            })) {
+                Label { Text(tool.title) } icon: { tool.icon }
             }
-        }))
-        Toggle("Eraser", image: .eraser, isOn: Binding(get: {
-            selectedToolIndex == 1
-        }, set: { newValue in
-            if newValue {
-                selectedToolIndex = 1
-            }
-        }))
-        Toggle("Bucket", image: .bucket, isOn: Binding(get: {
-            selectedToolIndex == 2
-        }, set: { newValue in
-            if newValue {
-                selectedToolIndex = 2
-            }
-        }))
-        Toggle("Move", systemImage: "arrow.up.and.down.and.arrow.left.and.right", isOn: Binding(get: {
-            selectedToolIndex == 3
-        }, set: { newValue in
-            if newValue {
-                selectedToolIndex = 3
-            }
-        }))
-        Toggle("Highlight", image: .highlight, isOn: Binding(get: {
-            selectedToolIndex == 4
-        }, set: { newValue in
-            if newValue {
-                selectedToolIndex = 4
-            }
-        }))
-        Toggle("Shadow", image: .shadow, isOn: Binding(get: {
-            selectedToolIndex == 5
-        }, set: { newValue in
-            if newValue {
-                selectedToolIndex = 5
-            }
-        }))
-        Toggle("Eyedropper", systemImage: "eyedropper", isOn: Binding(get: {
-            selectedToolIndex == 6
-        }, set: { newValue in
-            if newValue {
-                selectedToolIndex = 6
-            }
-        }))
+        }
     }
 }
 
 #Preview {
-    ToolSelectionButtons(selectedToolIndex: .constant(0))
+    ToolSelectionButtons(selectedTool: .constant(.pencil))
 }

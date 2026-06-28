@@ -23,7 +23,7 @@ struct EditorView: View {
     static let inspectorPeekDetentHeight: CGFloat = 200
 
     // Bottom toolbar state
-    @State private var selectedToolIndex: Int = 0
+    @State private var selectedTool: EditorTool = .pencil
     @State private var currentBrushWidth: Int? = 1
 
     // Additional @AppStorage properties for UserDefaults keys used later
@@ -115,15 +115,15 @@ struct EditorView: View {
             if horizontalSizeClass == .compact {
                 VStack {
                     leadingAndTrailingBottomBarItems()
-                    
-                    ToolSelectionBar(selectedToolIndex: $selectedToolIndex)
+
+                    ToolSelectionBar(selectedTool: $selectedTool)
                 }
                 .padding(6)
             } else {
                 ZStack {
                     leadingAndTrailingBottomBarItems()
-                    
-                    ToolSelectionBar(selectedToolIndex: $selectedToolIndex)
+
+                    ToolSelectionBar(selectedTool: $selectedTool)
                 }
                 .padding(6)
             }
@@ -250,23 +250,12 @@ struct EditorView: View {
         .onDisappear {
             documentsClosedCount += 1
         }
-        .onChange(of: selectedToolIndex) { _, newValue in
-            guard let canvas = canvasRef else { return }
-            canvas.tool = {
-                switch newValue {
-                case 0: documentController.pencilTool
-                case 1: documentController.eraserTool
-                case 2: documentController.fillTool
-                case 3: documentController.moveTool
-                case 4: documentController.highlightTool
-                case 5: documentController.shadowTool
-                case 6: documentController.eyedroperTool
-                default: documentController.pencilTool
-                }
-            }()
+        .onChange(of: selectedTool) { _, newTool in
+            guard let canvasRef else { return }
+            canvasRef.tool = newTool.tool(in: documentController)
             // Reflect the new tool's brush width, or hide the stepper (nil) for
             // tools that have no width (fill, move, eyedropper).
-            currentBrushWidth = brushWidth(forToolIndex: newValue)
+            currentBrushWidth = newTool.sizableTool(in: documentController)?.width
         }
         .onChange(of: currentBrushWidth) { _, width in
             guard let width, let canvasRef else { return }
@@ -319,7 +308,7 @@ struct EditorView: View {
                     get: { documentController.brushShape == .circle },
                     set: { documentController.brushShape = $0 ? .circle : .square }
                 ),
-                maxBrushWidth: maxBrushWidth(forToolIndex: selectedToolIndex),
+                maxBrushWidth: selectedTool.sizableTool(in: documentController)?.maxWidth ?? 10,
                 colorGet: { Color(components: documentController.toolColorComponents) },
                 colorSet: { newColor in
                     documentController.toolColorComponents = ColorComponents(newColor)
@@ -329,29 +318,6 @@ struct EditorView: View {
     }
 
     // MARK: - Helpers
-
-    /// The width-adjustable tool at `index`, or `nil` for tools with no brush
-    /// width (fill, move, eyedropper).
-    private func sizableTool(forToolIndex index: Int) -> (any SizableTool)? {
-        switch index {
-        case 0: documentController.pencilTool
-        case 1: documentController.eraserTool
-        case 4: documentController.highlightTool
-        case 5: documentController.shadowTool
-        default: nil
-        }
-    }
-
-    /// The current brush width for the tool at `index`, or `nil` for tools that
-    /// have no brush width — which hides the stepper.
-    private func brushWidth(forToolIndex index: Int) -> Int? {
-        sizableTool(forToolIndex: index)?.width
-    }
-
-    /// The largest brush width the tool at `index` supports.
-    private func maxBrushWidth(forToolIndex index: Int) -> Int {
-        sizableTool(forToolIndex: index)?.maxWidth ?? 10
-    }
 
     private var checker1: UIColor {
         let key = canvasBackgroundColorKey
