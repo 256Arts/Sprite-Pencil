@@ -281,6 +281,12 @@ struct EditorView: View {
             guard let canvasRef, let width = currentBrushWidth else { return }
             canvasRef.toolSizeChanged(size: PixelSize(width: width, height: width))
         }
+        .onChange(of: documentController.toolColorComponents) { _, newColor in
+            // Persist the active color so it's restored next launch (see `init`)
+            // and so the widget can pick it up as a background (see ShareOptionsView).
+            // Catches every path that changes the color: picker, eyedropper, palette tap.
+            currentColorHex = newColor.hex
+        }
     }
     
     @ViewBuilder
