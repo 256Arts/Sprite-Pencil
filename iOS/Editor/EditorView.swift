@@ -71,8 +71,8 @@ struct EditorView: View {
             zoomEnabled: true,
             pixelGridEnabled: pixelGridEnabled,
             tileGridEnabled: tileGridEnabled,
-            checkerboardColor1: checker1,
-            checkerboardColor2: checker2,
+            checkerboardColor1: canvasBackground.checkerColors.base,
+            checkerboardColor2: canvasBackground.checkerColors.alternate,
             tileGridColor: .systemGray3,
             pixelGridColor: .systemGray3,
             twoFingerUndoEnabled: twoFingerUndoEnabled,
@@ -311,23 +311,8 @@ struct EditorView: View {
 
     // MARK: - Helpers
 
-    private var checker1: UIColor {
-        let key = canvasBackgroundColorKey
-        return switch key {
-        case "white": UIColor(white: 1.0, alpha: 1.0)
-        case "pink": .systemPink
-        case "green": .systemGreen
-        default: .systemGray4
-        }
-    }
-    private var checker2: UIColor {
-        let key = canvasBackgroundColorKey
-        return switch key {
-        case "white": UIColor(white: 0.93, alpha: 1.0)
-        case "pink": .systemPink.withAlphaComponent(0.9)
-        case "green": .systemGreen.withAlphaComponent(0.9)
-        default: .systemGray5
-        }
+    private var canvasBackground: CanvasBackground {
+        CanvasBackground(storageValue: canvasBackgroundColorKey)
     }
 
     private var currentPalette: Palette {

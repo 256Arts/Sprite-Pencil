@@ -27,14 +27,10 @@ struct SettingsView: View {
         List {
             Section {
                 Picker("Canvas Background", selection: $canvasBackgroundColor) {
-                    Text("Default")
-                        .tag("default")
-                    Text("White")
-                        .tag("white")
-                    Text("Pink")
-                        .tag("pink")
-                    Text("Green")
-                        .tag("green")
+                    ForEach(CanvasBackground.allCases) { background in
+                        Text(background.displayName)
+                            .tag(background.rawValue)
+                    }
                 }
                 Picker("Finger Action", selection: $fingerAction) {
                     Text("Move")
