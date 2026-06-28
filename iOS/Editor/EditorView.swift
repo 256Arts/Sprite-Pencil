@@ -265,30 +265,21 @@ struct EditorView: View {
         }
         .onChange(of: currentBrushWidth) { _, width in
             guard let width, let canvasRef else { return }
-            
+
+            // Clamp to the tool's own max, write the width back to its stored
+            // instance (so it's restored when the user returns to this tool),
+            // then make it the active tool.
+            @MainActor func apply<T: SizableTool>(_ tool: inout T) {
+                tool.width = min(width, tool.maxWidth)
+                documentController.tool = tool
+                canvasRef.toolSizeChanged(size: tool.size)
+            }
             switch documentController.tool {
-            case is PencilTool:
-                let finalWidth = min(width, 10)
-                documentController.pencilTool.width = finalWidth
-                documentController.tool = documentController.pencilTool
-                canvasRef.toolSizeChanged(size: PixelSize(width: finalWidth, height: finalWidth))
-            case is EraserTool:
-                let finalWidth = min(width, 10)
-                documentController.eraserTool.width = finalWidth
-                documentController.tool = documentController.eraserTool
-                canvasRef.toolSizeChanged(size: PixelSize(width: finalWidth, height: finalWidth))
-            case is HighlightTool:
-                let finalWidth = min(width, 5)
-                documentController.highlightTool.width = finalWidth
-                documentController.tool = documentController.highlightTool
-                canvasRef.toolSizeChanged(size: PixelSize(width: finalWidth, height: finalWidth))
-            case is ShadowTool:
-                let finalWidth = min(width, 5)
-                documentController.shadowTool.width = finalWidth
-                documentController.tool = documentController.shadowTool
-                canvasRef.toolSizeChanged(size: PixelSize(width: finalWidth, height: finalWidth))
-            default:
-                break
+            case is PencilTool: apply(&documentController.pencilTool)
+            case is EraserTool: apply(&documentController.eraserTool)
+            case is HighlightTool: apply(&documentController.highlightTool)
+            case is ShadowTool: apply(&documentController.shadowTool)
+            default: break
             }
         }
         .onChange(of: documentController.checkeredDrawingMode) { _, newValue in
@@ -337,24 +328,27 @@ struct EditorView: View {
 
     // MARK: - Helpers
 
-    /// The current brush width for the tool at `index`, or `nil` for tools that
-    /// have no brush width (fill, move, eyedropper) — which hides the stepper.
-    private func brushWidth(forToolIndex index: Int) -> Int? {
+    /// The width-adjustable tool at `index`, or `nil` for tools with no brush
+    /// width (fill, move, eyedropper).
+    private func sizableTool(forToolIndex index: Int) -> (any SizableTool)? {
         switch index {
-        case 0: documentController.pencilTool.width
-        case 1: documentController.eraserTool.width
-        case 4: documentController.highlightTool.width
-        case 5: documentController.shadowTool.width
+        case 0: documentController.pencilTool
+        case 1: documentController.eraserTool
+        case 4: documentController.highlightTool
+        case 5: documentController.shadowTool
         default: nil
         }
     }
 
+    /// The current brush width for the tool at `index`, or `nil` for tools that
+    /// have no brush width — which hides the stepper.
+    private func brushWidth(forToolIndex index: Int) -> Int? {
+        sizableTool(forToolIndex: index)?.width
+    }
+
     /// The largest brush width the tool at `index` supports.
     private func maxBrushWidth(forToolIndex index: Int) -> Int {
-        switch index {
-        case 4, 5: 5 // highlight, shadow
-        default: 10  // pencil, eraser
-        }
+        sizableTool(forToolIndex: index)?.maxWidth ?? 10
     }
 
     private var checker1: UIColor {
