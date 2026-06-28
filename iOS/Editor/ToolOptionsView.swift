@@ -24,6 +24,8 @@ struct ToolOptionsView: View {
     var colorSet: (Color) -> Void
 
     var body: some View {
+        // The `ToolOptionsView` is usually aligned to the trailing edge,
+        // so to reduce controls moving around, put optional controls on the leading edge.
         if self.currentBrushWidth != nil {
             // The brush shape only matters once the brush is large enough to
             // have a meaningful curve (3px+); below that it's always a solid block.
