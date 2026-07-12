@@ -11,40 +11,21 @@ import SpritePencilKit
 import WidgetKit
 
 struct ShareOptionsView: View {
-    
+
     var documentController: DocumentController
 
-    @State var scale = 1
-    
+    // A `ShareLink` inside a `Menu` is a presentation within a presentation
+    // and silently fails, so exporting opens a popover anchored to the menu's
+    // toolbar button instead (see EditorView).
+    @Binding var isExportPresented: Bool
+
     var body: some View {
-        // BUG: Cannot present `UIActivityViewController` on VC which is already presenting
-        /*
-        Picker("Scale", selection: $scale) {
-            ForEach([1, 2, 4, 8, 16], id: \.self) { scale in
-                Text("\(scale)x").tag(scale)
-            }
+        Button("Export Image", systemImage: "photo") {
+            isExportPresented = true
         }
-        .pickerStyle(.palette)
-        .menuActionDismissBehavior(.disabled)
-        
-        ShareLink(
-            item: Image(
-                uiImage: documentController.export(scale: CGFloat(scale), backgroundColor: nil) ?? UIImage()
-            ),
-            preview: SharePreview(
-                "My Sprite Pencil Art",
-                image: Image(
-                    uiImage: documentController.export(scale: CGFloat(scale), backgroundColor: nil) ?? UIImage()
-                )
-            )
-        )
-        .buttonStyle(.borderedProminent)
-        
-        Divider()
-         */
-        
+
         Button("Set Widget Sprite", systemImage: "square") {
-            if let uiImage = documentController.export(scale: CGFloat(scale), backgroundColor: nil),
+            if let uiImage = documentController.export(scale: 1, backgroundColor: nil),
                let data = uiImage.pngData(),
                let defaults = UserDefaults(suiteName: SpritePencilApp.spritePencilAppGroupID) {
                 defaults.set(data, forKey: "sprite")
@@ -57,6 +38,36 @@ struct ShareOptionsView: View {
     }
 }
 
+struct ExportImageView: View {
+
+    var documentController: DocumentController
+
+    @State private var scale = 1
+
+    private var exportedImage: Image {
+        Image(uiImage: documentController.export(scale: CGFloat(scale), backgroundColor: nil) ?? UIImage())
+    }
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Picker("Scale", selection: $scale) {
+                ForEach([1, 2, 4, 8, 16], id: \.self) { scale in
+                    Text("\(scale)x").tag(scale)
+                }
+            }
+            .pickerStyle(.segmented)
+
+            ShareLink(
+                item: exportedImage,
+                preview: SharePreview("My Sprite Pencil Art", image: exportedImage)
+            )
+            .buttonStyle(.borderedProminent)
+        }
+        .padding()
+        .presentationDetents([.medium])
+    }
+}
+
 #Preview {
-    ShareOptionsView(documentController: DocumentController())
+    ShareOptionsView(documentController: DocumentController(), isExportPresented: .constant(false))
 }

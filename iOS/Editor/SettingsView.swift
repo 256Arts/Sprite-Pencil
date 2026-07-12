@@ -86,17 +86,11 @@ struct SettingsView: View {
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done", systemImage: "checkmark") {
-//                    editorVC.refreshCanvasBackground()
                     dismiss()
                 }
             }
         }
         .imageScale(.large)
-        #if !os(visionOS)
-        .onAppear {
-//            editorVC.loadAppStorePage(id: .spriteCatalog)
-        }
-        #endif
     }
 }
 

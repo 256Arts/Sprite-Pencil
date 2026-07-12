@@ -40,6 +40,8 @@ struct EditorView: View {
     @State private var inspectorDetent: PresentationDetent = .height(Self.inspectorPeekDetentHeight)
     @State private var isSavePalettePresented = false
     @State private var pendingPalette: Palette?
+    @State private var isExportPresented = false
+    @State private var isSettingsPresented = false
     
     @State private var subscriptions: Set<AnyCancellable> = []
 
@@ -188,7 +190,7 @@ struct EditorView: View {
             
             ToolbarItemGroup {
                 Menu("Share", systemImage: "square.and.arrow.up") {
-                    ShareOptionsView(documentController: documentController)
+                    ShareOptionsView(documentController: documentController, isExportPresented: $isExportPresented)
                     Button("Save as Palette", systemImage: "paintpalette") {
                         let image = UIImage(cgImage: documentController.context.makeImage()!)
                         if let palette = Palette(name: NSLocalizedString("My Palette", comment: "default palette name"), image: image, defaultGroupLength: 1) {
@@ -203,7 +205,14 @@ struct EditorView: View {
                             .presentationDetents([.medium, .large])
                     }
                 }
-                
+                .popover(isPresented: $isExportPresented) {
+                    ExportImageView(documentController: documentController)
+                }
+
+                Button("Settings", systemImage: "gear") {
+                    isSettingsPresented = true
+                }
+
                 if horizontalSizeClass == .regular {
                     Button("Palettes", systemImage: "sidebar.trailing") {
                         showingInspector.toggle()
@@ -212,6 +221,11 @@ struct EditorView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $isSettingsPresented) {
+            NavigationStack {
+                SettingsView()
+            }
+        }
         .inspector(isPresented: $showingInspector) {
             PaletteCollectionView(
                 controller: paletteController,
@@ -265,6 +279,13 @@ struct EditorView: View {
             // Re-render the hover outline (square vs. round) for the active brush.
             guard let canvasRef, let width = currentBrushWidth else { return }
             canvasRef.toolSizeChanged(size: PixelSize(width: width, height: width))
+        }
+        .onChange(of: paletteController.palette?.name) { _, newName in
+            // The palette chooser writes only to the collection controller;
+            // push the selection into the engine (Highlight/Shadow shade
+            // against it) and persist it for the next launch.
+            documentController.palette = paletteController.palette
+            colorPaletteName = newName ?? ""
         }
         .onChange(of: documentController.toolColorComponents) { _, newColor in
             // Persist the active color so it's restored next launch (see `init`)

@@ -14,10 +14,9 @@ struct DitherToggle: View {
     
     var body: some View {
         Toggle(isOn: $isOn) {
-            #if targetEnvironment(macCatalyst)
-            Image(uiImage: BottomToolbarView.largeSymbol(systemName: "checkerboard.rectangle")!)
-            #else
             Image(systemName: "checkerboard.rectangle")
+            #if targetEnvironment(macCatalyst)
+                .imageScale(.large)
             #endif
         }
         .toggleStyle(.button)

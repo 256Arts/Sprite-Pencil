@@ -46,23 +46,32 @@ final class AppCoordinator: NSObject {
         let appGroupDefaults = UserDefaults(suiteName: SpritePencilApp.spritePencilAppGroupID)
         let preferedFileName = appGroupDefaults?.string(forKey: "importSpriteName")
 
-        var url = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents") ?? FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        url.appendPathComponent(preferedFileName ?? NSLocalizedString("Sprite", comment: "Default image name"))
-        url.appendPathExtension("png")
-//        let document = Document(fileURL: url)
-//        document.fileData = imageData
-//        document.save(to: url, for: .forCreating) { (saveSuccess) in
-//            guard saveSuccess else {
-//                print("Unable to save new document.")
-//                return
-//            }
-//            document.close(completionHandler: { (closeSuccess) in
-//                guard closeSuccess else {
-//                    print("Unable to close new document.")
-//                    return
-//                }
-//            })
-//        }
+        let directoryURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents") ?? FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let baseName = preferedFileName ?? NSLocalizedString("Sprite", comment: "Default image name")
+
+        // Save into the user's documents (iCloud Drive when available), where
+        // the document browser picks it up. Replaces the UIDocument save lost
+        // in the DocumentGroup refactor, which silently discarded the data.
+        // Detached: NSFileCoordinator can block on iCloud, so stay off main.
+        Task.detached(priority: .userInitiated) {
+            var destinationURL = directoryURL.appendingPathComponent(baseName).appendingPathExtension("png")
+            var counter = 2
+            while FileManager.default.fileExists(atPath: destinationURL.path) {
+                destinationURL = directoryURL.appendingPathComponent("\(baseName) \(counter)").appendingPathExtension("png")
+                counter += 1
+            }
+            var coordinatorError: NSError?
+            NSFileCoordinator().coordinate(writingItemAt: destinationURL, options: .forReplacing, error: &coordinatorError) { url in
+                do {
+                    try imageData.write(to: url)
+                } catch {
+                    print("Unable to save imported sprite: \(error)")
+                }
+            }
+            if let coordinatorError {
+                print("Unable to coordinate imported sprite save: \(coordinatorError)")
+            }
+        }
     }
 
     struct LospecPalette: Codable {

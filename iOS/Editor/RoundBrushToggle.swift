@@ -16,10 +16,9 @@ struct RoundBrushToggle: View {
         Button {
             isOn.toggle()
         } label: {
-            #if targetEnvironment(macCatalyst)
-            Image(uiImage: BottomToolbarView.largeSymbol(systemName: isOn ? "circle.fill" : "square.fill")!)
-            #else
             Image(systemName: isOn ? "circle.fill" : "square.fill")
+            #if targetEnvironment(macCatalyst)
+                .imageScale(.large)
             #endif
         }
         .help("Round Brush")

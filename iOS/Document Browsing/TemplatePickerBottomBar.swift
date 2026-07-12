@@ -45,19 +45,6 @@ struct TemplatePickerBottomBar: View {
                     Text("px")
                 }
             }
-            #if targetEnvironment(macCatalyst)
-            Divider()
-            HStack {
-                Spacer()
-                Button("Cancel") {
-                    NotificationCenter.default.post(name: TemplatePickerView.doneNotificationName, object: nil)
-                }
-                Button("Create") {
-                    NotificationCenter.default.post(name: TemplatePickerView.doneNotificationName, object: selectedSize)
-                }
-            }
-            .padding(.horizontal)
-            #endif
         }
         .padding(.bottom, 12)
         .background(Color(UIColor.tertiarySystemFill).opacity(0.4))
