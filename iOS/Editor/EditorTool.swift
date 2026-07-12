@@ -52,7 +52,7 @@ enum EditorTool: Int, CaseIterable, Identifiable {
         case .move: controller.moveTool
         case .highlight: controller.highlightTool
         case .shadow: controller.shadowTool
-        case .eyedropper: controller.eyedroperTool
+        case .eyedropper: controller.eyedropperTool
         }
     }
 

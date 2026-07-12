@@ -1,4 +1,3 @@
-import Combine
 import SpritePencilKit
 import SwiftUI
 import UIKit
@@ -14,7 +13,7 @@ struct EditorView: View {
     @AppStorage(UserDefaults.Key.showPixelGrid) private var pixelGridEnabled: Bool = false
     @AppStorage(UserDefaults.Key.showTileGrid) private var tileGridEnabled: Bool = false
     @AppStorage(UserDefaults.Key.twoFingerUndoEnabled) private var twoFingerUndoEnabled: Bool = false
-    @AppStorage(UserDefaults.Key.fingerAction) private var nonDrawingFingerAction: CanvasUIView.FingerAction = .ignore
+    @AppStorage(UserDefaults.Key.fingerAction) private var nonDrawingFingerAction: FingerAction = .ignore
     
     static let inspectorPeekDetentHeight: CGFloat = 200
 
@@ -33,17 +32,12 @@ struct EditorView: View {
     
     @State private var documentController = DocumentController()
 
-    // Hold a weak reference to the underlying `CanvasUIView` to drive imperative actions from toolbar
-    @State private var canvasRef: CanvasUIView?
-    
     @State private var showingInspector = true
     @State private var inspectorDetent: PresentationDetent = .height(Self.inspectorPeekDetentHeight)
     @State private var isSavePalettePresented = false
     @State private var pendingPalette: Palette?
     @State private var isExportPresented = false
     @State private var isSettingsPresented = false
-    
-    @State private var subscriptions: Set<AnyCancellable> = []
 
     // Coalesces document re-encodes. The kit fires `.drawingDidChange` on every
     // touch-move sample, so encoding the full PNG inline on each one stutters
@@ -81,6 +75,14 @@ struct EditorView: View {
                 switch event {
                 case .drawingDidChange, .didEndUsingTool:
                     refreshDocumentDataFromContext()
+                case .eyedropColor(let color, point: _):
+                    // The eyedropper reports its picked color here; without
+                    // this handler the tool reads a color but nothing applies
+                    // it (it appeared to "do nothing").
+                    documentController.toolColorComponents = color
+                    paletteController.usedColor(components: color)
+                case .usedColor(let color):
+                    paletteController.usedColor(components: color)
                 case .showColorPalette:
                     // Could present palette UI here if desired
                     break
@@ -88,32 +90,20 @@ struct EditorView: View {
                     break
                 }
             },
-            configure: { zoomableView in
-                let canvasView = zoomableView.contentView
-                
-                // Keep a reference for toolbar actions
-                self.canvasRef = canvasView
-                
-                documentController.zoomableView = zoomableView
-                documentController.canvasView = canvasView
-                
-                // Initialize drawing context from document image data
-                if let image = UIImage(data: document.data), let context = CGContext.spriteDrawingContext(from: image) {
-                    documentController.context = context
-                    documentController.refresh()
-                    canvasView.makeCheckerboard()
-                    canvasView.refreshGrid()
-                    zoomableView.zoomToFit()
+            configure: { _ in
+                // Initialize drawing context from document image data. The kit
+                // reacts to `loadContext` on its own (checkerboard, grid, fit).
+                guard documentController.context == nil,
+                      let image = UIImage(data: document.data),
+                      let context = CGContext.spriteDrawingContext(from: image) else { return }
+                documentController.loadContext(context)
 
-                    // Seed recent colors now that the context exists. `configure`
-                    // runs once, exactly when the context is first set, so this is
-                    // the precise readiness signal (vs. guessing with a delay). The
-                    // `Task` hop keeps the `paletteController` mutation off this
-                    // view-update pass (see `refreshDocumentDataFromContext`).
-                    Task { @MainActor in addImageColorsToRecentColors() }
-                }
-
-                canvasView.tool = documentController.pencilTool
+                // Seed recent colors now that the context exists. `configure`
+                // runs once, exactly when the context is first set, so this is
+                // the precise readiness signal (vs. guessing with a delay). The
+                // `Task` hop keeps the `paletteController` mutation off this
+                // view-update pass (see `refreshDocumentDataFromContext`).
+                Task { @MainActor in addImageColorsToRecentColors() }
             }
         )
         .safeAreaInset(edge: .bottom) {
@@ -135,9 +125,9 @@ struct EditorView: View {
             // reaching for Undo doesn't accidentally exit the document.
             ToolbarSpacer(.fixed, placement: .topBarLeading)
             ToolbarItemGroup(placement: .topBarLeading) {
-                Button("Undo", systemImage: "arrow.uturn.left") { canvasRef?.doUndo() }
+                Button("Undo", systemImage: "arrow.uturn.left") { documentController.undo() }
                     .disabled(!(undoManager?.canUndo ?? false))
-                Button("Redo", systemImage: "arrow.uturn.right") { canvasRef?.doRedo() }
+                Button("Redo", systemImage: "arrow.uturn.right") { documentController.redo() }
                     .disabled(!(undoManager?.canRedo ?? false))
             }
             
@@ -175,14 +165,9 @@ struct EditorView: View {
                     Toggle("Pixel Grid", systemImage: "squareshape.split.3x3", isOn: $pixelGridEnabled)
                     Toggle("Tile Grid", systemImage: "squareshape.split.2x2", isOn: $tileGridEnabled)
                     Divider()
+                    // The canvas redraws its symmetry guides itself when these change.
                     Toggle("Vertical Symmetry", systemImage: "square.split.2x1", isOn: $documentController.verticalSymmetry)
-                        .onChange(of: documentController.verticalSymmetry) { _, _ in
-                            canvasRef?.refreshGrid()
-                        }
                     Toggle("Horizontal Symmetry", systemImage: "square.split.1x2", isOn: $documentController.horizontalSymmetry)
-                        .onChange(of: documentController.horizontalSymmetry) { _, _ in
-                            canvasRef?.refreshGrid()
-                        }
                 }
             }
             
@@ -238,32 +223,12 @@ struct EditorView: View {
         }
         .onAppear {
             documentController.undoManager = self.undoManager
-
-            // Subscribe to engine events. The eyedropper reports its picked
-            // color here; without this handler the tool reads a color but
-            // nothing applies it (it appeared to "do nothing").
-            if subscriptions.isEmpty {
-                documentController.eventPublisher
-                    .sink { event in
-                        switch event {
-                        case .eyedropColor(let color, point: _):
-                            documentController.toolColorComponents = color
-                            paletteController.usedColor(components: color)
-                        case .usedColor(let color):
-                            paletteController.usedColor(components: color)
-                        default:
-                            break
-                        }
-                    }
-                    .store(in: &subscriptions)
-            }
         }
         .onDisappear {
             documentsClosedCount += 1
         }
         .onChange(of: selectedTool) { _, newTool in
-            guard let canvasRef else { return }
-            canvasRef.tool = newTool.tool(in: documentController)
+            documentController.tool = newTool.tool(in: documentController)
             // Reflect the new tool's brush width, or hide the stepper (nil) for
             // tools that have no width (fill, move, eyedropper).
             currentBrushWidth = newTool.sizableTool(in: documentController)?.width
@@ -274,11 +239,6 @@ struct EditorView: View {
             // controller's tool pushes the new size to the canvas (see EditorTool).
             guard let width else { return }
             selectedTool.setWidth(width, in: documentController)
-        }
-        .onChange(of: documentController.brushShape) { _, _ in
-            // Re-render the hover outline (square vs. round) for the active brush.
-            guard let canvasRef, let width = currentBrushWidth else { return }
-            canvasRef.toolSizeChanged(size: PixelSize(width: width, height: width))
         }
         .onChange(of: paletteController.palette?.name) { _, newName in
             // The palette chooser writes only to the collection controller;

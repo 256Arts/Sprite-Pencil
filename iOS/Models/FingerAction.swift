@@ -9,13 +9,13 @@
 import SpritePencilKit
 import SwiftUI
 
-/// App-side presentation for the kit's `CanvasUIView.FingerAction`.
+/// App-side presentation for the kit's `FingerAction`.
 ///
 /// Centralizes the finger-action setting that used to be a bare string shared
 /// between `SettingsView` (the picker) and `EditorView` (the canvas wiring), the
 /// same way `CanvasBackground` does for the checkerboard. The `rawValue` is the
 /// value persisted under `UserDefaults.Key.fingerAction`.
-extension CanvasUIView.FingerAction {
+extension FingerAction {
 
     /// The non-drawing finger behaviors a user can choose in Settings. `.draw`
     /// is omitted: it's the implicit behavior when pencil-only drawing is off,

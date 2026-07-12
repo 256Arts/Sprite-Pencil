@@ -25,15 +25,9 @@ extension Palette {
             UIGraphicsBeginImageContext(CGSize(width: palette.colors.count, height: 1))
             guard let context = UIGraphicsGetCurrentContext() else { return UIImage() }
             let contextDataManager = ContextDataManager(context: context)
-            let cdp = contextDataManager.dataPointer
-            
+
             for (x, colorComponents) in palette.colors.enumerated() {
-                let point = PixelPoint(x: x, y: 0)
-                let offset = contextDataManager.dataOffset(for: point)
-                cdp[offset+2] = colorComponents.red
-                cdp[offset+1] = colorComponents.green
-                cdp[offset] = colorComponents.blue
-                cdp[offset+3] = colorComponents.opacity
+                contextDataManager[PixelPoint(x: x, y: 0)] = colorComponents
             }
             defer {
                 UIGraphicsEndImageContext()

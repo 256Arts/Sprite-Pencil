@@ -25,10 +25,7 @@ struct MessagesView: View {
     let documentController: DocumentController
     let paletteController: PaletteCollectionController
     let insertFile: (URL) -> Void
-    
-    // Hold a weak reference to the underlying `ZoomableUIView` to trigger zoom to fit
-    @State private var zoomableRef: ZoomableUIView?
-    
+
     var body: some View {
         VStack {
             HStack {
@@ -36,33 +33,18 @@ struct MessagesView: View {
                     documentController: documentController,
                     zoomEnabled: false,
                     shouldRecognizeGesturesSimultaneously: false,
-                    configure: { zoomableView in
-                        let canvasView = zoomableView.contentView
-                        
-                        zoomableRef = zoomableView
-                        
-                        documentController.zoomableView = zoomableView
-                        documentController.canvasView = canvasView
-                        
-                        // Initialize drawing context
-                        documentController.context = CGContext.spriteDrawingContext(width: 16, height: 16)
-                        documentController.refresh()
-                        canvasView.makeCheckerboard()
-                        canvasView.refreshGrid()
-                        zoomableView.zoomToFit()
-
-                        canvasView.tool = documentController.pencilTool
+                    configure: { _ in
+                        // The kit reacts to `loadContext` on its own
+                        // (checkerboard, grid, zoom to fit — including refits
+                        // on any later size change).
+                        if documentController.context == nil, let context = CGContext.spriteDrawingContext(width: 16, height: 16) {
+                            documentController.loadContext(context)
+                        }
                     }
                 )
                 // BUG: Launch once from Xcode, then from iMessage itself, and the canvas will layout like expanded view even though it's in compact view
                 // Workaround: Hardcode height
                 .frame(height: 220)
-                .onGeometryChange(for: CGSize.self) { proxy in
-                    proxy.size
-                } action: { _ in
-                    // Not working
-                    zoomableRef?.zoomToFit()
-                }
                 
                 VStack {
                     Button("Insert", systemImage: "arrow.up", role: .confirm) {
