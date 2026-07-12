@@ -602,7 +602,7 @@
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -632,7 +632,7 @@
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -658,7 +658,7 @@
 				CURRENT_PROJECT_VERSION = 66;
 				DEVELOPMENT_TEAM = VA3SY54YU8;
 				INFOPLIST_FILE = messages/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -682,7 +682,7 @@
 				CURRENT_PROJECT_VERSION = 66;
 				DEVELOPMENT_TEAM = VA3SY54YU8;
 				INFOPLIST_FILE = messages/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -708,8 +708,8 @@
 				CURRENT_PROJECT_VERSION = 66;
 				DEVELOPMENT_TEAM = VA3SY54YU8;
 				INFOPLIST_FILE = Widget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -736,8 +736,8 @@
 				CURRENT_PROJECT_VERSION = 66;
 				DEVELOPMENT_TEAM = VA3SY54YU8;
 				INFOPLIST_FILE = Widget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -762,7 +762,7 @@
 				CURRENT_PROJECT_VERSION = 66;
 				DEVELOPMENT_TEAM = VA3SY54YU8;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				MARKETING_VERSION = 4.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jaydenirwin.spritepencil.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -781,7 +781,7 @@
 				CURRENT_PROJECT_VERSION = 66;
 				DEVELOPMENT_TEAM = VA3SY54YU8;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				MARKETING_VERSION = 4.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jaydenirwin.spritepencil.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

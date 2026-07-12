@@ -45,12 +45,18 @@ struct PalettePickerView: View, DropDelegate {
                             PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName)
                         }
                         .buttonStyle(.plain)
+                        .swipeActions {
+                            Button("Delete", systemImage: "trash", role: .destructive) {
+                                deletePalette(palette)
+                            }
+                        }
                         .contextMenu {
                             Button("Delete", systemImage: "trash") {
                                 deletePalette(palette)
                             }
                         }
                     }
+                    .reorderable()
                 }
                 Text("Handpicked")
                     .font(.headline)
@@ -73,6 +79,12 @@ struct PalettePickerView: View, DropDelegate {
                     .buttonStyle(.plain)
                 }
             }
+            .reorderContainer(for: Palette.self) { difference in
+                var palettes = store.userPalettes
+                difference.apply(to: &palettes)
+                store.setUserPalettes(palettes)
+            }
+            .swipeActionsContainer()
             .padding()
         }
         .navigationTitle("Palettes")
@@ -126,6 +138,33 @@ struct PalettePickerView: View, DropDelegate {
         return true
     }
 
+}
+
+extension ReorderDifference where CollectionID == ReorderableSingleCollectionIdentifier {
+    /// Applies a single-collection drag-to-reorder result in one in-place pass.
+    func apply<C>(to collection: inout C)
+        where C: RangeReplaceableCollection,
+              C.Element: Identifiable,
+              C.Element.ID == ItemID {
+        let moving = Set(sources)
+        guard !moving.isEmpty else { return }
+
+        var moved: [C.Element] = []
+        moved.reserveCapacity(moving.count)
+        collection.removeAll { element in
+            guard moving.contains(element.id) else { return false }
+            moved.append(element)
+            return true
+        }
+
+        switch destination.position {
+        case .before(let id):
+            let index = collection.firstIndex { $0.id == id } ?? collection.endIndex
+            collection.insert(contentsOf: moved, at: index)
+        case .end:
+            collection.append(contentsOf: moved)
+        }
+    }
 }
 
 #Preview {

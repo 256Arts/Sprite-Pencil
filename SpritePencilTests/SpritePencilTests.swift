@@ -11,6 +11,7 @@
 
 import Testing
 import Foundation
+import UIKit
 import SpritePencilKit
 @testable import Sprite_Pencil
 
@@ -94,6 +95,64 @@ struct LospecDecodingTests {
 
         // The colors are hex strings the app feeds to ColorComponents(hex:).
         #expect(ColorComponents(hex: palette.colors[0]) != nil)
+    }
+}
+
+struct SpriteImageDocumentTests {
+
+    /// A blank new document decodes to a PNG of exactly the requested size.
+    @Test func blankDocumentHasRequestedSize() throws {
+        let document = SpriteImageDocument(size: SpriteSize(width: 8, height: 4))
+        let image = try #require(UIImage(data: document.data)?.cgImage)
+        #expect(image.width == 8)
+        #expect(image.height == 4)
+    }
+
+    /// The off-main PNG encoder preserves dimensions, channel order (no R/B
+    /// swap), and alpha through a full encode → decode roundtrip.
+    @Test func pngEncodeRoundTripsPixels() throws {
+        // Source: 3×1, [opaque red, opaque green, fully transparent].
+        var bytes: [UInt8] = [
+            255, 0, 0, 255,
+            0, 255, 0, 255,
+            0, 0, 0, 0,
+        ]
+        let source = try #require(makeImage(rgba: &bytes, width: 3, height: 1))
+
+        let data = try SpriteImageDocument.pngData(from: source)
+        let decoded = try #require(UIImage(data: data)?.cgImage)
+        #expect(decoded.width == 3)
+        #expect(decoded.height == 1)
+
+        let pixels = try #require(readRGBA(from: decoded))
+        #expect(Array(pixels[0..<4]) == [255, 0, 0, 255])   // red, not blue
+        #expect(Array(pixels[4..<8]) == [0, 255, 0, 255])   // green
+        #expect(pixels[11] == 0)                            // third pixel transparent
+    }
+
+    // Builds an sRGB, straight-alpha RGBA8 CGImage from a byte buffer.
+    private func makeImage(rgba: inout [UInt8], width: Int, height: Int) -> CGImage? {
+        let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+        guard let context = CGContext(
+            data: &rgba, width: width, height: height,
+            bitsPerComponent: 8, bytesPerRow: width * 4, space: colorSpace,
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+        ) else { return nil }
+        return context.makeImage()
+    }
+
+    // Renders a CGImage into a known RGBA8 sRGB buffer and returns its bytes.
+    private func readRGBA(from image: CGImage) -> [UInt8]? {
+        let width = image.width, height = image.height
+        var buffer = [UInt8](repeating: 0, count: width * height * 4)
+        let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+        guard let context = CGContext(
+            data: &buffer, width: width, height: height,
+            bitsPerComponent: 8, bytesPerRow: width * 4, space: colorSpace,
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+        ) else { return nil }
+        context.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
+        return buffer
     }
 }
 

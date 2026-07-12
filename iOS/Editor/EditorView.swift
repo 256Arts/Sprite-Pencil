@@ -4,7 +4,7 @@ import UIKit
 
 struct EditorView: View {
     
-    @Binding var document: SpriteImageDocument
+    let document: SpriteImageDocument
 
     @Environment(\.undoManager) private var undoManager
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -45,15 +45,8 @@ struct EditorView: View {
     @State private var canUndo = false
     @State private var canRedo = false
 
-    // Coalesces document re-encodes. The kit fires `.drawingDidChange` on every
-    // touch-move sample, so encoding the full PNG inline on each one stutters
-    // larger canvases. Instead we keep at most one encode in flight and re-run
-    // once more if the canvas changed meanwhile, so the final state is always saved.
-    @State private var isEncodingDocument = false
-    @State private var documentNeedsReencode = false
-    
-    init(document: Binding<SpriteImageDocument>) {
-        self._document = document
+    init(document: SpriteImageDocument) {
+        self.document = document
 
         // Palette & current color
         documentController.palette = currentPalette
@@ -80,7 +73,11 @@ struct EditorView: View {
             onEvent: { event in
                 switch event {
                 case .drawingDidChange, .didEndUsingTool:
-                    refreshDocumentDataFromContext()
+                    // Hand the live canvas image to the document (cheap bitmap
+                    // copy). SwiftUI autosaves off the kit's undo actions and
+                    // PNG-encodes this off the main actor in the writer — no more
+                    // hand-rolled on-main encode coalescing.
+                    document.currentImage = documentController.context?.makeImage()
                 case .eyedropColor(let color, point: _):
                     // The eyedropper reports its picked color here; without
                     // this handler the tool reads a color but nothing applies
@@ -179,7 +176,11 @@ struct EditorView: View {
                     Toggle("Horizontal Symmetry", systemImage: "square.split.1x2", isOn: $documentController.horizontalSymmetry)
                 }
             }
-            
+            // These editing actions are the first to move into the overflow menu
+            // when the bar is tight (compact width), keeping Undo/Redo, Share, and
+            // Settings visible.
+            .visibilityPriority(.low)
+
             ToolbarSpacer(.fixed)
             
             ToolbarItemGroup {
@@ -312,31 +313,6 @@ struct EditorView: View {
         PaletteStore.shared.palette(named: colorPaletteName) ?? PaletteStore.shared.defaultPalette
     }
 
-    private func refreshDocumentDataFromContext() {
-        // Coalesce bursts: if an encode is already scheduled/running, just mark the
-        // canvas dirty so one final encode runs when it finishes.
-        guard !isEncodingDocument else {
-            documentNeedsReencode = true
-            return
-        }
-        isEncodingDocument = true
-        documentNeedsReencode = false
-
-        // A `Task` hop also keeps this off the view-update pass (mutating during
-        // a view update crashes), and re-snapshots the latest context each run.
-        Task { @MainActor in
-            defer {
-                isEncodingDocument = false
-                if documentNeedsReencode {
-                    refreshDocumentDataFromContext()
-                }
-            }
-            guard let ctx = documentController.context, let image = ctx.makeImage(),
-                  let data = UIImage(cgImage: image).pngData() else { return }
-            document.data = data
-        }
-    }
-
     private func addImageColorsToRecentColors() {
         guard let context = documentController.context else { return }
         
@@ -373,6 +349,6 @@ private struct HoverReadout: View {
 }
 
 #Preview {
-    EditorView(document: .constant(SpriteImageDocument(size: .defaultSize)))
+    EditorView(document: SpriteImageDocument(size: .defaultSize))
 }
 

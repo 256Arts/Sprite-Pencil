@@ -17,6 +17,7 @@ extension UserDefaults {
         static let createdDocumentsCountText = "createdDocumentsCountText"
         static let documentsClosedCount = "documentsClosedCount"
         static let colorPalette = "colorPalette"
+        static let userPaletteOrder = "userPaletteOrder"
         static let showPalette = "showPalette"
         static let showPixelGrid = "showPixelGrid"
         static let showTileGrid = "showTileGrid"

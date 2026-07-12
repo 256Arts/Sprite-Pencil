@@ -51,6 +51,7 @@ final class PaletteStore {
         } catch {
             print("Did not find user palettes directory")
         }
+        applyPersistedOrder()
     }
 
     private func loadHandpickedPalettes() {
@@ -121,6 +122,7 @@ final class PaletteStore {
         } catch {
             print("Failed to write palette file or directory: \(error)")
         }
+        persistOrder()
     }
 
     func delete(_ palette: Palette) {
@@ -131,6 +133,29 @@ final class PaletteStore {
         } catch {
             print("Failed to delete user palette: \(error)")
         }
+        persistOrder()
+    }
+
+    /// Replaces the user-palette order (e.g. after a drag-to-reorder) and
+    /// persists it. Filesystem enumeration order isn't stable, so the chosen
+    /// order is stored by name and re-applied on the next launch.
+    func setUserPalettes(_ palettes: [Palette]) {
+        userPalettes = palettes
+        persistOrder()
+    }
+
+    // MARK: - Order persistence
+
+    private func persistOrder() {
+        UserDefaults.standard.set(userPalettes.map(\.name), forKey: UserDefaults.Key.userPaletteOrder)
+    }
+
+    private func applyPersistedOrder() {
+        guard let order = UserDefaults.standard.stringArray(forKey: UserDefaults.Key.userPaletteOrder) else { return }
+        let rank = Dictionary(uniqueKeysWithValues: order.enumerated().map { ($1, $0) })
+        // Stable sort by saved rank; palettes not in the saved order (newly
+        // added on another device, imported since) sort to the end.
+        userPalettes.sort { (rank[$0.name] ?? Int.max) < (rank[$1.name] ?? Int.max) }
     }
 
     private var userPalettesDirectoryURL: URL {
