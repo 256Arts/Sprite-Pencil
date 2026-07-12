@@ -65,7 +65,7 @@ struct ToolsHelpView: View {
                     VStack(alignment: .leading) {
                         Text("Dithering Mode")
                         Text("Helps drawing gradients by only editing every other pixel.")
-                            .foregroundColor(Color(UIColor.secondaryLabel))
+                            .foregroundStyle(.secondary)
                     }
                 }
             }

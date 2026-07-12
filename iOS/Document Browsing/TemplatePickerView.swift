@@ -31,14 +31,19 @@ struct TemplatePickerView: View {
                         .font(.headline)
                     HStack {
                         ForEach(SpriteSize.squareSizes) { (size) in
-                            Text("\(size.width)x\(size.height)")
-                                .frame(width: 60, height: 60)
-                                .background(size == selectedSize ? Color.yellowAccent : Color(UIColor.tertiarySystemFill))
-                                .foregroundStyle(size == selectedSize ? Color.black : .primary)
-                                .font(Font.system(size: 17))
-                                .onTapGesture {
-                                    selectedSize = size
-                                }
+                            Button {
+                                selectedSize = size
+                            } label: {
+                                Text("\(size.width)x\(size.height)")
+                                    .frame(width: 60, height: 60)
+                                    .background(size == selectedSize ? Color.yellowAccent : Color(UIColor.tertiarySystemFill))
+                                    .foregroundStyle(size == selectedSize ? Color.black : .primary)
+                                    .font(Font.system(size: 17))
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(Text(verbatim: "\(size.width) by \(size.height)"))
+                            .accessibilityAddTraits(size == selectedSize ? [.isButton, .isSelected] : .isButton)
                         }
                     }
                     Text("16:9")
@@ -46,14 +51,19 @@ struct TemplatePickerView: View {
                         .padding(.top, 8)
                     HStack {
                         ForEach(SpriteSize.widescreenSizes) { (size) in
-                            Text("\(size.width)x\(size.height)")
-                                .frame(width: 112, height: 63)
-                                .background(size == selectedSize ? Color.yellowAccent : Color(UIColor.tertiarySystemFill))
-                                .foregroundStyle(size == selectedSize ? Color.black : .primary)
-                                .font(Font.system(size: 17))
-                                .onTapGesture {
-                                    selectedSize = size
-                                }
+                            Button {
+                                selectedSize = size
+                            } label: {
+                                Text("\(size.width)x\(size.height)")
+                                    .frame(width: 112, height: 63)
+                                    .background(size == selectedSize ? Color.yellowAccent : Color(UIColor.tertiarySystemFill))
+                                    .foregroundStyle(size == selectedSize ? Color.black : .primary)
+                                    .font(Font.system(size: 17))
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(Text(verbatim: "\(size.width) by \(size.height)"))
+                            .accessibilityAddTraits(size == selectedSize ? [.isButton, .isSelected] : .isButton)
                         }
                     }
                     Text("Templates")
@@ -69,7 +79,7 @@ struct TemplatePickerView: View {
             }
             .navigationTitle("New Sprite")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarHidden(isCatalyst)
+            .toolbar(isCatalyst ? .hidden : .visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {

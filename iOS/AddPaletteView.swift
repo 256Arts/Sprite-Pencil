@@ -20,14 +20,14 @@ struct AddPaletteView: View {
     var body: some View {
         ZStack {
             Color(UIColor.systemGroupedBackground)
-                .edgesIgnoringSafeArea(.all)
+                .ignoresSafeArea()
             VStack {
                 Image(decorative: "Palette Colored")
                 Text("Add Palette")
                     .font(Font.system(size: 32, weight: .bold, design: .default))
                 if self.fromLospec {
                     Text("from lospec.com")
-                        .foregroundColor(Color(UIColor.secondaryLabel))
+                        .foregroundStyle(.secondary)
                 }
                 Spacer()
                 VStack(alignment: .leading, spacing: 8) {
@@ -37,7 +37,7 @@ struct AddPaletteView: View {
                         .padding(.vertical, 12)
                         .padding(.horizontal, 16)
                         .background(Color(UIColor.secondarySystemGroupedBackground))
-                        .cornerRadius(6)
+                        .clipShape(.rect(cornerRadius: 6))
                 }
                 Spacer()
                 Button {

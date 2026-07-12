@@ -19,22 +19,22 @@ struct PalettePreview: View {
             HStack(spacing: 0) {
                 ForEach(palette.colors.prefix(16)) { color in
                     Rectangle()
-                        .foregroundColor(Color(components: color))
+                        .foregroundStyle(Color(components: color))
                 }
             }
             .frame(height: 16)
             HStack {
                 Text(palette.name)
-                    .foregroundColor(palette.name == selectedPaletteName ? Color(UIColor.darkText) : Color(UIColor.label))
+                    .foregroundStyle(palette.name == selectedPaletteName ? Color(UIColor.darkText) : Color(UIColor.label))
                 Spacer()
                 Text("\(palette.colors.count)")
-                    .foregroundColor(palette.name == selectedPaletteName ? Color(UIColor.darkText) : Color(UIColor.secondaryLabel))
+                    .foregroundStyle(palette.name == selectedPaletteName ? Color(UIColor.darkText) : Color(UIColor.secondaryLabel))
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
         }
         .background(palette.name == selectedPaletteName ? Color.yellowAccent : Color(UIColor.secondarySystemGroupedBackground))
-        .cornerRadius(12)
+        .clipShape(.rect(cornerRadius: 12))
     }
     
 }

@@ -27,7 +27,7 @@ struct TemplatePickerBottomBar: View {
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.trailing)
                         .frame(width: 80)
-                        .foregroundColor(Color(UIColor.label))
+                        .foregroundStyle(.primary)
                     Text("px")
                 }
                 HStack {
@@ -41,14 +41,14 @@ struct TemplatePickerBottomBar: View {
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.trailing)
                         .frame(width: 80)
-                        .foregroundColor(Color(UIColor.label))
+                        .foregroundStyle(.primary)
                     Text("px")
                 }
             }
         }
         .padding(.bottom, 12)
         .background(Color(UIColor.tertiarySystemFill).opacity(0.4))
-        .foregroundColor(Color(UIColor.secondaryLabel))
+        .foregroundStyle(.secondary)
     }
 }
 

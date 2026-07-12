@@ -61,8 +61,7 @@ struct PaletteCollectionView: View {
                                 ColorCell(
                                     components: color,
                                     isSelected: color == selectedColor
-                                )
-                                .onTapGesture {
+                                ) {
                                     selectedColor = color
                                 }
                             }
@@ -90,14 +89,13 @@ struct PaletteCollectionView: View {
                                 ColorCell(
                                     components: color,
                                     isSelected: color == selectedColor
-                                )
-                                .onTapGesture {
+                                ) {
                                     selectedColor = color
                                 }
                             }
                         }
                     }
-                    
+
                     if controller.showClearColor {
                         Text("Clear")
                             .font(.headline)
@@ -109,8 +107,7 @@ struct PaletteCollectionView: View {
                             ColorCell(
                                 components: .clear,
                                 isSelected: selectedColor == .clear
-                            )
-                            .onTapGesture {
+                            ) {
                                 selectedColor = .clear
                             }
                         }
@@ -125,8 +122,7 @@ struct PaletteCollectionView: View {
                             ColorCell(
                                 components: color,
                                 isSelected: color == selectedColor
-                            )
-                            .onTapGesture {
+                            ) {
                                 selectedColor = color
                             }
                         }
@@ -142,6 +138,7 @@ struct PaletteCollectionView: View {
 private struct ColorCell: View {
     var components: ColorComponents
     var isSelected: Bool
+    var action: () -> Void
 
     private var uiColor: UIColor {
         UIColor(red: CGFloat(components.red) / 255.0,
@@ -162,19 +159,28 @@ private struct ColorCell: View {
         isSelected ? Color(UIColor(named: "AccentColor") ?? .label) : Color.clear
     }
 
+    private var accessibilityLabel: Text {
+        components.opacity == 0 ? Text("Clear") : Text(verbatim: components.hex)
+    }
+
     var body: some View {
-        RoundedRectangle(cornerRadius: 6)
-            .fill(swiftUIColor)
-            .aspectRatio(1, contentMode: .fit)
-            .overlay {
-                RoundedRectangle(cornerRadius: 6)
-                    .inset(by: -4)
-                    .stroke(borderColor, lineWidth: isSelected ? 2 : 0)
-                
-                if isVeryDarkColor {
+        Button(action: action) {
+            RoundedRectangle(cornerRadius: 6)
+                .fill(swiftUIColor)
+                .aspectRatio(1, contentMode: .fit)
+                .overlay {
                     RoundedRectangle(cornerRadius: 6)
-                        .stroke(Color(UIColor.opaqueSeparator), lineWidth: 0.5)
+                        .inset(by: -4)
+                        .stroke(borderColor, lineWidth: isSelected ? 2 : 0)
+
+                    if isVeryDarkColor {
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(Color(UIColor.opaqueSeparator), lineWidth: 0.5)
+                    }
                 }
-            }
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(accessibilityLabel)
+        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
 }

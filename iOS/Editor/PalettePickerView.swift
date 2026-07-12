@@ -36,35 +36,41 @@ struct PalettePickerView: View, DropDelegate {
                     .font(.headline)
                 if store.userPalettes.isEmpty {
                     Text("Drop palette images here.")
-                        .foregroundColor(Color(UIColor.tertiaryLabel))
+                        .foregroundStyle(.tertiary)
                 } else {
                     ForEach(store.userPalettes) { palette in
-                        PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName)
-                            .onTapGesture {
-                                selectPalette(palette)
+                        Button {
+                            selectPalette(palette)
+                        } label: {
+                            PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName)
+                        }
+                        .buttonStyle(.plain)
+                        .contextMenu {
+                            Button("Delete", systemImage: "trash") {
+                                deletePalette(palette)
                             }
-                            .contextMenu {
-                                Button("Delete", systemImage: "trash") {
-                                    deletePalette(palette)
-                                }
-                            }
+                        }
                     }
                 }
                 Text("Handpicked")
                     .font(.headline)
                 ForEach(handpickedPalettes) { palette in
-                    PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName)
-                        .onTapGesture {
-                            selectPalette(palette)
-                        }
+                    Button {
+                        selectPalette(palette)
+                    } label: {
+                        PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName)
+                    }
+                    .buttonStyle(.plain)
                 }
                 Text("Basic")
                     .font(.headline)
                 ForEach(basicPalettes) { palette in
-                    PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName)
-                        .onTapGesture {
-                            selectPalette(palette)
-                        }
+                    Button {
+                        selectPalette(palette)
+                    } label: {
+                        PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
             .padding()
@@ -81,8 +87,10 @@ struct PalettePickerView: View, DropDelegate {
         .navigationBarBackButtonHidden()
         .background(Color(UIColor.systemGroupedBackground))
         .onDrop(of: [.image], delegate: self)
-        .alert(isPresented: $showingImportError) { () -> Alert in
-            Alert(title: Text("Failed To Load Palette"), message: Text("Palette images must have a height of 1px, and not contain clear pixels."))
+        .alert("Failed To Load Palette", isPresented: $showingImportError) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Palette images must have a height of 1px, and not contain clear pixels.")
         }
         .tint(.yellowAccent)
     }

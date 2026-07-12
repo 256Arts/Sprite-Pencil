@@ -1,0 +1,30 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Display a sprite." : {
+
+    },
+    "No Sprite Set" : {
+
+    },
+    "Select Background" : {
+
+    },
+    "Selects the background fill" : {
+
+    },
+    "Sprite" : {
+
+    },
+    "Tap" : {
+
+    },
+    "Tap \"Set Widget Sprite\"" : {
+
+    },
+    "Tap \"Share\"" : {
+
+    }
+  },
+  "version" : "1.0"
+}

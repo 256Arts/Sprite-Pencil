@@ -47,7 +47,20 @@ struct LabeledStepper: View {
             Text(String(self.value))
                 .allowsHitTesting(false)
         }
-        .accentColor(Color(UIColor.label))
+        .tint(Color(UIColor.label))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Brush Size")
+        .accessibilityValue(String(value))
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment:
+                if value < max { value += 1 }
+            case .decrement:
+                if value > min { value -= 1 }
+            @unknown default:
+                break
+            }
+        }
         #endif
     }
 }
