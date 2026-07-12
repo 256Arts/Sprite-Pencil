@@ -44,15 +44,15 @@ struct SpriteEntry: TimelineEntry {
 
 struct SpriteWidgetView: View {
     var entry: SpriteTimelineProvider.Entry
-    let defaults = UserDefaults(suiteName: "group.com.jaydenirwin.spritepencil")
+    let defaults = AppGroup.defaults
     var image: UIImage? {
-        if let data = defaults?.data(forKey: "sprite") {
+        if let data = defaults?.data(forKey: AppGroup.Key.sprite) {
             return UIImage(data: data)
         }
         return nil
     }
     var backgroundColor: UIColor {
-        if let hex = defaults?.string(forKey: "backgroundColor"), let comp = ColorComponents(hex: hex) {
+        if let hex = defaults?.string(forKey: AppGroup.Key.backgroundColor), let comp = ColorComponents(hex: hex) {
             return UIColor(components: comp)
         }
         return .black

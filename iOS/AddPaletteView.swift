@@ -16,10 +16,7 @@ struct AddPaletteView: View {
     @State var palette: Palette
     @State var name = ""
     @State var fromLospec: Bool
-    
-    var paletteImage: UIImage?
-    var completionHandler: ((Bool) -> Void)?
-    
+
     var body: some View {
         ZStack {
             Color(UIColor.systemGroupedBackground)
@@ -51,8 +48,7 @@ struct AddPaletteView: View {
                         defaultGroupLength: palette.defaultGroupLength,
                         groupLengths: palette.groupLengths
                     )
-                    Palette.addPalette(namedPalette, paletteImage: self.paletteImage)
-                    self.completionHandler?(true)
+                    PaletteStore.shared.add(namedPalette)
                     dismiss()
                 } label: {
                     Text("Add Palette")
@@ -73,7 +69,6 @@ struct AddPaletteView: View {
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Cancel", systemImage: "xmark") {
-                            self.completionHandler?(false)
                             dismiss()
                         }
                     }

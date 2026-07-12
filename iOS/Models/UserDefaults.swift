@@ -38,7 +38,10 @@ extension UserDefaults {
             Key.showPalette: true,
             Key.showPixelGrid: false,
             Key.showTileGrid: false,
-            Key.colorPalette: Palette.defaultPalette.name,
+            // The seasonal default (Endesga 32) hasn't loaded yet at register
+            // time; SP 16 matches the old pre-load registration value, and the
+            // store's `defaultPalette` still wins wherever this name misses.
+            Key.colorPalette: Palette.sp16.name,
             
             Key.canvasBackgroundColor: "default",
             Key.fingerAction: "ignore",

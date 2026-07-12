@@ -12,18 +12,22 @@ import SwiftUI
 struct MessagesView: View {
     
     init(insertFile: @escaping (URL) -> Void) {
-        documentController = DocumentController()
+        let documentController = DocumentController()
         documentController.palette = Palette.sp16
-        
-        paletteController = PaletteCollectionController()
+        _documentController = State(initialValue: documentController)
+
+        let paletteController = PaletteCollectionController()
         paletteController.messagesAppMode = true
         paletteController.palette = Palette.sp16
-        
+        _paletteController = State(initialValue: paletteController)
+
         self.insertFile = insertFile
     }
-    
-    let documentController: DocumentController
-    let paletteController: PaletteCollectionController
+
+    // @State so a re-init of the struct (any parent update) can't silently
+    // replace the controllers and reset the canvas mid-drawing.
+    @State private var documentController: DocumentController
+    @State private var paletteController: PaletteCollectionController
     let insertFile: (URL) -> Void
 
     var body: some View {
@@ -74,7 +78,6 @@ struct MessagesView: View {
             
             PaletteCollectionView(
                 controller: paletteController,
-                showPaletteChooserButton: false,
                 selectedColor: Binding(get: {
                     self.documentController.toolColorComponents
                 }, set: { newValue in

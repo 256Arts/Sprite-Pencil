@@ -36,12 +36,14 @@ struct PaletteCollectionView: View {
     var itemMaxLength: CGFloat = 42
     #endif
     
-    let showPaletteChooserButton: Bool
     let spacing: CGFloat = 8
-    
+
     @Binding var selectedColor: ColorComponents
-    
-    @State private var showingPaletteChooser = false
+
+    /// Presents the host's palette chooser; the pencil button is hidden when
+    /// nil. Injected so this shared view needs no picker of its own (the
+    /// Messages extension has none).
+    var onChoosePalette: (() -> Void)? = nil
 
     var body: some View {
         ScrollView {
@@ -72,13 +74,11 @@ struct PaletteCollectionView: View {
                             Text(palette.name)
                                 .font(.headline)
                             
-                            if showPaletteChooserButton {
-                                Button("Choose Palette", systemImage: "pencil") {
-                                    self.showingPaletteChooser = true
-                                }
-                                .buttonStyle(.borderless)
-                                .labelStyle(.iconOnly)
-                                .help("Choose Palette")
+                            if let onChoosePalette {
+                                Button("Choose Palette", systemImage: "pencil", action: onChoosePalette)
+                                    .buttonStyle(.borderless)
+                                    .labelStyle(.iconOnly)
+                                    .help("Choose Palette")
                             }
                         }
                         
@@ -134,13 +134,6 @@ struct PaletteCollectionView: View {
                 }
             }
             .scenePadding()
-        }
-        .sheet(isPresented: $showingPaletteChooser) {
-            NavigationStack {
-                PalettePickerView(selectedPaletteName: controller.palette?.name ?? "", onSelect: { palette in
-                    controller.palette = palette
-                })
-            }
         }
         .tint(.yellowAccent)
     }

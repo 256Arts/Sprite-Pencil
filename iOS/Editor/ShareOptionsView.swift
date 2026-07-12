@@ -27,10 +27,10 @@ struct ShareOptionsView: View {
         Button("Set Widget Sprite", systemImage: "square") {
             if let uiImage = documentController.export(scale: 1, backgroundColor: nil),
                let data = uiImage.pngData(),
-               let defaults = UserDefaults(suiteName: SpritePencilApp.spritePencilAppGroupID) {
-                defaults.set(data, forKey: "sprite")
+               let defaults = AppGroup.defaults {
+                defaults.set(data, forKey: AppGroup.Key.sprite)
                 if let hex = UserDefaults.standard.string(forKey: UserDefaults.Key.currentColor) {
-                    defaults.set(hex, forKey: "backgroundColor")
+                    defaults.set(hex, forKey: AppGroup.Key.backgroundColor)
                 }
                 WidgetCenter.shared.reloadAllTimelines()
             }

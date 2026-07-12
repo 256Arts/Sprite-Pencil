@@ -263,6 +263,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				1BB2017C2E23846D0058834C /* Shared */,
 				1BB201F82E2384820058834C /* Widget */,
 			);
 			name = SpriteWidgetExtension;

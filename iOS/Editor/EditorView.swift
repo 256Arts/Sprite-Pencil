@@ -34,10 +34,16 @@ struct EditorView: View {
 
     @State private var showingInspector = true
     @State private var inspectorDetent: PresentationDetent = .height(Self.inspectorPeekDetentHeight)
-    @State private var isSavePalettePresented = false
     @State private var pendingPalette: Palette?
     @State private var isExportPresented = false
     @State private var isSettingsPresented = false
+    @State private var showingPaletteChooser = false
+
+    // Mirrors of `undoManager.canUndo/canRedo`, refreshed on the kit's
+    // `.refreshUndo` events so the Undo/Redo buttons update deterministically
+    // instead of riding incidental re-renders.
+    @State private var canUndo = false
+    @State private var canRedo = false
 
     // Coalesces document re-encodes. The kit fires `.drawingDidChange` on every
     // touch-move sample, so encoding the full PNG inline on each one stutters
@@ -86,6 +92,9 @@ struct EditorView: View {
                 case .showColorPalette:
                     // Could present palette UI here if desired
                     break
+                case .refreshUndo:
+                    canUndo = undoManager?.canUndo ?? false
+                    canRedo = undoManager?.canRedo ?? false
                 default:
                     break
                 }
@@ -126,9 +135,9 @@ struct EditorView: View {
             ToolbarSpacer(.fixed, placement: .topBarLeading)
             ToolbarItemGroup(placement: .topBarLeading) {
                 Button("Undo", systemImage: "arrow.uturn.left") { documentController.undo() }
-                    .disabled(!(undoManager?.canUndo ?? false))
+                    .disabled(!canUndo)
                 Button("Redo", systemImage: "arrow.uturn.right") { documentController.redo() }
-                    .disabled(!(undoManager?.canRedo ?? false))
+                    .disabled(!canRedo)
             }
             
             ToolbarItemGroup {
@@ -178,17 +187,14 @@ struct EditorView: View {
                     ShareOptionsView(documentController: documentController, isExportPresented: $isExportPresented)
                     Button("Save as Palette", systemImage: "paintpalette") {
                         let image = UIImage(cgImage: documentController.context.makeImage()!)
-                        if let palette = Palette(name: NSLocalizedString("My Palette", comment: "default palette name"), image: image, defaultGroupLength: 1) {
-                            pendingPalette = palette
-                            isSavePalettePresented = true
-                        }
+                        // Note: `Palette(name:image:)` requires a 1px-tall image, so this
+                        // only succeeds for palette-strip sprites — same as before.
+                        pendingPalette = Palette(name: NSLocalizedString("My Palette", comment: "default palette name"), image: image, defaultGroupLength: 1)
                     }
                 }
-                .popover(isPresented: $isSavePalettePresented) {
-                    if let palette = pendingPalette {
-                        AddPaletteView(palette: palette, fromLospec: false)
-                            .presentationDetents([.medium, .large])
-                    }
+                .popover(item: $pendingPalette) { palette in
+                    AddPaletteView(palette: palette, fromLospec: false)
+                        .presentationDetents([.medium, .large])
                 }
                 .popover(isPresented: $isExportPresented) {
                     ExportImageView(documentController: documentController)
@@ -214,15 +220,29 @@ struct EditorView: View {
         .inspector(isPresented: $showingInspector) {
             PaletteCollectionView(
                 controller: paletteController,
-                showPaletteChooserButton: true,
-                selectedColor: $documentController.toolColorComponents
+                selectedColor: $documentController.toolColorComponents,
+                onChoosePalette: { showingPaletteChooser = true }
             )
             .presentationDetents([.height(Self.inspectorPeekDetentHeight), .large], selection: $inspectorDetent)
             .presentationBackgroundInteraction(.enabled)
             .inspectorColumnWidth(min: 220, ideal: 280, max: 360)
         }
+        .sheet(isPresented: $showingPaletteChooser) {
+            NavigationStack {
+                PalettePickerView(selectedPaletteName: paletteController.palette?.name ?? "") { palette in
+                    paletteController.palette = palette
+                }
+            }
+        }
         .onAppear {
             documentController.undoManager = self.undoManager
+        }
+        .onChange(of: undoManager) { _, newManager in
+            // The environment's manager can be nil on first render or replaced
+            // under DocumentGroup; re-wire the controller whenever it changes.
+            documentController.undoManager = newManager
+            canUndo = newManager?.canUndo ?? false
+            canRedo = newManager?.canRedo ?? false
         }
         .onDisappear {
             documentsClosedCount += 1
@@ -258,11 +278,8 @@ struct EditorView: View {
     @ViewBuilder
     private func leadingAndTrailingBottomBarItems() -> some View {
         HStack {
-            if let hoverPoint = documentController.hoverPoint {
-                Text("\(hoverPoint.x), \(hoverPoint.y)")
-                    .font(Font.body.monospacedDigit())
-            }
-            
+            HoverReadout(documentController: documentController)
+
             Spacer()
             
             if horizontalSizeClass == .compact, !showingInspector {
@@ -292,11 +309,7 @@ struct EditorView: View {
     // MARK: - Helpers
 
     private var currentPalette: Palette {
-        if !colorPaletteName.isEmpty {
-            Palette.allPalettes.first(where: { $0.name == colorPaletteName }) ?? Palette.defaultPalette
-        } else {
-            Palette.defaultPalette
-        }
+        PaletteStore.shared.palette(named: colorPaletteName) ?? PaletteStore.shared.defaultPalette
     }
 
     private func refreshDocumentDataFromContext() {
@@ -342,6 +355,19 @@ struct EditorView: View {
         }
         for components in colorsComponents {
             paletteController.usedColor(components: components)
+        }
+    }
+}
+
+/// Isolated so pointer/Pencil hover samples — which arrive continuously while
+/// hovering — re-evaluate only this `Text`, not the entire editor body.
+private struct HoverReadout: View {
+    var documentController: DocumentController
+
+    var body: some View {
+        if let hoverPoint = documentController.hoverPoint {
+            Text("\(hoverPoint.x), \(hoverPoint.y)")
+                .font(Font.body.monospacedDigit())
         }
     }
 }
