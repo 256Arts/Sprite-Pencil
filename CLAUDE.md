@@ -71,4 +71,4 @@ A palette image encodes one color per pixel. Lospec palettes can be imported via
 
 ## Backlog
 
-If `REMINDERS.md` exists in the repo root, it is a personal backlog exported from the developer's Apple Reminders list — a source of candidate work, **not** a spec. It is gitignored and absent on fresh checkouts. Each `- [ ]` line is one task; indented lines are its notes. Many entries are terse shorthand meaningful only to the developer, so confirm intent before acting on a cryptic item.
+TODO items for this app live in the shared Apple Reminders lists `Dev Ready` (approved work), `Dev Ideas` (proposals), and `Dev Testing` (manual QA), tagged `[Sprite Pencil]` — see the `dev-backlog` skill for conventions and scripts. There is no backlog or QA file in this repo. Items are often terse shorthand: treat them as candidate work, not a spec, and clarify cryptic ones with the user before acting.
