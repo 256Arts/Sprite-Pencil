@@ -1,14 +1,3 @@
-//
-//  SpritePencilTests.swift
-//  Sprite Pencil
-//
-//  Pure-logic regression coverage for the app-side value types: the raw
-//  values persisted in user settings (CanvasBackground, FingerAction), the
-//  Lospec palette JSON shape, sprite-size identity, and the recent-colors
-//  ordering rules. No canvas or view is involved — the drawing engine has its
-//  own suite in SpritePencilKitTests.
-//
-
 import Testing
 import Foundation
 import UIKit

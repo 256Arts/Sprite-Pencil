@@ -1,11 +1,3 @@
-//
-//
-//  MessagesView.swift
-//  Sprite Pencil Messages
-//
-//  Created by 256 Arts on 2026-03-23.
-//
-        
 import SpritePencilKit
 import SwiftUI
 

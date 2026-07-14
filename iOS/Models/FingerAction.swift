@@ -1,11 +1,3 @@
-//
-//  FingerAction.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer.
-//  Copyright © 2026 256 Arts Developer. All rights reserved.
-//
-
 import SpritePencilKit
 import SwiftUI
 

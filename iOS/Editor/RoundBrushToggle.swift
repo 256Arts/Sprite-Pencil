@@ -1,11 +1,3 @@
-//
-//  RoundBrushToggle.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer on 2026-06-25.
-//  Copyright © 2026 256 Arts Developer. All rights reserved.
-//
-
 import SwiftUI
 
 struct RoundBrushToggle: View {

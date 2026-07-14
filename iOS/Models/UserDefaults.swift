@@ -1,11 +1,3 @@
-//
-//  UserDefaults.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer on 2019-01-20.
-//  Copyright © 2019 256 Arts Developer. All rights reserved.
-//
-
 import Foundation
 import SpritePencilKit
 

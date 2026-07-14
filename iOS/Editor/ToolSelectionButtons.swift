@@ -1,11 +1,3 @@
-//
-//  ToolSelectionButtons.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer on 2020-09-13.
-//  Copyright © 2020 256 Arts Developer. All rights reserved.
-//
-
 import SwiftUI
 
 struct ToolSelectionButtonToggleStyle: ToggleStyle {

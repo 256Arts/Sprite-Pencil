@@ -1,11 +1,3 @@
-//
-//  ToolOptionsView.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer on 2020-05-16.
-//  Copyright © 2020 256 Arts Developer. All rights reserved.
-//
-
 import SwiftUI
 import SpritePencilKit
 

@@ -1,11 +1,3 @@
-//
-//  HelpView.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer on 2020-10-25.
-//  Copyright © 2020 256 Arts Developer. All rights reserved.
-//
-
 import SwiftUI
 
 struct HelpView: View {

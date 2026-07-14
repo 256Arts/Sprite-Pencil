@@ -1,11 +1,3 @@
-//
-//  TemplatePickerBottomBar.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer on 2021-02-21.
-//  Copyright © 2021 256 Arts Developer. All rights reserved.
-//
-
 import SwiftUI
 
 struct TemplatePickerBottomBar: View {

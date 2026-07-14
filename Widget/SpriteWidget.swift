@@ -1,11 +1,3 @@
-//
-//  Widget.swift
-//  Widget
-//
-//  Created by 256 Arts Developer on 2020-10-02.
-//  Copyright © 2020 256 Arts Developer. All rights reserved.
-//
-
 import WidgetKit
 import SwiftUI
 import SpritePencilKit

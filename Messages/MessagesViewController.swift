@@ -1,11 +1,3 @@
-//
-//  MessagesViewController.swift
-//  messages
-//
-//  Created by 256 Arts Developer on 2018-10-15.
-//  Copyright © 2018 256 Arts Developer. All rights reserved.
-//
-
 import UIKit
 import Messages
 import SwiftUI

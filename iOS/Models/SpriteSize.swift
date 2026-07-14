@@ -1,11 +1,3 @@
-//
-//  SpriteSize.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer on 2021-04-15.
-//  Copyright © 2021 256 Arts Developer. All rights reserved.
-//
-
 import Foundation
 
 struct SpriteSize: Identifiable, Equatable {

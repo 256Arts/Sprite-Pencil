@@ -1,11 +1,3 @@
-//
-//  LabeledStepper.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer on 2020-09-14.
-//  Copyright © 2020 256 Arts Developer. All rights reserved.
-//
-
 import SwiftUI
 
 struct LabeledStepper: View {

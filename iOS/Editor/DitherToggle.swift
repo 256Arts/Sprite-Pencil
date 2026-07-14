@@ -1,11 +1,3 @@
-//
-//  DitherToggle.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer on 2022-12-31.
-//  Copyright © 2022 256 Arts Developer. All rights reserved.
-//
-
 import SwiftUI
 
 struct DitherToggle: View {

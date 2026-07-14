@@ -1,11 +1,3 @@
-//
-//  PalettePreviewView.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer on 2021-03-01.
-//  Copyright © 2021 256 Arts Developer. All rights reserved.
-//
-
 import SwiftUI
 import SpritePencilKit
 

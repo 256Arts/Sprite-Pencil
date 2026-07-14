@@ -1,11 +1,3 @@
-//
-//  ExportView.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer on 2020-04-29.
-//  Copyright © 2020 256 Arts Developer. All rights reserved.
-//
-
 import SwiftUI
 import SpritePencilKit
 import WidgetKit

@@ -1,11 +1,3 @@
-//
-//  PaletteStore.swift
-//  Sprite Pencil
-//
-//  Created by 256 Arts Developer on 2026-07-12.
-//  Copyright © 2026 256 Arts Developer. All rights reserved.
-//
-
 import UIKit
 import SpritePencilKit
 
