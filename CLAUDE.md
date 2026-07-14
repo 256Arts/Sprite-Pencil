@@ -14,7 +14,7 @@ The three targets share the app group `group.com.jaydenirwin.spritepencil` (see 
 
 ## Building
 
-Open `Sprite Pencil.xcodeproj` in Xcode and build/run via the **Sprite Pencil** scheme (or **Sprite Pencil Messages** for the iMessage extension). There is no command-line build script, package manifest, or test suite in this repo — building is Xcode-only.
+Open `Sprite Pencil.xcodeproj` in Xcode and build/run via the **Sprite Pencil** scheme (or **Sprite Pencil Messages** for the iMessage extension). The `SpritePencilTests` target (Swift Testing) runs on the **Sprite Pencil** scheme.
 
 Swift Package dependencies are resolved automatically by Xcode (`Sprite Pencil.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved`). If resolution gets stuck, use File ▸ Packages ▸ Reset Package Caches in Xcode.
 
@@ -47,13 +47,15 @@ Tool selection, brush width, dither (checkered) mode, symmetry, and palette/colo
 
 ### Palettes
 
-`Palette` is a kit type extended app-side in `iOS/Models/Palette.swift`. Palettes come from three sources, combined in `Palette.allPalettes`:
+`Palette` is a `SpritePencilKit` type. `PaletteStore` (`iOS/Models/PaletteStore.swift`, `@MainActor @Observable` singleton) owns the catalog, combining three sources in `allPalettes`:
 
-- **User palettes** — PNG files in `Documents/Palettes/`, loaded at launch.
-- **Handpicked palettes** — bundled image assets (PICO-8, Endesga 32, etc.) loaded in `SpritePencilApp.loadAppPalettes()`, which also seasonally injects extra palettes by calendar date.
+- **User palettes** — PNG files in `Documents/Palettes/`, loaded at launch; order persisted by name in `UserDefaults.Key.userPaletteOrder`.
+- **Handpicked palettes** — shipped by **PaletteKit** (`Palette.handpicked()`), which owns the palette PNGs, the seasonal by-date rotation, and Building Bricks. The app bundles no palette images of its own.
 - **Built-in special palettes** — `Palette.sp16`, `.rrggbb`, etc., defined in the kit.
 
-A palette image encodes one color per pixel. Lospec palettes can be imported via the `lospec-palette://` URL scheme (`AppCoordinator.openLospecURL`).
+A palette image encodes one color per pixel. Lospec palettes are imported via the `lospec-palette://` URL scheme (`AppCoordinator.openLospecURL` → `Palette.lospec(_:)`).
+
+**`PaletteKit` is the second package** (`/Volumes/Kingston/GitHub/PaletteKit`, referenced by local path — see the workspace `CLAUDE.md`): the shared, storage-agnostic palette model used by Sprite Pencil, Palette 3D, and Sprite Catalog. It stores colors as perceptual Lab/LCH fractions rather than bytes. Both modules spell a palette `Palette`, so **`iOS/Models/PaletteBridge.swift` is the only file that imports both** — it qualifies each side and hands the rest of the app plain `SpritePencilKit` types. Put any new PaletteKit interop there rather than importing PaletteKit elsewhere.
 
 ### App entry & URL handling
 

@@ -65,28 +65,6 @@ struct SpriteSizeTests {
     }
 }
 
-struct LospecDecodingTests {
-
-    @Test func decodesTheLospecJSONShape() throws {
-        // The exact shape returned by lospec.com/palette-list/<slug>.json.
-        let json = Data("""
-        {
-          "name": "Sweetie 16",
-          "author": "GrafxKid",
-          "colors": ["1a1c2c", "5d275d", "b13e53", "ef7d57"]
-        }
-        """.utf8)
-
-        let palette = try JSONDecoder().decode(AppCoordinator.LospecPalette.self, from: json)
-        #expect(palette.name == "Sweetie 16")
-        #expect(palette.author == "GrafxKid")
-        #expect(palette.colors == ["1a1c2c", "5d275d", "b13e53", "ef7d57"])
-
-        // The colors are hex strings the app feeds to ColorComponents(hex:).
-        #expect(ColorComponents(hex: palette.colors[0]) != nil)
-    }
-}
-
 struct SpriteImageDocumentTests {
 
     /// A blank new document decodes to a PNG of exactly the requested size.

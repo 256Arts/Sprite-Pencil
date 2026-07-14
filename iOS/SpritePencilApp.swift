@@ -76,25 +76,10 @@ final class AppCoordinator: NSObject {
         }
     }
 
-    struct LospecPalette: Codable {
-        let name: String
-        let author: String
-        let colors: [String]
-    }
-
     func openLospecURL(_ url: URL) async {
-        guard url.scheme == "lospec-palette", let paletteSlug = url.host() else { return }
-        guard let jsonURL = URL(string: "https://lospec.com/palette-list/\(paletteSlug).json") else { return }
         do {
-            let (data, _) = try await URLSession.shared.data(from: jsonURL)
-            let lospecPalette = try JSONDecoder().decode(LospecPalette.self, from: data)
-            var colors = [ColorComponents]()
-            for hex in lospecPalette.colors {
-                guard let components = ColorComponents(hex: hex) else { return }
-                colors.append(components)
-            }
             // Drives the "Add Palette" sheet.
-            importingPaletteFromLospec = Palette(name: lospecPalette.name, specialCase: nil, colors: colors, defaultGroupLength: 1)
+            importingPaletteFromLospec = try await Palette.lospec(url)
         } catch {
             print(error)
         }

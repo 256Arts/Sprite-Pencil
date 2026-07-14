@@ -2,9 +2,10 @@ import UIKit
 import SpritePencilKit
 
 /// The app's palette catalog: user palettes stored as PNGs in
-/// `Documents/Palettes/`, bundled handpicked palettes (seasonally rotated),
-/// and the kit's built-in specials. Replaces the old mutable statics on
-/// `Palette`, so palette lists are observable and main-actor isolated.
+/// `Documents/Palettes/`, the handpicked palettes PaletteKit ships (seasonally
+/// rotated, bridged in `PaletteBridge`), and the kit's built-in specials.
+/// Replaces the old mutable statics on `Palette`, so palette lists are
+/// observable and main-actor isolated.
 @MainActor @Observable
 final class PaletteStore {
 
@@ -47,54 +48,8 @@ final class PaletteStore {
     }
 
     private func loadHandpickedPalettes() {
-        struct PaletteConfig { let name: String; let defaultGroupLength: Int }
-
-        var configs = [
-            PaletteConfig(name: "Island Joy 16", defaultGroupLength: 1),
-            PaletteConfig(name: "PICO-8", defaultGroupLength: 1),
-            PaletteConfig(name: "Zughy 32", defaultGroupLength: 5),
-            PaletteConfig(name: "Endesga 32", defaultGroupLength: 4),
-            PaletteConfig(name: "BLK 36", defaultGroupLength: 6),
-            PaletteConfig(name: "Apollo", defaultGroupLength: 6),
-            PaletteConfig(name: "Endesga 64", defaultGroupLength: 6),
-            PaletteConfig(name: "SPF-80", defaultGroupLength: 1)
-        ]
-        let month = Calendar.current.component(.month, from: Date())
-        let day = Calendar.current.component(.day, from: Date())
-        switch month {
-        case 2:
-            if day == 14 { configs.insert(PaletteConfig(name: "Hearts", defaultGroupLength: 2), at: 0) }
-        case 5:
-            if day == 4 { configs.insert(PaletteConfig(name: "TIE Fighter", defaultGroupLength: 1), at: 0) }
-        case 6:
-            configs.insert(PaletteConfig(name: "Pride", defaultGroupLength: 1), at: 0)
-        case 10:
-            configs.insert(PaletteConfig(name: "HallowPumpkin", defaultGroupLength: 1), at: 0)
-        case 12:
-            configs.insert(PaletteConfig(name: "POLA5", defaultGroupLength: 1), at: 0)
-        default:
-            break
-        }
-
-        for config in configs {
-            if let image = UIImage(named: config.name), let palette = Palette(name: config.name, image: image, defaultGroupLength: config.defaultGroupLength) {
-                handpickedPalettes.append(palette)
-                if config.name == "Endesga 32" { defaultPalette = palette }
-            }
-        }
-
-        let buildingBricks = Palette(name: "Building Bricks", specialCase: nil, colors: {
-            let rgb: [(r: UInt8, g: UInt8, b: UInt8)] = [
-                (242,243,242),(230,227,224),(160,165,169),(99,95,97),(5,19,29),(242,205,55),(201,26,9),(114,14,15),
-                (180,210,227),(90,147,219),(0,85,191),(10,52,99),(75,159,74),(35,120,65),(24,70,50),(88,42,18),
-                (53,33,0),(7,139,201),(169,85,0),(149,138,115),(125,191,221),(250,156,28),(208,145,104),(224,255,176),
-                (187,233,11),(246,215,179),(194,218,184),(249,186,97),(254,186,189),(201,202,226),(146,57,120),(204,112,42),
-                (115,220,161),(63,54,145),(199,210,60),(255,167,11),(254,138,24),(242,112,94),(96,116,161),(160,188,172),
-                (132,94,132),(228,205,158),(0,143,155),(67,84,163)
-            ]
-            return rgb.map({ ColorComponents(red: $0.r, green: $0.g, blue: $0.b, opacity: 255) })
-        }(), defaultGroupLength: 1)
-        handpickedPalettes.insert(buildingBricks, at: min(5, handpickedPalettes.count))
+        handpickedPalettes = Palette.handpicked()
+        defaultPalette = palette(named: Palette.defaultPremadeName) ?? .sp16
     }
 
     // MARK: - User palettes

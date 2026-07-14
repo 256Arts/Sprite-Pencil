@@ -18,6 +18,8 @@
 		1BC7AF002526DEA100AFB499 /* SpriteWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1BC7AEF02526DEA000AFB499 /* SpriteWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1BEEC5C921EEF3F000AB83C3 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1BEEC5C821EEF3F000AB83C3 /* Settings.bundle */; };
 		5F00000000000000000000B2 /* SpritePencilKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5F00000000000000000000B1 /* SpritePencilKit */; };
+		5F00000000000000000000C2 /* PaletteKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5F00000000000000000000C1 /* PaletteKit */; };
+		5F00000000000000000000C4 /* PaletteKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5F00000000000000000000C3 /* PaletteKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B9BEDD528B2AAC700ECAD66 /* SpritePencilKit in Frameworks */,
+				5F00000000000000000000C2 /* PaletteKit in Frameworks */,
 				1B9067E92473504500335EF5 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F00000000000000000000B2 /* SpritePencilKit in Frameworks */,
+				5F00000000000000000000C4 /* PaletteKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +249,7 @@
 			name = "Sprite Pencil";
 			packageProductDependencies = (
 				1B9BEDD428B2AAC700ECAD66 /* SpritePencilKit */,
+				5F00000000000000000000C1 /* PaletteKit */,
 			);
 			productName = "Pixel Canvas";
 			productReference = 1B9C7568215FE88500C3470F /* Sprite Pencil.app */;
@@ -317,6 +322,7 @@
 			name = SpritePencilTests;
 			packageProductDependencies = (
 				5F00000000000000000000B1 /* SpritePencilKit */,
+				5F00000000000000000000C3 /* PaletteKit */,
 			);
 			productName = SpritePencilTests;
 			productReference = 5F00000000000000000000A6 /* SpritePencilTests.xctest */;
@@ -363,6 +369,7 @@
 			mainGroup = 1B9C755F215FE88500C3470F;
 			packageReferences = (
 				1B9BEDD328B2AAC700ECAD66 /* XCRemoteSwiftPackageReference "SpritePencilKit" */,
+				5F00000000000000000000C0 /* XCLocalSwiftPackageReference "PaletteKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1B9C7569215FE88500C3470F /* Products */;
@@ -842,6 +849,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		5F00000000000000000000C0 /* XCLocalSwiftPackageReference "PaletteKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../../../../../../Volumes/Kingston/GitHub/PaletteKit";
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		1B9BEDD328B2AAC700ECAD66 /* XCRemoteSwiftPackageReference "SpritePencilKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -868,6 +882,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1B9BEDD328B2AAC700ECAD66 /* XCRemoteSwiftPackageReference "SpritePencilKit" */;
 			productName = SpritePencilKit;
+		};
+		5F00000000000000000000C1 /* PaletteKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PaletteKit;
+		};
+		5F00000000000000000000C3 /* PaletteKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PaletteKit;
 		};
 		5F00000000000000000000B1 /* SpritePencilKit */ = {
 			isa = XCSwiftPackageProductDependency;
