@@ -1,7 +1,6 @@
 import SwiftUI
 import UIKit
 import SpritePencilKit
-import StoreKit
 import UniformTypeIdentifiers
 
 @MainActor @Observable
@@ -110,10 +109,6 @@ struct SpritePencilApp: App {
         }
     }
 
-    @AppStorage(UserDefaults.Key.documentsClosedCount) private var documentsClosedCount = 0
-
-    @Environment(\.requestReview) private var requestReview
-
     @State var documentCreationContinuation: CheckedContinuation<SpriteSize, any Error>?
     @State var isTemplatePickerPresented = false
     @State var appCoordinator = AppCoordinator()
@@ -169,11 +164,6 @@ struct SpritePencilApp: App {
                     Button("OK", role: .close) { }
                 } message: {
                     Text("Now let's celebrate by opening a new sprite and using the new tools!")
-                }
-                .onDisappear {
-                    if [5, 20, 50, 100].contains(documentsClosedCount) {
-                        requestReview()
-                    }
                 }
                 .sheet(item: $appCoordinator.importingPaletteFromLospec) { palette in
                     NavigationStack {

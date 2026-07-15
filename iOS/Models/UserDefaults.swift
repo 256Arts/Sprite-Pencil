@@ -6,11 +6,12 @@ extension UserDefaults {
     struct Key {
         static let showPermanentEditWarning = "showPermanentEditWarning"
         static let createdDocumentsCount = "createdDocumentsCount"
+        // Never read in code: displayed by the Settings.bundle Usage pane
+        // (PSTitleValueSpecifier), which can only show string values.
         static let createdDocumentsCountText = "createdDocumentsCountText"
         static let documentsClosedCount = "documentsClosedCount"
         static let colorPalette = "colorPalette"
         static let userPaletteOrder = "userPaletteOrder"
-        static let showPalette = "showPalette"
         static let showPixelGrid = "showPixelGrid"
         static let showTileGrid = "showTileGrid"
         static let currentColor = "currentColor"
@@ -28,7 +29,6 @@ extension UserDefaults {
             Key.createdDocumentsCount: 0,
             Key.createdDocumentsCountText: "0",
             Key.documentsClosedCount: 0,
-            Key.showPalette: true,
             Key.showPixelGrid: false,
             Key.showTileGrid: false,
             // The seasonal default (Endesga 32) hasn't loaded yet at register

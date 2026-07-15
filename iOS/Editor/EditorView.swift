@@ -1,13 +1,15 @@
 import SpritePencilKit
+import StoreKit
 import SwiftUI
 import UIKit
 
 struct EditorView: View {
-    
+
     let document: SpriteImageDocument
 
     @Environment(\.undoManager) private var undoManager
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.requestReview) private var requestReview
 
     // Canvas configuration state (mirrors prior defaults/controls)
     @AppStorage(UserDefaults.Key.showPixelGrid) private var pixelGridEnabled: Bool = false
@@ -26,6 +28,7 @@ struct EditorView: View {
     @AppStorage(UserDefaults.Key.canvasBackgroundColor) private var canvasBackground: CanvasBackground = .default
     @AppStorage(UserDefaults.Key.colorPalette) private var colorPaletteName: String = ""
     @AppStorage(UserDefaults.Key.documentsClosedCount) private var documentsClosedCount: Int = 0
+    @AppStorage(UserDefaults.Key.showPermanentEditWarning) private var showPermanentEditWarning: Bool = true
 
     // Palette controller bridged into SwiftUI Inspector
     @State private var paletteController = PaletteCollectionController()
@@ -38,6 +41,7 @@ struct EditorView: View {
     @State private var isExportPresented = false
     @State private var isSettingsPresented = false
     @State private var showingPaletteChooser = false
+    @State private var isPermanentEditWarningPresented = false
 
     // Mirrors of `undoManager.canUndo/canRedo`, refreshed on the kit's
     // `.refreshUndo` events so the Undo/Redo buttons update deterministically
@@ -237,6 +241,18 @@ struct EditorView: View {
         }
         .onAppear {
             documentController.undoManager = self.undoManager
+            // One-time heads-up, restored from the pre-SwiftUI app. Only for
+            // documents opened from disk (`configuration` is nil for new ones),
+            // with copy updated for the autosaving document model.
+            if document.configuration != nil, showPermanentEditWarning {
+                showPermanentEditWarning = false
+                isPermanentEditWarningPresented = true
+            }
+        }
+        .alert("Permanent Edits", isPresented: $isPermanentEditWarningPresented) {
+            Button("OK", role: .close) { }
+        } message: {
+            Text("While drawing you can undo edits. Edits are saved to the file automatically.")
         }
         .onChange(of: undoManager) { _, newManager in
             // The environment's manager can be nil on first render or replaced
@@ -247,6 +263,9 @@ struct EditorView: View {
         }
         .onDisappear {
             documentsClosedCount += 1
+            if [5, 20, 50, 100].contains(documentsClosedCount) {
+                requestReview()
+            }
         }
         .onChange(of: selectedTool) { _, newTool in
             documentController.tool = newTool.tool(in: documentController)
