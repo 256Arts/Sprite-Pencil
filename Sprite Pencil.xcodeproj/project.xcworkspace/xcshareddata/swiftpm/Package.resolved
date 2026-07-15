@@ -1,15 +1,15 @@
 {
-  "originHash" : "df6290e3ebc293a2c0b0232287f65cf2a56b7a28c0761901328960315ccbe274",
-  "pins" : [
+  "originHash": "df6290e3ebc293a2c0b0232287f65cf2a56b7a28c0761901328960315ccbe274",
+  "pins": [
     {
-      "identity" : "spritepencilkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/256Arts/SpritePencilKit",
-      "state" : {
-        "revision" : "3e236b80d5161f5a999033a1765c1520dbd69e16",
-        "version" : "2.2.0"
+      "identity": "spritepencilkit",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/256Arts/SpritePencilKit",
+      "state": {
+        "revision": "01b22372ff3b2ba38452fc96e8912a472de33b6c",
+        "version": "2.3.0"
       }
     }
   ],
-  "version" : 3
+  "version": 3
 }

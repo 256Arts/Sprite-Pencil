@@ -1,3 +1,4 @@
+import PhotosUI
 import SpritePencilKit
 import StoreKit
 import SwiftUI
@@ -43,6 +44,12 @@ struct EditorView: View {
     @State private var showingPaletteChooser = false
     @State private var isPermanentEditWarningPresented = false
 
+    // Tracing reference shown behind the sprite's transparent pixels.
+    // Session-only: not saved with the document.
+    @State private var referenceImage: UIImage?
+    @State private var referencePhotoItem: PhotosPickerItem?
+    @State private var isReferencePickerPresented = false
+
     // Mirrors of `undoManager.canUndo/canRedo`, refreshed on the kit's
     // `.refreshUndo` events so the Undo/Redo buttons update deterministically
     // instead of riding incidental re-renders.
@@ -74,6 +81,7 @@ struct EditorView: View {
             applePencilCanEyedrop: true,
             nonDrawingFingerAction: nonDrawingFingerAction,
             shouldFillPaths: false,
+            referenceImage: referenceImage,
             onEvent: { event in
                 switch event {
                 case .drawingDidChange, .didEndUsingTool:
@@ -178,6 +186,15 @@ struct EditorView: View {
                     // The canvas redraws its symmetry guides itself when these change.
                     Toggle("Vertical Symmetry", systemImage: "square.split.2x1", isOn: $documentController.verticalSymmetry)
                     Toggle("Horizontal Symmetry", systemImage: "square.split.1x2", isOn: $documentController.horizontalSymmetry)
+                    Divider()
+                    Button("Import Reference Image", systemImage: "photo.badge.plus") {
+                        isReferencePickerPresented = true
+                    }
+                    if referenceImage != nil {
+                        Button("Remove Reference Image", systemImage: "trash") {
+                            referenceImage = nil
+                        }
+                    }
                 }
             }
             // These editing actions are the first to move into the overflow menu
@@ -231,6 +248,16 @@ struct EditorView: View {
             .presentationDetents([.height(Self.inspectorPeekDetentHeight), .large], selection: $inspectorDetent)
             .presentationBackgroundInteraction(.enabled)
             .inspectorColumnWidth(min: 220, ideal: 280, max: 360)
+        }
+        .photosPicker(isPresented: $isReferencePickerPresented, selection: $referencePhotoItem, matching: .images)
+        .onChange(of: referencePhotoItem) { _, newItem in
+            guard let newItem else { return }
+            Task {
+                if let data = try? await newItem.loadTransferable(type: Data.self) {
+                    referenceImage = UIImage(data: data)
+                }
+                referencePhotoItem = nil
+            }
         }
         .sheet(isPresented: $showingPaletteChooser) {
             NavigationStack {
