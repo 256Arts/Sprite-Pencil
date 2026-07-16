@@ -1,15 +1,33 @@
 {
-  "originHash": "df6290e3ebc293a2c0b0232287f65cf2a56b7a28c0761901328960315ccbe274",
-  "pins": [
+  "originHash" : "731d1d5e4f1bb8aafb720c6bef9a057bab394a9db4bf107f207dd13e4926f343",
+  "pins" : [
     {
-      "identity": "spritepencilkit",
-      "kind": "remoteSourceControl",
-      "location": "https://github.com/256Arts/SpritePencilKit",
-      "state": {
-        "revision": "01b22372ff3b2ba38452fc96e8912a472de33b6c",
-        "version": "2.3.0"
+      "identity" : "chromakit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/256Arts/ChromaKit.git",
+      "state" : {
+        "revision" : "9ba9a5a4cc2f7c867c3b657bd58afa9c328ad0eb",
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "palettekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/256Arts/PaletteKit",
+      "state" : {
+        "revision" : "ef290ab15ec52e285346de25656830991d7bf1e6",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "spritepencilkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/256Arts/SpritePencilKit",
+      "state" : {
+        "revision" : "01b22372ff3b2ba38452fc96e8912a472de33b6c",
+        "version" : "2.3.0"
       }
     }
   ],
-  "version": 3
+  "version" : 3
 }

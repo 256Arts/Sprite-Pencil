@@ -363,7 +363,7 @@
 			mainGroup = 1B9C755F215FE88500C3470F;
 			packageReferences = (
 				1B9BEDD328B2AAC700ECAD66 /* XCRemoteSwiftPackageReference "SpritePencilKit" */,
-				5F00000000000000000000C0 /* XCLocalSwiftPackageReference "PaletteKit" */,
+				5F00000000000000000000C0 /* XCRemoteSwiftPackageReference "PaletteKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1B9C7569215FE88500C3470F /* Products */;
@@ -843,14 +843,15 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		5F00000000000000000000C0 /* XCLocalSwiftPackageReference "PaletteKit" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../../../../../../../Volumes/Kingston/GitHub/PaletteKit";
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
+		5F00000000000000000000C0 /* XCRemoteSwiftPackageReference "PaletteKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/256Arts/PaletteKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		1B9BEDD328B2AAC700ECAD66 /* XCRemoteSwiftPackageReference "SpritePencilKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/256Arts/SpritePencilKit";
@@ -879,10 +880,12 @@
 		};
 		5F00000000000000000000C1 /* PaletteKit */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 5F00000000000000000000C0 /* XCRemoteSwiftPackageReference "PaletteKit" */;
 			productName = PaletteKit;
 		};
 		5F00000000000000000000C3 /* PaletteKit */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 5F00000000000000000000C0 /* XCRemoteSwiftPackageReference "PaletteKit" */;
 			productName = PaletteKit;
 		};
 		5F00000000000000000000B1 /* SpritePencilKit */ = {
