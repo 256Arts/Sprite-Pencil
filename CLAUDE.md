@@ -55,7 +55,7 @@ Tool selection, brush width, dither (checkered) mode, symmetry, and palette/colo
 
 A palette image encodes one color per pixel. Lospec palettes are imported via the `lospec-palette://` URL scheme (`AppCoordinator.openLospecURL` → `Palette.lospec(_:)`).
 
-**`PaletteKit` is the second package** (`/Volumes/Kingston/GitHub/PaletteKit`, referenced by local path — see the workspace `CLAUDE.md`): the shared, storage-agnostic palette model used by Sprite Pencil, Palette 3D, and Sprite Catalog. It stores colors as perceptual Lab/LCH fractions rather than bytes. Both modules spell a palette `Palette`, so **`iOS/Models/PaletteBridge.swift` is the only file that imports both** — it qualifies each side and hands the rest of the app plain `SpritePencilKit` types. Put any new PaletteKit interop there rather than importing PaletteKit elsewhere.
+**`PaletteKit` is the second package** (`github.com/256Arts/PaletteKit`, a remote SwiftPM dependency like the kit; local checkout at `/Volumes/Kingston/GitHub/PaletteKit`): the shared, storage-agnostic palette model used by Sprite Pencil, Palette 3D, and Sprite Catalog. It stores colors as perceptual Lab/LCH fractions rather than bytes. Both modules spell a palette `Palette`, so **`iOS/Models/PaletteBridge.swift` is the only file that imports both** — it qualifies each side and hands the rest of the app plain `SpritePencilKit` types. Put any new PaletteKit interop there rather than importing PaletteKit elsewhere.
 
 ### App entry & URL handling
 
