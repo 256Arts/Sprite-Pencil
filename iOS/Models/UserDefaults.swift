@@ -14,6 +14,7 @@ extension UserDefaults {
         static let userPaletteOrder = "userPaletteOrder"
         static let showPixelGrid = "showPixelGrid"
         static let showTileGrid = "showTileGrid"
+        static let showTiledPreview = "showTiledPreview"
         static let currentColor = "currentColor"
         
         static let canvasBackgroundColor = "canvasBackgroundColor"
@@ -31,6 +32,7 @@ extension UserDefaults {
             Key.documentsClosedCount: 0,
             Key.showPixelGrid: false,
             Key.showTileGrid: false,
+            Key.showTiledPreview: false,
             // The seasonal default (Endesga 32) hasn't loaded yet at register
             // time; SP 16 matches the old pre-load registration value, and the
             // store's `defaultPalette` still wins wherever this name misses.

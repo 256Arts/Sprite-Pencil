@@ -15,6 +15,7 @@ struct EditorView: View {
     // Canvas configuration state (mirrors prior defaults/controls)
     @AppStorage(UserDefaults.Key.showPixelGrid) private var pixelGridEnabled: Bool = false
     @AppStorage(UserDefaults.Key.showTileGrid) private var tileGridEnabled: Bool = false
+    @AppStorage(UserDefaults.Key.showTiledPreview) private var tiledPreviewEnabled: Bool = false
     @AppStorage(UserDefaults.Key.twoFingerUndoEnabled) private var twoFingerUndoEnabled: Bool = false
     @AppStorage(UserDefaults.Key.fingerAction) private var nonDrawingFingerAction: FingerAction = .ignore
     
@@ -73,6 +74,7 @@ struct EditorView: View {
             zoomEnabled: true,
             pixelGridEnabled: pixelGridEnabled,
             tileGridEnabled: tileGridEnabled,
+            tiledPreviewEnabled: tiledPreviewEnabled,
             checkerboardColor1: canvasBackground.checkerColors.base,
             checkerboardColor2: canvasBackground.checkerColors.alternate,
             tileGridColor: .systemGray3,
@@ -182,6 +184,9 @@ struct EditorView: View {
                     Divider()
                     Toggle("Pixel Grid", systemImage: "squareshape.split.3x3", isOn: $pixelGridEnabled)
                     Toggle("Tile Grid", systemImage: "squareshape.split.2x2", isOn: $tileGridEnabled)
+                    // Surrounds the canvas with repeats of the sprite, for
+                    // checking that a tilemap tile meets its own edges.
+                    Toggle("Tiled Preview", systemImage: "square.grid.3x3", isOn: $tiledPreviewEnabled)
                     Divider()
                     // The canvas redraws its symmetry guides itself when these change.
                     Toggle("Vertical Symmetry", systemImage: "square.split.2x1", isOn: $documentController.verticalSymmetry)
