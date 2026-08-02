@@ -12,7 +12,8 @@ struct SettingsView: View {
     @AppStorage(UserDefaults.Key.fingerAction) var fingerAction: FingerAction = .ignore
     @AppStorage(UserDefaults.Key.twoFingerUndoEnabled) var twoFingerUndoEnabled = true
     @AppStorage(UserDefaults.Key.showColorNotifications) var showColorNotifications = false
-    
+    @AppStorage(UserDefaults.Key.autosaveEnabled) var autosaveEnabled = true
+
     @Environment(\.dismiss) var dismiss
     @Environment(\.accessibilityAssistiveAccessEnabled) private var isAssistiveAccessEnabled
     
@@ -34,7 +35,13 @@ struct SettingsView: View {
                 Toggle("2 Finger Undo", isOn: $twoFingerUndoEnabled)
                 Toggle("Show HEX Notifications", isOn: $showColorNotifications)
             }
-            
+
+            Section {
+                Toggle("Autosave", isOn: $autosaveEnabled)
+            } footer: {
+                Text("When off, your sprite file is left untouched while you draw, and closing it asks whether to save your edits.")
+            }
+
             Section {
                 NavigationLink("Help") {
                     HelpView()

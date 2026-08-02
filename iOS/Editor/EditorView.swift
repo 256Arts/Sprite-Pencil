@@ -11,6 +11,7 @@ struct EditorView: View {
     @Environment(\.undoManager) private var undoManager
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.requestReview) private var requestReview
+    @Environment(\.dismiss) private var dismiss
 
     // Canvas configuration state (mirrors prior defaults/controls)
     @AppStorage(UserDefaults.Key.showPixelGrid) private var pixelGridEnabled: Bool = false
@@ -31,6 +32,7 @@ struct EditorView: View {
     @AppStorage(UserDefaults.Key.colorPalette) private var colorPaletteName: String = ""
     @AppStorage(UserDefaults.Key.documentsClosedCount) private var documentsClosedCount: Int = 0
     @AppStorage(UserDefaults.Key.showPermanentEditWarning) private var showPermanentEditWarning: Bool = true
+    @AppStorage(UserDefaults.Key.autosaveEnabled) private var autosaveEnabled: Bool = true
 
     // Palette controller bridged into SwiftUI Inspector
     @State private var paletteController = PaletteCollectionController()
@@ -56,6 +58,25 @@ struct EditorView: View {
     // instead of riding incidental re-renders.
     @State private var canUndo = false
     @State private var canRedo = false
+
+    // Manual-save state, used only while `autosaveEnabled` is off.
+    //
+    // SwiftUI treats a document as having unsaved changes purely on the
+    // strength of undo actions registered with the *document's* undo manager,
+    // so the way to stop it autosaving is to hand the drawing engine a
+    // different manager. This one is ours: undo/redo keep working exactly as
+    // before, but nothing reaches the file until the person says so.
+    // `DocumentController.undoManager` is `weak`, so this must be held here.
+    @State private var manualUndoManager = UndoManager()
+    @State private var hasUnsavedChanges = false
+    @State private var isCloseConfirmationPresented = false
+    @State private var saveErrorMessage: String?
+
+    /// The person has edits that only exist in memory, so closing the document
+    /// has to ask first.
+    private var needsSaveConfirmation: Bool {
+        !autosaveEnabled && hasUnsavedChanges
+    }
 
     init(document: SpriteImageDocument) {
         self.document = document
@@ -92,6 +113,9 @@ struct EditorView: View {
                     // PNG-encodes this off the main actor in the writer — no more
                     // hand-rolled on-main encode coalescing.
                     document.currentImage = documentController.context?.makeImage()
+                    if !autosaveEnabled {
+                        hasUnsavedChanges = true
+                    }
                 case .eyedropColor(let color, point: _):
                     // The eyedropper reports its picked color here; without
                     // this handler the tool reads a color but nothing applies
@@ -104,8 +128,7 @@ struct EditorView: View {
                     // Could present palette UI here if desired
                     break
                 case .refreshUndo:
-                    canUndo = undoManager?.canUndo ?? false
-                    canRedo = undoManager?.canRedo ?? false
+                    refreshUndoState()
                 default:
                     break
                 }
@@ -141,6 +164,18 @@ struct EditorView: View {
         }
         .safeAreaPadding(.bottom, horizontalSizeClass == .compact && showingInspector && inspectorDetent == .height(Self.inspectorPeekDetentHeight) ? Self.inspectorPeekDetentHeight : 0)
         .toolbar {
+            // Stands in for the document's own close button, which is hidden
+            // below while there are unsaved edits so it can't discard them
+            // silently. Tied to the same condition, so if the person saves,
+            // the system button comes back and this one goes away.
+            if needsSaveConfirmation {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Close", systemImage: "chevron.backward") {
+                        isCloseConfirmationPresented = true
+                    }
+                }
+            }
+
             // Keep Undo away from the document's close button (also leading), so
             // reaching for Undo doesn't accidentally exit the document.
             ToolbarSpacer(.fixed, placement: .topBarLeading)
@@ -149,8 +184,17 @@ struct EditorView: View {
                     .disabled(!canUndo)
                 Button("Redo", systemImage: "arrow.uturn.right") { documentController.redo() }
                     .disabled(!canRedo)
+
+                // Only meaningful with autosaving off; otherwise the file is
+                // already up to date and a Save button would be a lie.
+                if !autosaveEnabled {
+                    Button("Save", systemImage: "square.and.arrow.down") {
+                        Task { await save() }
+                    }
+                    .disabled(!hasUnsavedChanges)
+                }
             }
-            
+
             ToolbarItemGroup {
                 Menu("Flip", systemImage: "arrow.left.and.right.righttriangle.left.righttriangle.right") {
                     Button("Flip Horizontal", systemImage: "arrow.left.and.right.righttriangle.left.righttriangle.right") {
@@ -239,6 +283,31 @@ struct EditorView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        // Replaced by the Close button above, so unsaved edits can't be
+        // discarded by a stray tap. Only ever hidden while a save is pending.
+        .navigationBarBackButtonHidden(needsSaveConfirmation)
+        .confirmationDialog("Save Changes?", isPresented: $isCloseConfirmationPresented, titleVisibility: .visible) {
+            Button("Save") {
+                Task {
+                    await save()
+                    if saveErrorMessage == nil {
+                        dismiss()
+                    }
+                }
+            }
+            Button("Discard Changes", role: .destructive) {
+                hasUnsavedChanges = false
+                dismiss()
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Autosave is off, so your edits haven't been written to the file yet.")
+        }
+        .alert("Unable to Save", isPresented: Binding(get: { saveErrorMessage != nil }, set: { if !$0 { saveErrorMessage = nil } })) {
+            Button("OK", role: .close) { }
+        } message: {
+            Text(saveErrorMessage ?? "")
+        }
         .sheet(isPresented: $isSettingsPresented) {
             NavigationStack {
                 SettingsView()
@@ -272,11 +341,11 @@ struct EditorView: View {
             }
         }
         .onAppear {
-            documentController.undoManager = self.undoManager
+            applyUndoManager()
             // One-time heads-up, restored from the pre-SwiftUI app. Only for
-            // documents opened from disk (`configuration` is nil for new ones),
-            // with copy updated for the autosaving document model.
-            if document.configuration != nil, showPermanentEditWarning {
+            // documents opened from disk, with copy updated for the autosaving
+            // document model.
+            if !document.isNewDocument, showPermanentEditWarning {
                 showPermanentEditWarning = false
                 isPermanentEditWarningPresented = true
             }
@@ -284,14 +353,21 @@ struct EditorView: View {
         .alert("Permanent Edits", isPresented: $isPermanentEditWarningPresented) {
             Button("OK", role: .close) { }
         } message: {
-            Text("While drawing you can undo edits. Edits are saved to the file automatically.")
+            Text("While drawing you can undo edits. Edits are saved to the file automatically. To be asked before edits are written, turn off Autosave in Settings.")
         }
-        .onChange(of: undoManager) { _, newManager in
+        .onChange(of: undoManager) { _, _ in
             // The environment's manager can be nil on first render or replaced
             // under DocumentGroup; re-wire the controller whenever it changes.
-            documentController.undoManager = newManager
-            canUndo = newManager?.canUndo ?? false
-            canRedo = newManager?.canRedo ?? false
+            applyUndoManager()
+        }
+        .onChange(of: autosaveEnabled) { _, isEnabled in
+            // Turning autosaving back on has to flush whatever was held back,
+            // otherwise those edits would sit in memory with no Save button
+            // left to write them.
+            if isEnabled, hasUnsavedChanges {
+                Task { await save() }
+            }
+            applyUndoManager()
         }
         .onDisappear {
             documentsClosedCount += 1
@@ -355,6 +431,37 @@ struct EditorView: View {
                     documentController.toolColorComponents = ColorComponents(newColor)
                 }
             )
+        }
+    }
+
+    // MARK: - Saving
+
+    /// Points the drawing engine at the undo manager that matches the current
+    /// autosave setting: the document's (SwiftUI sees the edits and writes
+    /// them) or our private one (SwiftUI sees nothing, the file is untouched).
+    ///
+    /// Switching modes mid-document starts a fresh undo stack, since the two
+    /// managers hold separate histories.
+    private func applyUndoManager() {
+        documentController.undoManager = autosaveEnabled ? undoManager : manualUndoManager
+        refreshUndoState()
+    }
+
+    private func refreshUndoState() {
+        canUndo = documentController.undoManager?.canUndo ?? false
+        canRedo = documentController.undoManager?.canRedo ?? false
+    }
+
+    /// Writes the canvas to the file and clears the pending-changes flag.
+    /// Surfaces failures rather than swallowing them — with autosaving off
+    /// this is the only write, so a silent failure would lose the drawing.
+    private func save() async {
+        guard let image = documentController.context?.makeImage() else { return }
+        do {
+            try await document.saveNow(image: image)
+            hasUnsavedChanges = false
+        } catch {
+            saveErrorMessage = error.localizedDescription
         }
     }
 

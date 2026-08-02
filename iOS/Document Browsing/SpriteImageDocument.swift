@@ -28,16 +28,23 @@ final class SpriteImageDocument: Document {
     /// view state, so it must not invalidate the editor on every stroke.
     @ObservationIgnored var currentImage: CGImage?
 
-    /// The framework's file configuration (nil for a brand-new, unsaved
-    /// document). Kept for future direct-URL access; optional so the size-based
-    /// initializer — used for new documents and previews — needs no framework
-    /// configuration to exist.
+    /// The framework's file configuration. Its `fileURL` is nil until the
+    /// document has a file on disk, so `isNewDocument` — not this — is what
+    /// distinguishes a fresh sprite from one opened from the browser.
+    /// Optional only so previews can build a document with no framework
+    /// configuration to hand it.
     let configuration: URLDocumentConfiguration?
 
+    /// True when the document was created blank rather than read from disk.
+    /// Drives the editor's one-time "Permanent Edits" warning, which only
+    /// applies to files that already existed.
+    let isNewDocument: Bool
+
     /// New (untitled) document: a blank transparent sprite of the given size.
-    init(size: SpriteSize) {
+    init(size: SpriteSize, configuration: URLDocumentConfiguration? = nil) {
         self.data = Self.blankPNG(size: size)
-        self.configuration = nil
+        self.configuration = configuration
+        self.isNewDocument = true
         UserDefaults.standard.incrementDocumentsCreatedCount()
     }
 
@@ -45,6 +52,7 @@ final class SpriteImageDocument: Document {
     init(configuration: URLDocumentConfiguration) {
         self.data = Data()
         self.configuration = configuration
+        self.isNewDocument = false
     }
 
     // MARK: - Reading
@@ -95,6 +103,48 @@ final class SpriteImageDocument: Document {
         return WriteSnapshot(image: image)
     }
 
+    // MARK: - Manual saving
+
+    /// Writes `image` to the document's file right now, without going through
+    /// SwiftUI's autosave.
+    ///
+    /// SwiftUI decides a document has unsaved changes purely from undo actions
+    /// registered on the document's `UndoManager`. With autosaving turned off
+    /// the editor points the drawing engine at a private manager instead, so
+    /// the framework never sees a change and never touches the file — which is
+    /// the whole point of that mode, but it also means the editor has to do the
+    /// one write itself when the person confirms.
+    ///
+    /// Throws `CocoaError(.fileWriteInvalidFileName)` if the document has no
+    /// file yet (it isn't ours to place — the browser owns naming).
+    @MainActor
+    func saveNow(image: CGImage) async throws {
+        guard let configuration, let fileURL = configuration.fileURL else {
+            throw CocoaError(.fileWriteInvalidFileName)
+        }
+        // Same off-main encode the writer does; only the write itself is on
+        // main, and a sprite PNG is a few kilobytes.
+        let encoded = try await Self.encodePNG(WriteSnapshot(image: image))
+
+        var coordinationError: NSError?
+        var writeError: (any Error)?
+        configuration.makeFileCoordinator().coordinate(writingItemAt: fileURL, options: .forReplacing, error: &coordinationError) { url in
+            do {
+                try encoded.write(to: url, options: .atomic)
+            } catch {
+                writeError = error
+            }
+        }
+        if let coordinationError { throw coordinationError }
+        if let writeError { throw writeError }
+
+        data = encoded
+        currentImage = image
+        // Keep the framework's idea of the file in step with the write we just
+        // made, so it doesn't read this back as an outside edit.
+        configuration.lastContentModificationDate = (try? fileURL.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .now
+    }
+
     // MARK: - PNG helpers
 
     private static func blankPNG(size: SpriteSize) -> Data {
@@ -102,6 +152,14 @@ final class SpriteImageDocument: Document {
         format.scale = 1
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: size.width, height: size.height), format: format)
         return renderer.pngData { _ in /* transparent */ }
+    }
+
+    /// `pngData(from:)` hopped off the main actor, for `saveNow(image:)`.
+    /// `@concurrent` is what moves it: a plain `nonisolated async` function
+    /// would inherit the caller's actor and encode on main.
+    @concurrent
+    nonisolated private static func encodePNG(_ snapshot: WriteSnapshot) async throws -> Data {
+        try pngData(from: snapshot.image)
     }
 
     /// Encodes a `CGImage` to PNG via ImageIO — safe to call off the main actor

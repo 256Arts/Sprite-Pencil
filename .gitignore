@@ -1,3 +1,6 @@
 # Exported Apple Reminders backlog (personal, not part of the project)
 
 # Per-session QA handoff notes (personal, not part of the project)
+
+# Agent scratchpad (Conductor workspace collaboration files)
+.context/

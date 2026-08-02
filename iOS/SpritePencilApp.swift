@@ -184,13 +184,13 @@ struct SpritePencilApp: App {
             // New document. Mac Catalyst has no launch scene to host the picker,
             // so it keeps the old default-size behavior.
             #if targetEnvironment(macCatalyst)
-            return SpriteImageDocument(size: .defaultSize)
+            return SpriteImageDocument(size: .defaultSize, configuration: configuration)
             #else
             let size = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<SpriteSize, any Error>) in
                 documentCreationContinuation = continuation
                 isTemplatePickerPresented = true
             }
-            return SpriteImageDocument(size: size)
+            return SpriteImageDocument(size: size, configuration: configuration)
             #endif
         })
     }

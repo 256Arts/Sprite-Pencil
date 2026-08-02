@@ -97,6 +97,24 @@ struct SpriteImageDocumentTests {
         #expect(pixels[11] == 0)                            // third pixel transparent
     }
 
+    /// A document created blank says so, which is what suppresses the editor's
+    /// "Permanent Edits" warning for sprites that didn't exist before.
+    @Test func newDocumentIsMarkedNew() {
+        #expect(SpriteImageDocument(size: .defaultSize).isNewDocument)
+    }
+
+    /// The manual save used when autosaving is off refuses a document with no
+    /// file rather than inventing a location — it must not fail silently, or
+    /// the drawing would be lost with no autosave to fall back on.
+    @MainActor
+    @Test func manualSaveFailsWithoutAFile() async throws {
+        let document = SpriteImageDocument(size: SpriteSize(width: 4, height: 4))
+        let image = try #require(UIImage(data: document.data)?.cgImage)
+        await #expect(throws: CocoaError(.fileWriteInvalidFileName)) {
+            try await document.saveNow(image: image)
+        }
+    }
+
     // Builds an sRGB, straight-alpha RGBA8 CGImage from a byte buffer.
     private func makeImage(rgba: inout [UInt8], width: Int, height: Int) -> CGImage? {
         let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!

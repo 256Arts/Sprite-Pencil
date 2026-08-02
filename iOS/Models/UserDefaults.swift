@@ -5,6 +5,7 @@ extension UserDefaults {
     
     struct Key {
         static let showPermanentEditWarning = "showPermanentEditWarning"
+        static let autosaveEnabled = "autosaveEnabled"
         static let createdDocumentsCount = "createdDocumentsCount"
         // Never read in code: displayed by the Settings.bundle Usage pane
         // (PSTitleValueSpecifier), which can only show string values.
@@ -27,6 +28,7 @@ extension UserDefaults {
     func register() {
         register(defaults: [
             Key.showPermanentEditWarning: true,
+            Key.autosaveEnabled: true,
             Key.createdDocumentsCount: 0,
             Key.createdDocumentsCountText: "0",
             Key.documentsClosedCount: 0,
