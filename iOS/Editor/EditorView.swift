@@ -164,15 +164,16 @@ struct EditorView: View {
         }
         .safeAreaPadding(.bottom, horizontalSizeClass == .compact && showingInspector && inspectorDetent == .height(Self.inspectorPeekDetentHeight) ? Self.inspectorPeekDetentHeight : 0)
         .toolbar {
-            // Stands in for the document's own close button, which is hidden
-            // below while there are unsaved edits so it can't discard them
-            // silently. Tied to the same condition, so if the person saves,
-            // the system button comes back and this one goes away.
+            // Deliberately a look-alike for the document's own close button,
+            // which is hidden below while edits are pending: same chevron, same
+            // slot, so the editor looks unchanged. The only difference is that
+            // this one asks before throwing the drawing away.
             if needsSaveConfirmation {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Close", systemImage: "chevron.backward") {
                         isCloseConfirmationPresented = true
                     }
+                    .labelStyle(.iconOnly)
                 }
             }
 
@@ -184,15 +185,6 @@ struct EditorView: View {
                     .disabled(!canUndo)
                 Button("Redo", systemImage: "arrow.uturn.right") { documentController.redo() }
                     .disabled(!canRedo)
-
-                // Only meaningful with autosaving off; otherwise the file is
-                // already up to date and a Save button would be a lie.
-                if !autosaveEnabled {
-                    Button("Save", systemImage: "square.and.arrow.down") {
-                        Task { await save() }
-                    }
-                    .disabled(!hasUnsavedChanges)
-                }
             }
 
             ToolbarItemGroup {
