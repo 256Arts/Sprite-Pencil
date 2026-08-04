@@ -72,6 +72,7 @@ struct EditorView: View {
     @State private var isCloseConfirmationPresented = false
     @State private var saveErrorMessage: String?
     @State private var isShakeUndoPresented = false
+    @State private var isUndoHistoryResetWarningPresented = false
 
     /// The person has edits that only exist in memory, so closing the document
     /// has to ask first.
@@ -336,6 +337,13 @@ struct EditorView: View {
             NavigationStack {
                 SettingsView()
             }
+            // Attached to the sheet's own content so it presents over Settings,
+            // where the Autosave toggle that triggers it lives.
+            .alert("Undo History Cleared", isPresented: $isUndoHistoryResetWarningPresented) {
+                Button("OK", role: .close) { }
+            } message: {
+                Text("Autosave modes keep separate undo histories, so edits made before this change can no longer be undone. Your drawing itself is unchanged.")
+            }
         }
         .inspector(isPresented: $showingInspector) {
             PaletteCollectionView(
@@ -391,7 +399,18 @@ struct EditorView: View {
             if isEnabled, hasUnsavedChanges {
                 Task { await save() }
             }
+            // The two managers hold separate stacks and `UndoManager` has no way
+            // to hand registered actions over, so the switch drops whatever was
+            // on the old one. Say so rather than letting Undo quietly go dead —
+            // but only when there was something to lose, and only for the window
+            // whose Settings sheet the toggle was flipped in (the setting is
+            // shared, so every other open document would warn about a switch
+            // nobody made there).
+            let hadHistory = canUndo || canRedo
             applyUndoManager()
+            if hadHistory, isSettingsPresented {
+                isUndoHistoryResetWarningPresented = true
+            }
         }
         .onDisappear {
             documentsClosedCount += 1
@@ -465,7 +484,8 @@ struct EditorView: View {
     /// them) or our private one (SwiftUI sees nothing, the file is untouched).
     ///
     /// Switching modes mid-document starts a fresh undo stack, since the two
-    /// managers hold separate histories.
+    /// managers hold separate histories. The caller warns about that when the
+    /// stack being left behind wasn't empty.
     private func applyUndoManager() {
         documentController.undoManager = autosaveEnabled ? undoManager : manualUndoManager
         refreshUndoState()
