@@ -45,6 +45,8 @@ When something looks undefined in this repo, it almost certainly comes from `Spr
 
 SwiftUI decides a document is dirty purely from undo actions registered on the document's `UndoManager`. The **Autosave** setting (`UserDefaults.Key.autosaveEnabled`, on by default) exploits that: when off, `EditorView` points `documentController.undoManager` at a private `UndoManager` instead, so the framework never sees a change and never writes the file. The file is then written once, on close: with edits pending the system close button is swapped for a look-alike that prompts Save/Discard first, and Save calls `SpriteImageDocument.saveNow(image:)`, which writes through `configuration.makeFileCoordinator()`. The editor is otherwise identical in both modes.
 
+Because the private manager is invisible to the responder chain, UIKit's own ⌘Z and shake-to-undo find nothing to undo while Autosave is off. The editor stands in for them **in that mode only** (leaving the system in charge the rest of the time): the toolbar Undo/Redo buttons claim the ⌘Z / ⇧⌘Z shortcuts, and `ShakeDetector` (`iOS/Editor/ShakeDetector.swift`, an invisible first responder) reports shakes so the editor can offer its own undo alert. Both route to `documentController.undo()`/`redo()`, which work against whichever manager is live.
+
 Tool selection, brush width, dither (checkered) mode, symmetry, and palette/color are all driven from SwiftUI state and pushed imperatively onto `documentController` / `canvasRef`. The bottom bar (`ToolSelectionBar`, `ToolOptionsView`) and the trailing `inspector` (`PaletteCollectionView`) are the main controls.
 
 ### Palettes

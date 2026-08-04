@@ -71,6 +71,7 @@ struct EditorView: View {
     @State private var hasUnsavedChanges = false
     @State private var isCloseConfirmationPresented = false
     @State private var saveErrorMessage: String?
+    @State private var isShakeUndoPresented = false
 
     /// The person has edits that only exist in memory, so closing the document
     /// has to ask first.
@@ -181,10 +182,17 @@ struct EditorView: View {
             // reaching for Undo doesn't accidentally exit the document.
             ToolbarSpacer(.fixed, placement: .topBarLeading)
             ToolbarItemGroup(placement: .topBarLeading) {
+                // The shortcuts are only claimed while Autosave is off. In that
+                // mode the drawing's history lives in a private undo manager, so
+                // UIKit's built-in ⌘Z — which drives the responder chain's
+                // manager — has nothing to undo; the rest of the time the system
+                // handles these keys and we stay out of its way.
                 Button("Undo", systemImage: "arrow.uturn.left") { documentController.undo() }
                     .disabled(!canUndo)
+                    .keyboardShortcut(autosaveEnabled ? nil : KeyboardShortcut("z", modifiers: .command))
                 Button("Redo", systemImage: "arrow.uturn.right") { documentController.redo() }
                     .disabled(!canRedo)
+                    .keyboardShortcut(autosaveEnabled ? nil : KeyboardShortcut("z", modifiers: [.command, .shift]))
             }
 
             ToolbarItemGroup {
@@ -278,6 +286,30 @@ struct EditorView: View {
         // Replaced by the Close button above, so unsaved edits can't be
         // discarded by a stray tap. Only ever hidden while a save is pending.
         .navigationBarBackButtonHidden(needsSaveConfirmation)
+        .background {
+            #if !targetEnvironment(macCatalyst) && !os(visionOS)
+            // Only while Autosave is off, for the same reason as the ⌘Z
+            // shortcuts above: UIKit's own shake-to-undo reads the responder
+            // chain's undo manager, which is empty in that mode.
+            if !autosaveEnabled {
+                ShakeDetector {
+                    guard canUndo || canRedo else { return }
+                    isShakeUndoPresented = true
+                }
+                .accessibilityHidden(true)
+            }
+            #endif
+        }
+        // Mirrors the system's shake-to-undo alert: a shake is easy to trigger
+        // by accident, so it asks rather than acting.
+        .alert("Undo Drawing?", isPresented: $isShakeUndoPresented) {
+            Button("Undo") { documentController.undo() }
+                .disabled(!canUndo)
+            if canRedo {
+                Button("Redo") { documentController.redo() }
+            }
+            Button("Cancel", role: .cancel) { }
+        }
         .confirmationDialog("Save Changes?", isPresented: $isCloseConfirmationPresented, titleVisibility: .visible) {
             Button("Save") {
                 Task {
