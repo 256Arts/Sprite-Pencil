@@ -72,7 +72,8 @@ struct EditorView: View {
     @State private var isCloseConfirmationPresented = false
     @State private var saveErrorMessage: String?
     @State private var isShakeUndoPresented = false
-    @State private var isUndoHistoryResetWarningPresented = false
+    @State private var isUndoHistoryResetConfirmationPresented = false
+    @State private var isRevertingAutosaveChange = false
 
     /// The person has edits that only exist in memory, so closing the document
     /// has to ask first.
@@ -339,10 +340,16 @@ struct EditorView: View {
             }
             // Attached to the sheet's own content so it presents over Settings,
             // where the Autosave toggle that triggers it lives.
-            .alert("Undo History Cleared", isPresented: $isUndoHistoryResetWarningPresented) {
-                Button("OK", role: .close) { }
+            .alert("Clear Undo History?", isPresented: $isUndoHistoryResetConfirmationPresented) {
+                Button("Change Autosave", role: .destructive) {
+                    applyAutosaveChange(autosaveEnabled)
+                }
+                Button("Cancel", role: .cancel) {
+                    isRevertingAutosaveChange = true
+                    autosaveEnabled.toggle()
+                }
             } message: {
-                Text("Autosave modes keep separate undo histories, so edits made before this change can no longer be undone. Your drawing itself is unchanged.")
+                Text("The two Autosave modes keep separate undo histories, so the edits you've made so far won't be undoable afterwards. Your drawing itself is unchanged.")
             }
         }
         .inspector(isPresented: $showingInspector) {
@@ -393,24 +400,24 @@ struct EditorView: View {
             applyUndoManager()
         }
         .onChange(of: autosaveEnabled) { _, isEnabled in
-            // Turning autosaving back on has to flush whatever was held back,
-            // otherwise those edits would sit in memory with no Save button
-            // left to write them.
-            if isEnabled, hasUnsavedChanges {
-                Task { await save() }
+            // Cancelling the confirmation below puts the setting back, which
+            // lands here a second time with nothing left to do.
+            guard !isRevertingAutosaveChange else {
+                isRevertingAutosaveChange = false
+                return
             }
             // The two managers hold separate stacks and `UndoManager` has no way
             // to hand registered actions over, so the switch drops whatever was
-            // on the old one. Say so rather than letting Undo quietly go dead —
-            // but only when there was something to lose, and only for the window
-            // whose Settings sheet the toggle was flipped in (the setting is
-            // shared, so every other open document would warn about a switch
-            // nobody made there).
-            let hadHistory = canUndo || canRedo
-            applyUndoManager()
-            if hadHistory, isSettingsPresented {
-                isUndoHistoryResetWarningPresented = true
+            // on the old one. Ask before doing that rather than letting Undo
+            // quietly go dead — but only when there is something to lose, and
+            // only in the window whose Settings sheet the toggle was flipped in
+            // (the setting is shared, so every other open document would prompt
+            // about a switch nobody made there).
+            if canUndo || canRedo, isSettingsPresented {
+                isUndoHistoryResetConfirmationPresented = true
+                return
             }
+            applyAutosaveChange(isEnabled)
         }
         .onDisappear {
             documentsClosedCount += 1
@@ -479,13 +486,26 @@ struct EditorView: View {
 
     // MARK: - Saving
 
+    /// Carries out a change of the Autosave setting, once it's certain the
+    /// person wants it. Nothing here happens while the confirmation is up, so
+    /// cancelling really does leave the document as it was.
+    private func applyAutosaveChange(_ isEnabled: Bool) {
+        // Turning autosaving back on has to flush whatever was held back,
+        // otherwise those edits would sit in memory with no Save button
+        // left to write them.
+        if isEnabled, hasUnsavedChanges {
+            Task { await save() }
+        }
+        applyUndoManager()
+    }
+
     /// Points the drawing engine at the undo manager that matches the current
     /// autosave setting: the document's (SwiftUI sees the edits and writes
     /// them) or our private one (SwiftUI sees nothing, the file is untouched).
     ///
     /// Switching modes mid-document starts a fresh undo stack, since the two
-    /// managers hold separate histories. The caller warns about that when the
-    /// stack being left behind wasn't empty.
+    /// managers hold separate histories. `applyAutosaveChange(_:)` is the way
+    /// in when the setting changes, so the person can decline that.
     private func applyUndoManager() {
         documentController.undoManager = autosaveEnabled ? undoManager : manualUndoManager
         refreshUndoState()
