@@ -60,6 +60,14 @@ struct ToolsHelpView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+                HStack {
+                    Image(systemName: "rectangle.dashed")
+                    VStack(alignment: .leading) {
+                        Text("Select Area")
+                        Text("With the move tool, drag to select an area, then drag inside it to move only those pixels.")
+                            .foregroundStyle(.secondary)
+                    }
+                }
             }
         }
         .navigationTitle("Tools")

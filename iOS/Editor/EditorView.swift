@@ -476,6 +476,15 @@ struct EditorView: View {
                     set: { documentController.brushShape = $0 ? .circle : .square }
                 ),
                 maxBrushWidth: selectedTool.sizableTool(in: documentController)?.maxWidth ?? 10,
+                selectAreaOn: selectedTool == .move ? Binding(
+                    get: { documentController.moveTool.selectsArea },
+                    set: { newValue in
+                        documentController.moveTool.selectsArea = newValue
+                        // Re-assigning pushes the mode to the canvas (same
+                        // pattern as brush width — see EditorTool.setWidth).
+                        documentController.tool = documentController.moveTool
+                    }
+                ) : nil,
                 colorGet: { Color(components: documentController.toolColorComponents) },
                 colorSet: { newColor in
                     documentController.toolColorComponents = ColorComponents(newColor)

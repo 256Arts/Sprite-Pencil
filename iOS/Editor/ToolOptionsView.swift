@@ -11,6 +11,9 @@ struct ToolOptionsView: View {
     /// Largest brush width the current tool allows (varies per tool).
     var maxBrushWidth: Int = 10
 
+    /// Non-nil only while the move tool is active; shows the select-area toggle.
+    var selectAreaOn: Binding<Bool>?
+
     // Color accessors supplied by parent
     var colorGet: () -> Color
     var colorSet: (Color) -> Void
@@ -34,7 +37,12 @@ struct ToolOptionsView: View {
             DitherToggle(isOn: Binding(get: { self.ditherOn }, set: { self.ditherOn = $0 }))
                 .buttonStyle(.glass)
         }
-        
+
+        if let selectAreaOn {
+            SelectAreaToggle(isOn: selectAreaOn)
+                .buttonStyle(.glass)
+        }
+
         ColorPicker("Color", selection: Binding(get: {
             colorGet()
         }, set: { newValue in
