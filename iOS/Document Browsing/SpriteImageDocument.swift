@@ -48,6 +48,15 @@ final class SpriteImageDocument: Document {
         UserDefaults.standard.incrementDocumentsCreatedCount()
     }
 
+    /// A document with no file behind it, built from PNG bytes the app already has.
+    /// Used for the screenshot run's seeded sprite (see `ScreenshotMode`); `isNewDocument`
+    /// keeps the "Permanent Edits" warning out of the shots, as for any untitled sprite.
+    init(data: Data) {
+        self.data = data
+        self.configuration = nil
+        self.isNewDocument = true
+    }
+
     /// Existing document opened from disk. `data` is filled by `apply(snapshot:)`.
     init(configuration: URLDocumentConfiguration) {
         self.data = Data()

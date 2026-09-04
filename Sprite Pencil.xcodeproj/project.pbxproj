@@ -44,6 +44,13 @@
 			remoteGlobalIDString = 1B9C7567215FE88500C3470F;
 			remoteInfo = "Sprite Pencil";
 		};
+		5F00000000000000000000DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1B9C7560215FE88500C3470F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1B9C7567215FE88500C3470F;
+			remoteInfo = "Sprite Pencil";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -74,6 +81,7 @@
 		1BC7AF012526DEA100AFB499 /* SpriteWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpriteWidgetExtension.entitlements; sourceTree = "<group>"; };
 		1BEEC5C821EEF3F000AB83C3 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		5F00000000000000000000A6 /* SpritePencilTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpritePencilTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F00000000000000000000D6 /* SpritePencilUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpritePencilUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -90,6 +98,13 @@
 				Info.plist,
 			);
 			target = 1B9C7567215FE88500C3470F /* Sprite Pencil */;
+		};
+		5F00000000000000000000DC /* Exceptions for "SpritePencilUITests" folder in "SpritePencilUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				UITests.entitlements,
+			);
+			target = 5F00000000000000000000D1 /* SpritePencilUITests */;
 		};
 		1BB201FF2E2384820058834C /* Exceptions for "Widget" folder in "SpriteWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -135,6 +150,14 @@
 			path = SpritePencilTests;
 			sourceTree = "<group>";
 		};
+		5F00000000000000000000D5 /* SpritePencilUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5F00000000000000000000DC /* Exceptions for "SpritePencilUITests" folder in "SpritePencilUITests" target */,
+			);
+			path = SpritePencilUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +199,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5F00000000000000000000D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -190,6 +220,7 @@
 				1B00D5DB2E80EBF80007B6D6 /* Messages */,
 				1BB201F82E2384820058834C /* Widget */,
 				5F00000000000000000000A5 /* SpritePencilTests */,
+				5F00000000000000000000D5 /* SpritePencilUITests */,
 				1BC0F8A8217458A30023113F /* Frameworks */,
 				1B9C7569215FE88500C3470F /* Products */,
 			);
@@ -202,6 +233,7 @@
 				1BC0F8A7217458A30023113F /* Sprite Pencil Messages.appex */,
 				1BC7AEF02526DEA000AFB499 /* SpriteWidgetExtension.appex */,
 				5F00000000000000000000A6 /* SpritePencilTests.xctest */,
+				5F00000000000000000000D6 /* SpritePencilUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -322,6 +354,29 @@
 			productReference = 5F00000000000000000000A6 /* SpritePencilTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		5F00000000000000000000D1 /* SpritePencilUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5F00000000000000000000D2 /* Build configuration list for PBXNativeTarget "SpritePencilUITests" */;
+			buildPhases = (
+				5F00000000000000000000D7 /* Sources */,
+				5F00000000000000000000D8 /* Frameworks */,
+				5F00000000000000000000D9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5F00000000000000000000DA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				5F00000000000000000000D5 /* SpritePencilUITests */,
+			);
+			name = SpritePencilUITests;
+			packageProductDependencies = (
+			);
+			productName = SpritePencilUITests;
+			productReference = 5F00000000000000000000D6 /* SpritePencilUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -345,6 +400,10 @@
 						CreatedOnToolsVersion = 12.0.1;
 					};
 					5F00000000000000000000A1 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = 1B9C7567215FE88500C3470F;
+					};
+					5F00000000000000000000D1 = {
 						CreatedOnToolsVersion = 26.0;
 						TestTargetID = 1B9C7567215FE88500C3470F;
 					};
@@ -374,6 +433,7 @@
 				1BC0F8A6217458A30023113F /* Sprite Pencil Messages */,
 				1BC7AEEF2526DEA000AFB499 /* SpriteWidgetExtension */,
 				5F00000000000000000000A1 /* SpritePencilTests */,
+				5F00000000000000000000D1 /* SpritePencilUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -402,6 +462,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		5F00000000000000000000A9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5F00000000000000000000D9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -439,6 +506,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5F00000000000000000000D7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -457,6 +531,11 @@
 			isa = PBXTargetDependency;
 			target = 1B9C7567215FE88500C3470F /* Sprite Pencil */;
 			targetProxy = 5F00000000000000000000AB /* PBXContainerItemProxy */;
+		};
+		5F00000000000000000000DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1B9C7567215FE88500C3470F /* Sprite Pencil */;
+			targetProxy = 5F00000000000000000000DB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -793,6 +872,54 @@
 			};
 			name = Release;
 		};
+		5F00000000000000000000D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SpritePencilUITests/UITests.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 66;
+				DEVELOPMENT_TEAM = VA3SY54YU8;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 4.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaydenirwin.spritepencil.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6,7";
+				TEST_TARGET_NAME = "Sprite Pencil";
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		5F00000000000000000000D4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SpritePencilUITests/UITests.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 66;
+				DEVELOPMENT_TEAM = VA3SY54YU8;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 4.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaydenirwin.spritepencil.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6,7";
+				TEST_TARGET_NAME = "Sprite Pencil";
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -837,6 +964,15 @@
 			buildConfigurations = (
 				5F00000000000000000000A3 /* Debug */,
 				5F00000000000000000000A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5F00000000000000000000D2 /* Build configuration list for PBXNativeTarget "SpritePencilUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5F00000000000000000000D3 /* Debug */,
+				5F00000000000000000000D4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

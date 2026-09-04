@@ -25,8 +25,12 @@ final class PaletteStore {
 
     // MARK: - Loading
 
-    func loadPalettes() {
-        loadUserPalettes()
+    /// - Parameter includingUserPalettes: Pass `false` to load only the palettes the app ships.
+    ///   A screenshot run does, so the palette picker photographs the same list on every machine.
+    func loadPalettes(includingUserPalettes: Bool = true) {
+        if includingUserPalettes {
+            loadUserPalettes()
+        }
         loadHandpickedPalettes()
     }
 

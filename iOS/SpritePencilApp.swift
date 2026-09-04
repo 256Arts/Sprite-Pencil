@@ -85,7 +85,22 @@ final class AppCoordinator: NSObject {
     }
 }
 
+/// Picks the app to run.
+///
+/// `SceneBuilder` has no `buildEither`, so a screenshot run cannot be a branch inside a `body` — it
+/// has to be a different `App`, chosen before either one is built. Doing it here leaves the shipping
+/// scene graph, and this type's `init`, exactly as they were.
 @main
+struct SpritePencilAppLauncher {
+    static func main() {
+        if ScreenshotMode.isActive {
+            ScreenshotApp.main()
+        } else {
+            SpritePencilApp.main()
+        }
+    }
+}
+
 struct SpritePencilApp: App {
 
     init() {

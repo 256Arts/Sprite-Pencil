@@ -83,13 +83,6 @@ struct EditorView: View {
 
     init(document: SpriteImageDocument) {
         self.document = document
-
-        // Palette & current color
-        documentController.palette = currentPalette
-        paletteController.palette = currentPalette
-        if let color = ColorComponents(hex: currentColorHex), !currentColorHex.isEmpty {
-            documentController.toolColorComponents = color
-        }
     }
 
     var body: some View {
@@ -198,6 +191,8 @@ struct EditorView: View {
             }
 
             ToolbarItemGroup {
+                // Each of these menus otherwise takes its accessibility label from its SF Symbol,
+                // so VoiceOver reads Canvas as "Square" and Outline as "Circle Inside A Circle".
                 Menu("Flip", systemImage: "arrow.left.and.right.righttriangle.left.righttriangle.right") {
                     Button("Flip Horizontal", systemImage: "arrow.left.and.right.righttriangle.left.righttriangle.right") {
                         documentController.flip(vertically: false)
@@ -206,6 +201,7 @@ struct EditorView: View {
                         documentController.flip(vertically: true)
                     }
                 }
+                .accessibilityLabel("Flip")
                 
                 // Only one rotation direction is exposed: rotating is a rare
                 // action, so a single button beats a menu. To rotate the other
@@ -222,6 +218,7 @@ struct EditorView: View {
                         documentController.outline()
                     }
                 }
+                .accessibilityLabel("Outline")
                 
                 Menu("Canvas", systemImage: "square") {
                     Button("Trim Canvas", systemImage: "crop") {
@@ -247,6 +244,7 @@ struct EditorView: View {
                         }
                     }
                 }
+                .accessibilityLabel("Canvas")
             }
             // These editing actions are the first to move into the overflow menu
             // when the bar is tight (compact width), keeping Undo/Redo, Share, and
@@ -272,6 +270,7 @@ struct EditorView: View {
                 .popover(isPresented: $isExportPresented) {
                     ExportImageView(documentController: documentController)
                 }
+                .accessibilityLabel("Share")
 
                 Button("Settings", systemImage: "gear") {
                     isSettingsPresented = true
@@ -380,6 +379,7 @@ struct EditorView: View {
             }
         }
         .onAppear {
+            applyPersistedPaletteAndColor()
             applyUndoManager()
             // One-time heads-up, restored from the pre-SwiftUI app. Only for
             // documents opened from disk, with copy updated for the autosaving
@@ -497,6 +497,20 @@ struct EditorView: View {
             Task { await save() }
         }
         applyUndoManager()
+    }
+
+    /// Pushes the saved palette and drawing color into the freshly-made controllers.
+    ///
+    /// This can't be `init`'s job: `@State`'s initial value is created lazily, so a controller
+    /// touched there is an instance SwiftUI throws away — which left the inspector with no palette
+    /// at all and the color picker on black, whatever was last used.
+    private func applyPersistedPaletteAndColor() {
+        guard paletteController.palette == nil else { return }   // not on every re-appearance
+        documentController.palette = currentPalette
+        paletteController.palette = currentPalette
+        if let color = ColorComponents(hex: currentColorHex), !currentColorHex.isEmpty {
+            documentController.toolColorComponents = color
+        }
     }
 
     /// Points the drawing engine at the undo manager that matches the current
