@@ -95,6 +95,12 @@ final class ScreenshotTests: XCTestCase {
     // MARK: - Capturing
 
     private func capture(_ name: String) {
+        // Every capture below photographs the whole screen, or the frontmost window — never this
+        // app in particular. So an app that has lost the foreground yields another app's UI, filed
+        // under this app's name, at the right size, with nothing to notice. The shared runner holds
+        // a machine-wide lock so that cannot happen; this is the check that it held.
+        XCTAssertEqual(app.state, .runningForeground,
+                       "\(name): the app under test was not frontmost — another app has this device")
         #if os(macOS) || targetEnvironment(macCatalyst) || os(visionOS)
         // Both of these are photographed from outside the test: the Mac by `screencapture -l`, and
         // visionOS by `simctl io screenshot` (its `XCUIScreen.main.screenshot()` comes back 1x1).
