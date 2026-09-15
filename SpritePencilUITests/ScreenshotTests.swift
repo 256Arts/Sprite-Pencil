@@ -26,10 +26,6 @@ final class ScreenshotTests: XCTestCase {
         settle()
         capture("01-editor")
 
-        activate(control("Eraser"), "the eraser tool")
-        settle()
-        capture("99-diagnostic")
-
         activate(toolbarItem("Settings"), "Settings")
         settle()
         capture("03-settings")
