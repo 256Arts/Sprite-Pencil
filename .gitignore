@@ -5,3 +5,8 @@
 # Agent scratchpad (Conductor workspace collaboration files)
 .context/
 build/
+
+# Xcode state, build products, agent scratchpad, macOS
+xcuserdata/
+DerivedData/
+.DS_Store
