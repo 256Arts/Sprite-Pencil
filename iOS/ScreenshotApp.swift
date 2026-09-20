@@ -20,6 +20,7 @@ struct ScreenshotApp: App {
                 EditorView(document: document)
                     .navigationTitle(ScreenshotMode.documentName)
             }
+            .screenshotModeStatus()
             #if targetEnvironment(macCatalyst)
             .onAppear {
                 // The runner clears saved Mac window frames with `defaults`, which resolves a

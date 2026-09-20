@@ -19,10 +19,10 @@ final class ScreenshotTests: XCTestCase {
         // window that is not key land nowhere.
         app.activate()
 
+        checkSeedIsThrowaway()
         // The palette inspector's "Recent" section is filled from the sprite's own pixels once the
         // drawing context loads, so it appears only after the seeded document is really on screen.
-        let recentColors = app.staticTexts["Recent"]
-        XCTAssertTrue(recentColors.waitForExistence(timeout: 60), "seeded content never appeared")
+        waitFor(app.staticTexts["Recent"], "the palette inspector's Recent section", shot: "01-editor")
         settle()
         capture("01-editor")
 
@@ -41,7 +41,67 @@ final class ScreenshotTests: XCTestCase {
         capture("04-canvas")
     }
 
+    // MARK: - The seed
+
+    /// What the app said it prepared, read out of the accessibility tree.
+    ///
+    /// The app hangs `ScreenshotMode.status` on its root view (`.screenshotModeStatus()`). A walk
+    /// that cannot find it is running against a build that has not adopted that modifier, which is
+    /// worth saying plainly rather than reporting as an empty seed.
+    private var seedStatus: String {
+        let label = app.descendants(matching: .any)["ScreenshotMode.Status"]
+        guard label.waitForExistence(timeout: 30) else {
+            return "no ScreenshotMode.Status element — add .screenshotModeStatus() to the app's root view"
+        }
+        // A SwiftUI `Text` reaches XCUITest as the element's *value* on macOS and as its *label* on
+        // iOS, so take whichever is filled in rather than betting on one.
+        if let value = label.value as? String, !value.isEmpty { return value }
+        return label.label
+    }
+
+    /// Stops the walk when the app did not report a ready state.
+    ///
+    /// `ScreenshotMode.prepare` reports what it pinned and seeded before the first shot. A walk that
+    /// missed that would then photograph an unprepared app and fail on a missing element, which says
+    /// nothing about why. Read the reason instead, before the first shot.
+    private func checkSeedIsThrowaway() {
+        let status = seedStatus
+        print("SCREENSHOT MODE: \(status)")
+        guard status.hasPrefix("ready") else {
+            attach(XCTAttachment(string: app.debugDescription), named: "element-tree")
+            return XCTFail("the app did not report a ready state, so there is nothing to photograph — \(status)")
+        }
+    }
+
+    private static var platform: String {
+        #if targetEnvironment(macCatalyst)
+        "Mac Catalyst"
+        #elseif os(visionOS)
+        "visionOS"
+        #else
+        UIDevice.current.userInterfaceIdiom == .pad ? "iPadOS" : "iOS"
+        #endif
+    }
+
+    /// Which simulator this was, for a failure read days after the run's own log is gone.
+    private static var device: String {
+        ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "this machine"
+    }
+
     // MARK: - Driving
+
+    /// Waits for `element` to exist, and on a miss names the platform, the device, what it was
+    /// waiting for, and `seedStatus` — so a failure explains itself instead of reporting only
+    /// "seeded content never appeared".
+    private func waitFor(_ element: XCUIElement, _ description: String, shot: String, timeout: TimeInterval = 60) {
+        guard element.waitForExistence(timeout: timeout) else {
+            attach(XCTAttachment(string: app.debugDescription), named: "element-tree")
+            return XCTFail("""
+                \(shot): never found \(description) in \(Int(timeout))s on \(Self.platform), \(Self.device).
+                The app reported: \(seedStatus)
+                """)
+        }
+    }
 
     /// Finds a toolbar item, opening the bar's overflow menu first if that is where it ended up.
     ///
@@ -71,7 +131,10 @@ final class ScreenshotTests: XCTestCase {
     private func activate(_ element: XCUIElement, _ description: String) {
         guard element.waitForExistence(timeout: 15) else {
             attach(XCTAttachment(string: app.debugDescription), named: "missed-\(description)")
-            return XCTFail("never found \(description)")
+            return XCTFail("""
+                never found \(description) on \(Self.platform), \(Self.device).
+                The app reported: \(seedStatus)
+                """)
         }
         #if targetEnvironment(macCatalyst)
         // Catalyst builds against the iOS SDK, so `click()` does not exist — and a plain `tap()`

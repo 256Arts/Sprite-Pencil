@@ -36,6 +36,22 @@ enum ScreenshotMode {
         // Only the palettes the app ships. The person's own palettes live in `Documents/Palettes`
         // and would otherwise be in the palette-picker shot.
         PaletteStore.shared.loadPalettes(includingUserPalettes: false)
+        report("ready — pinned defaults, no store to seed; demo sprite \"\(documentName)\", \(PaletteStore.shared.allPalettes.count) shipped palettes")
+    }
+
+    // MARK: - Saying what happened
+
+    /// What this launch prepared, in one line, for the walk and for the shared runner.
+    ///
+    /// A failed walk otherwise reports only "seeded content never appeared", which is equally true
+    /// of defaults that never got pinned, a screen that never opened, and an identifier renamed
+    /// last week. The walk reads this out of the accessibility tree before its first shot and
+    /// prints it on any miss, and the fixed prefix makes it greppable in the build log.
+    @MainActor private(set) static var status = "the seed has not run"
+
+    @MainActor private static func report(_ line: String) {
+        status = line
+        print("SCREENSHOT MODE: \(line)")
     }
 
     /// The editor's document for this run: the demo sprite, with no file behind it.
@@ -155,4 +171,30 @@ enum ScreenshotMode {
         "................................",
         "................................",
     ]
+}
+
+extension View {
+
+    /// Carries `ScreenshotMode.status` into the accessibility tree, where the walk reads it.
+    ///
+    /// Nothing on a normal launch; on a screenshot run, a one-point transparent label — present to
+    /// XCUITest, invisible in the shot. It is how the walk can tell a seed that never ran from a
+    /// screen that never opened, neither of which the app can report any other way: a simulator
+    /// app's `print` does not reach the build log, and there is no file path both the app and the
+    /// runner can write.
+    @MainActor
+    @ViewBuilder
+    func screenshotModeStatus() -> some View {
+        if ScreenshotMode.isActive {
+            overlay(alignment: .topLeading) {
+                Text(ScreenshotMode.status)
+                    .font(.system(size: 1))
+                    .opacity(0.001)
+                    .accessibilityIdentifier("ScreenshotMode.Status")
+                    .allowsHitTesting(false)
+            }
+        } else {
+            self
+        }
+    }
 }
