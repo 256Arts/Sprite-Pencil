@@ -3,7 +3,7 @@
 # A repo with no .conductor/settings.toml can take this file whole. One that already has a
 # settings.toml must have these entries *merged* into it — a project usually has its own
 # setup/run scripts, and overwriting the file would drop them. If [scripts] already exists,
-# keep its existing keys and add only the three [scripts.run.*] tables below; note that
+# keep its existing keys and add only the two [scripts.run.*] tables below; note that
 # run_mode is a single value, so an existing "concurrent" has to become "nonconcurrent" for
 # the reason given under it.
 
@@ -22,11 +22,6 @@ command = "\"${CONDUCTOR_WORKSPACE_PATH:-.}/Scripts/screenshots.sh\""
 available_in = ["local"]
 default = true
 icon = "camera"
-
-[scripts.run.screenshots-mac]
-command = "\"${CONDUCTOR_WORKSPACE_PATH:-.}/Scripts/screenshots.sh\" mac"
-available_in = ["local"]
-icon = "monitor"
 
 # Capture, then send the results to App Store Connect. Screenshots attach to an App Store version
 # and only one still being prepared can be written to, so this cannot alter a live listing — if no
