@@ -9,7 +9,7 @@ class MessagesViewController: MSMessagesAppViewController {
         let vc = UIHostingController(
             rootView: MessagesView(insertFile: { fileURL in
                 do {
-                    let sticker = try MSSticker(contentsOfFileURL: fileURL, localizedDescription: "Custom Sprite")
+                    let sticker = try MSSticker(contentsOfFileURL: fileURL, localizedDescription: String(localized: "Custom Sprite"))
                     self.activeConversation?.insert(sticker) { (error) in
                         if let error = error {
                             print(error)
