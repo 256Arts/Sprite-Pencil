@@ -20,7 +20,6 @@ run_mode = "nonconcurrent"
 [scripts.run.screenshots]
 command = "\"${CONDUCTOR_WORKSPACE_PATH:-.}/Scripts/screenshots.sh\""
 available_in = ["local"]
-default = true
 icon = "camera"
 
 # Capture, then send the results to App Store Connect. Screenshots attach to an App Store version
@@ -30,3 +29,10 @@ icon = "camera"
 command = "\"${CONDUCTOR_WORKSPACE_PATH:-.}/Scripts/screenshots.sh\" --upload"
 available_in = ["local"]
 icon = "cloud-upload"
+
+# Builds the app for this Mac (native, else Catalyst, else Designed for iPad) and runs it.
+[scripts.run.run]
+command = '''"$HOME/Library/Mobile Documents/com~apple~CloudDocs/Repos/Scripts/run-mac"'''
+available_in = ["local"]
+default = true
+icon = "play"
