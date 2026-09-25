@@ -22,11 +22,12 @@ command = "\"${CONDUCTOR_WORKSPACE_PATH:-.}/Scripts/screenshots.sh\""
 available_in = ["local"]
 icon = "camera"
 
-# Capture, then send the results to App Store Connect. Screenshots attach to an App Store version
-# and only one still being prepared can be written to, so this cannot alter a live listing — if no
-# version is editable it reports that and uploads nothing. Add --dry-run to see what would change.
-[scripts.run.screenshots-upload]
-command = "\"${CONDUCTOR_WORKSPACE_PATH:-.}/Scripts/screenshots.sh\" --upload"
+# Publish the App Store metadata without recapturing: What's New (Raw Assets/WhatsNew.txt, else written from recent commits; translated into
+# every language the app ships), then the shots already taken, to App Store Connect and the app's
+# page on the 256 Arts site. Writes only a version still being prepared, so it cannot alter a live
+# listing. See Repos/Scripts/app-metadata; add --dry-run to see what would change.
+[scripts.run.upload-app-metadata]
+command = '''"$HOME/Library/Mobile Documents/com~apple~CloudDocs/Repos/Scripts/app-metadata"'''
 available_in = ["local"]
 icon = "cloud-upload"
 
