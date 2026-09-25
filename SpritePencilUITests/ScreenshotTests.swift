@@ -26,15 +26,17 @@ final class ScreenshotTests: XCTestCase {
         settle()
         capture("01-editor")
 
-        activate(toolbarItem("Settings"), "Settings")
-        settle()
-        capture("03-settings")
-        activate(control("Done"), "Settings' Done button")
-
+        // Before Settings: at compact width the inspector is a sheet, and Settings' sheet
+        // replaces it.
         activate(control("Choose Palette"), "the palette chooser")
         settle()
         capture("02-palettes")
         activate(control("Done"), "the palette chooser's Done button")
+
+        activate(toolbarItem("Settings"), "Settings")
+        settle()
+        capture("03-settings")
+        activate(control("Done"), "Settings' Done button")
 
         activate(toolbarItem("Canvas"), "the Canvas menu")
         settle()
