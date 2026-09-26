@@ -501,7 +501,7 @@ struct EditorView: View {
         }
         .tint(.primary)
         .frame(minHeight: 38)
-        .padding(.horizontal, 10)
+        .padding(.trailing, 10)
         .padding(2)
         .glassEffect()
     }
