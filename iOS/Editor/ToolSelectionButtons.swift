@@ -16,10 +16,7 @@ struct ToolSelectionButtonToggleStyle: ToggleStyle {
             configuration.label
                 .frame(width: circular ? 32 : 42, height: 32)
                 .foregroundStyle(configuration.isOn ? AnyShapeStyle(.black) : AnyShapeStyle(.primary))
-                .glassEffect(
-                    configuration.isOn ? .regular.tint(.yellowAccent).interactive() : .identity,
-                    in: circular ? AnyShape(.circle) : AnyShape(.capsule)
-                )
+                .selectionPlatter(configuration.isOn, in: circular ? AnyShape(.circle) : AnyShape(.capsule))
                 .contentShape(circular ? AnyShape(.circle) : AnyShape(.capsule))
         }
         .buttonStyle(.plain)
@@ -39,7 +36,30 @@ struct ToolSelectionBar: View {
                 .padding(.horizontal, -2)
         }
         .padding(2)
-        .glassEffect()
+        .platterGlass()
+    }
+}
+
+extension View {
+
+    /// The glass platter behind a row of controls. visionOS has no `glassEffect`; its windows' own
+    /// glass is the equivalent.
+    func platterGlass() -> some View {
+        #if os(visionOS)
+        glassBackgroundEffect(in: .capsule)
+        #else
+        glassEffect()
+        #endif
+    }
+
+    /// A yellow platter marking the selected button, clear otherwise.
+    fileprivate func selectionPlatter(_ isOn: Bool, in shape: AnyShape) -> some View {
+        #if os(visionOS)
+        background(isOn ? AnyShapeStyle(Color.yellowAccent) : AnyShapeStyle(.clear), in: shape)
+            .hoverEffect()
+        #else
+        glassEffect(isOn ? .regular.tint(.yellowAccent).interactive() : .identity, in: shape)
+        #endif
     }
 }
 

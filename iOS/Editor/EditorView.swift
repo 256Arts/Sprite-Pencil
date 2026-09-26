@@ -504,7 +504,7 @@ struct EditorView: View {
         .padding(.leading, stepperLeadsToolOptions ? 10 : 0)
         .padding(.trailing, 10)
         .padding(2)
-        .glassEffect()
+        .platterGlass()
     }
 
     /// Whether the brush size stepper is the platter's leading item on Mac,
