@@ -18,25 +18,27 @@ final class ScreenshotTests: XCTestCase {
 
     func testCaptureAppStoreScreenshots() throws {
         continueAfterFailure = false
-        launch()
+        app = XCUIApplication()
+        app.launchArguments = ["-screenshotMode"]
+        app.launch()
+        // The Mac run is driven from a terminal, which stays frontmost otherwise — and the Mac shot
+        // is of the frontmost window.
+        app.activate()
+        #if os(iOS)
+        turnToRequestedOrientation()
+        #endif
+
+        checkSeedIsThrowaway()
         // The palette inspector's "Recent" section is filled from the sprite's own pixels once the
         // drawing context loads, so it appears only after the seeded document is really on screen.
         waitFor(app.staticTexts["Recent"], "the palette inspector's Recent section", shot: "01-editor")
         settle()
         capture("01-editor")
 
-        #if targetEnvironment(macCatalyst)
-        // XCUITest's synthesized clicks and keystrokes reach a Catalyst app and do nothing, so the
-        // Mac opens each sheet from a launch argument instead of walking there. The Canvas menu has
-        // no such route, so the Mac set stops at Settings.
-        for (page, shot) in [("palettes", "02-palettes"), ("settings", "03-settings")] {
-            app.terminate()
-            launch(page: page)
-            waitFor(control("Done"), "the \(page) sheet's Done button", shot: shot)
-            settle()
-            capture(shot)
-        }
-        #else
+        #if !targetEnvironment(macCatalyst)
+        // Mac Catalyst stops at the editor: XCUITest's synthesized clicks and keystrokes reach a
+        // Catalyst app and do nothing, so the walk can't open anything there.
+
         // Before Settings: at compact width the inspector is a sheet, and Settings' sheet
         // replaces it.
         activate(control("Choose Palette"), "the palette chooser")
@@ -53,21 +55,6 @@ final class ScreenshotTests: XCTestCase {
         settle()
         capture("04-canvas")
         #endif
-    }
-
-    /// Launches into screenshot mode, opening `page`'s sheet if one is named (see
-    /// `ScreenshotMode.page`), and stops unless the app reports itself ready.
-    private func launch(page: String? = nil) {
-        app = XCUIApplication()
-        app.launchArguments = ["-screenshotMode"] + (page.map { ["-screenshotPage", $0] } ?? [])
-        app.launch()
-        // The Mac run is driven from a terminal, which stays frontmost otherwise — and the Mac shot
-        // is of the frontmost window.
-        app.activate()
-        #if os(iOS)
-        turnToRequestedOrientation()
-        #endif
-        checkSeedIsThrowaway()
     }
 
     // MARK: - The seed
