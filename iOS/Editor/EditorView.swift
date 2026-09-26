@@ -501,9 +501,22 @@ struct EditorView: View {
         }
         .tint(.primary)
         .frame(minHeight: 38)
+        .padding(.leading, stepperLeadsToolOptions ? 10 : 0)
         .padding(.trailing, 10)
         .padding(2)
         .glassEffect()
+    }
+
+    /// Whether the brush size stepper is the platter's leading item on Mac,
+    /// the only case where the platter keeps its leading inset.
+    private var stepperLeadsToolOptions: Bool {
+        #if targetEnvironment(macCatalyst)
+        let showsPaletteButton = horizontalSizeClass == .compact && !showingInspector
+        // The round brush toggle precedes the stepper from 3px up (see ToolOptionsView).
+        return !showsPaletteButton && (currentBrushWidth ?? 3) < 3
+        #else
+        return false
+        #endif
     }
 
     // MARK: - Saving
