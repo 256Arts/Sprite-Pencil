@@ -12,7 +12,10 @@ struct ToolSelectionButtonToggleStyle: ToggleStyle {
             Button {
                 configuration.isOn.toggle()
             } label: {
+                // Fill the frame so the platter is the same size whatever the icon;
+                // otherwise it hugs the label, and short SF Symbols get a short platter.
                 configuration.label
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .buttonStyle(.glassProminent)
             // Match the capsule platter; Mac otherwise draws a rounded rectangle.
@@ -25,6 +28,7 @@ struct ToolSelectionButtonToggleStyle: ToggleStyle {
                 configuration.isOn.toggle()
             } label: {
                 configuration.label
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .buttonStyle(.borderless)
             .buttonBorderShape(circular ? .circle : .capsule)
