@@ -175,7 +175,9 @@ struct EditorView: View {
 
             // Keep Undo away from the document's close button (also leading), so
             // reaching for Undo doesn't accidentally exit the document.
+            #if !os(visionOS)
             ToolbarSpacer(.fixed, placement: .topBarLeading)
+            #endif
             ToolbarItemGroup(placement: .topBarLeading) { ToolbarGroup {
                 // The shortcuts are only claimed while Autosave is off. In that
                 // mode the drawing's history lives in a private undo manager, so
@@ -246,12 +248,16 @@ struct EditorView: View {
                 }
                 .accessibilityLabel("Canvas")
             } }
+            #if !os(visionOS)
             // These editing actions are the first to move into the overflow menu
             // when the bar is tight (compact width), keeping Undo/Redo, Share, and
             // Settings visible.
             .visibilityPriority(.low)
+            #endif
 
+            #if !os(visionOS)
             ToolbarSpacer(.fixed)
+            #endif
             
             ToolbarItemGroup { ToolbarGroup {
                 Menu("Share", systemImage: "square.and.arrow.up") {
@@ -351,16 +357,26 @@ struct EditorView: View {
                 Text("The two Autosave modes keep separate undo histories, so the edits you've made so far won't be undoable afterwards. Your drawing itself is unchanged.")
             }
         }
-        .inspector(isPresented: $showingInspector) {
-            PaletteCollectionView(
-                controller: paletteController,
-                selectedColor: $documentController.toolColorComponents,
-                onChoosePalette: { showingPaletteChooser = true }
-            )
-            .presentationDetents([.height(Self.inspectorPeekDetentHeight), .large], selection: $inspectorDetent)
-            .presentationBackgroundInteraction(.enabled)
-            .inspectorColumnWidth(min: 220, ideal: 280, max: 360)
+        #if os(visionOS)
+        // visionOS has no inspector, so the palettes take a trailing column
+        // inside the window — the same layout as the iPad inspector.
+        .safeAreaInset(edge: .trailing, spacing: 0) {
+            if showingInspector {
+                HStack(spacing: 0) {
+                    Divider()
+                    paletteCollection()
+                        .frame(width: 280)
+                }
+            }
         }
+        #else
+        .inspector(isPresented: $showingInspector) {
+            paletteCollection()
+                .presentationDetents([.height(Self.inspectorPeekDetentHeight), .large], selection: $inspectorDetent)
+                .presentationBackgroundInteraction(.enabled)
+                .inspectorColumnWidth(min: 220, ideal: 280, max: 360)
+        }
+        #endif
         .photosPicker(isPresented: $isReferencePickerPresented, selection: $referencePhotoItem, matching: .images)
         .onChange(of: referencePhotoItem) { _, newItem in
             guard let newItem else { return }
@@ -462,6 +478,14 @@ struct EditorView: View {
 
             trailingBottomBarItems()
         }
+    }
+
+    private func paletteCollection() -> some View {
+        PaletteCollectionView(
+            controller: paletteController,
+            selectedColor: $documentController.toolColorComponents,
+            onChoosePalette: { showingPaletteChooser = true }
+        )
     }
 
     /// The tool options (and the palette button when the inspector is hidden),
