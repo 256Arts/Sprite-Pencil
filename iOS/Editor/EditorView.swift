@@ -499,40 +499,13 @@ struct EditorView: View {
         )
     }
 
-    /// The tool options (and the palette button when the inspector is hidden),
-    /// sharing one glass platter to match the tool bar.
+    /// The tool options (and the palette button when the inspector is hidden).
+    /// On Mac and visionOS they share one glass platter to match the tool bar.
     @ViewBuilder
     private func trailingBottomBarItems() -> some View {
+        #if targetEnvironment(macCatalyst) || os(visionOS)
         HStack(spacing: 12) {
-            if horizontalSizeClass == .compact, !showingInspector {
-                Button("Palettes", systemImage: "paintpalette") {
-                    showingInspector.toggle()
-                }
-                .labelStyle(.iconOnly)
-            }
-            
-            ToolOptionsView(
-                currentBrushWidth: $currentBrushWidth,
-                ditherOn: $documentController.checkeredDrawingMode,
-                roundBrush: Binding(
-                    get: { documentController.brushShape == .circle },
-                    set: { documentController.brushShape = $0 ? .circle : .square }
-                ),
-                maxBrushWidth: selectedTool.sizableTool(in: documentController)?.maxWidth ?? 10,
-                selectAreaOn: selectedTool == .move ? Binding(
-                    get: { documentController.moveTool.selectsArea },
-                    set: { newValue in
-                        documentController.moveTool.selectsArea = newValue
-                        // Re-assigning pushes the mode to the canvas (same
-                        // pattern as brush width — see EditorTool.setWidth).
-                        documentController.tool = documentController.moveTool
-                    }
-                ) : nil,
-                colorGet: { Color(components: documentController.toolColorComponents) },
-                colorSet: { newColor in
-                    documentController.toolColorComponents = ColorComponents(newColor)
-                }
-            )
+            trailingBottomBarControls()
         }
         .tint(.primary)
         .frame(minHeight: 38)
@@ -540,6 +513,47 @@ struct EditorView: View {
         .padding(.trailing, 10)
         .padding(2)
         .platterGlass()
+        #else
+        HStack {
+            trailingBottomBarControls()
+        }
+        #endif
+    }
+
+    @ViewBuilder
+    private func trailingBottomBarControls() -> some View {
+        if horizontalSizeClass == .compact, !showingInspector {
+            Button("Palettes", systemImage: "paintpalette") {
+                showingInspector.toggle()
+            }
+            .labelStyle(.iconOnly)
+            #if !targetEnvironment(macCatalyst) && !os(visionOS)
+            .buttonStyle(.glass)
+            #endif
+        }
+        
+        ToolOptionsView(
+            currentBrushWidth: $currentBrushWidth,
+            ditherOn: $documentController.checkeredDrawingMode,
+            roundBrush: Binding(
+                get: { documentController.brushShape == .circle },
+                set: { documentController.brushShape = $0 ? .circle : .square }
+            ),
+            maxBrushWidth: selectedTool.sizableTool(in: documentController)?.maxWidth ?? 10,
+            selectAreaOn: selectedTool == .move ? Binding(
+                get: { documentController.moveTool.selectsArea },
+                set: { newValue in
+                    documentController.moveTool.selectsArea = newValue
+                    // Re-assigning pushes the mode to the canvas (same
+                    // pattern as brush width — see EditorTool.setWidth).
+                    documentController.tool = documentController.moveTool
+                }
+            ) : nil,
+            colorGet: { Color(components: documentController.toolColorComponents) },
+            colorSet: { newColor in
+                documentController.toolColorComponents = ColorComponents(newColor)
+            }
+        )
     }
 
     /// Whether the brush size stepper is the platter's leading item on Mac,

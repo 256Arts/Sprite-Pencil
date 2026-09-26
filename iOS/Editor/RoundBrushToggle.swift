@@ -9,12 +9,10 @@ struct RoundBrushToggle: View {
             isOn.toggle()
         } label: {
             Image(systemName: isOn ? "circle.fill" : "square.fill")
+            #if targetEnvironment(macCatalyst)
                 .imageScale(.large)
+            #endif
         }
-        .buttonStyle(.borderless)
-        .buttonBorderShape(.circle)
-        .tint(.primary)
-        .frame(width: 38, height: 38)
         .help("Round Brush")
     }
 }

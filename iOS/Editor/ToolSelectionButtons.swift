@@ -76,9 +76,13 @@ struct ToolSelectionButtons: View {
                 if isOn { selectedTool = tool }
             })) {
                 Label { Text(tool.title) } icon: {
+                    #if targetEnvironment(macCatalyst)
                     // Only affects the SF Symbols (Move, Eyedropper), which otherwise
                     // look small beside the bitmap tool icons.
                     tool.icon.imageScale(.large)
+                    #else
+                    tool.icon
+                    #endif
                 }
             }
         }
