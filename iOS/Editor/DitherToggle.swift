@@ -7,11 +7,8 @@ struct DitherToggle: View {
     var body: some View {
         Toggle(isOn: $isOn) {
             Image(systemName: "checkerboard.rectangle")
-            #if targetEnvironment(macCatalyst)
-                .imageScale(.large)
-            #endif
         }
-        .toggleStyle(.button)
+        .toggleStyle(GlassToggleStyle())
         .help("Dithering Mode")
         .keyboardShortcut("D")
     }

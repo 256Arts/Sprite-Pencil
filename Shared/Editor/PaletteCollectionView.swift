@@ -77,6 +77,7 @@ struct PaletteCollectionView: View {
                                 Button("Choose Palette", systemImage: "pencil", action: onChoosePalette)
                                     .buttonStyle(.borderless)
                                     .labelStyle(.iconOnly)
+                                    .foregroundStyle(.secondary)
                                     .help("Choose Palette")
                             }
                         }

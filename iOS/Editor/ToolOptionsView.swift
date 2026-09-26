@@ -27,6 +27,7 @@ struct ToolOptionsView: View {
             if 3 <= (self.currentBrushWidth ?? 1) {
                 RoundBrushToggle(isOn: Binding(get: { self.roundBrush }, set: { self.roundBrush = $0 }))
                     .buttonStyle(.glass)
+                    .buttonBorderShape(.circle)
             }
 
             LabeledStepper(min: 1, max: maxBrushWidth, value: Binding<Int>(
@@ -35,12 +36,12 @@ struct ToolOptionsView: View {
             ))
 
             DitherToggle(isOn: Binding(get: { self.ditherOn }, set: { self.ditherOn = $0 }))
-                .buttonStyle(.glass)
+                .buttonBorderShape(.circle)
         }
 
         if let selectAreaOn {
             SelectAreaToggle(isOn: selectAreaOn)
-                .buttonStyle(.glass)
+                .buttonBorderShape(.circle)
         }
 
         ColorPicker("Color", selection: Binding(get: {
@@ -49,7 +50,7 @@ struct ToolOptionsView: View {
             colorSet(newValue)
         }))
         .labelsHidden()
-        .frame(maxWidth: 32, maxHeight: 32)
+        .fixedSize()
     }
 }
 

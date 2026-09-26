@@ -9,6 +9,8 @@ struct ToolSelectionButtonToggleStyle: ToggleStyle {
                 configuration.label
             }
             .buttonStyle(.glassProminent)
+            // Match the capsule platter; Mac otherwise draws a rounded rectangle.
+            .buttonBorderShape(.capsule)
             .tint(.yellowAccent)
             .foregroundStyle(.black)
             .frame(width: 48, height: 38)

@@ -176,7 +176,7 @@ struct EditorView: View {
             // Keep Undo away from the document's close button (also leading), so
             // reaching for Undo doesn't accidentally exit the document.
             ToolbarSpacer(.fixed, placement: .topBarLeading)
-            ToolbarItemGroup(placement: .topBarLeading) {
+            ToolbarItemGroup(placement: .topBarLeading) { ToolbarGroup {
                 // The shortcuts are only claimed while Autosave is off. In that
                 // mode the drawing's history lives in a private undo manager, so
                 // UIKit's built-in ⌘Z — which drives the responder chain's
@@ -188,9 +188,9 @@ struct EditorView: View {
                 Button("Redo", systemImage: "arrow.uturn.right") { documentController.redo() }
                     .disabled(!canRedo)
                     .keyboardShortcut(autosaveEnabled ? nil : KeyboardShortcut("z", modifiers: [.command, .shift]))
-            }
+            } }
 
-            ToolbarItemGroup {
+            ToolbarItemGroup { ToolbarGroup {
                 // Each of these menus otherwise takes its accessibility label from its SF Symbol,
                 // so VoiceOver reads Canvas as "Square" and Outline as "Circle Inside A Circle".
                 Menu("Flip", systemImage: "arrow.left.and.right.righttriangle.left.righttriangle.right") {
@@ -245,7 +245,7 @@ struct EditorView: View {
                     }
                 }
                 .accessibilityLabel("Canvas")
-            }
+            } }
             // These editing actions are the first to move into the overflow menu
             // when the bar is tight (compact width), keeping Undo/Redo, Share, and
             // Settings visible.
@@ -253,7 +253,7 @@ struct EditorView: View {
 
             ToolbarSpacer(.fixed)
             
-            ToolbarItemGroup {
+            ToolbarItemGroup { ToolbarGroup {
                 Menu("Share", systemImage: "square.and.arrow.up") {
                     ShareOptionsView(documentController: documentController, isExportPresented: $isExportPresented)
                     Button("Save as Palette", systemImage: "paintpalette") {
@@ -281,7 +281,7 @@ struct EditorView: View {
                         showingInspector.toggle()
                     }
                 }
-            }
+            } }
         }
         .navigationBarTitleDisplayMode(.inline)
         // Replaced by the Close button above, so unsaved edits can't be
@@ -455,7 +455,7 @@ struct EditorView: View {
     
     @ViewBuilder
     private func leadingAndTrailingBottomBarItems() -> some View {
-        HStack {
+        HStack(spacing: 12) {
             HoverReadout(documentController: documentController)
 
             Spacer()
@@ -597,3 +597,17 @@ private struct HoverReadout: View {
     EditorView(document: SpriteImageDocument(size: .defaultSize))
 }
 
+/// Mac Catalyst gives each item of a `ToolbarItemGroup` its own glass capsule. A
+/// `ControlGroup` shares one between them, the way iOS already draws a group. Catalyst
+/// still splits off any `Menu`, and a group whose buttons are all disabled.
+private struct ToolbarGroup<Content: View>: View {
+    @ViewBuilder var content: Content
+
+    var body: some View {
+        #if targetEnvironment(macCatalyst)
+        ControlGroup { content }
+        #else
+        content
+        #endif
+    }
+}

@@ -7,11 +7,8 @@ struct SelectAreaToggle: View {
     var body: some View {
         Toggle(isOn: $isOn) {
             Image(systemName: "rectangle.dashed")
-            #if targetEnvironment(macCatalyst)
-                .imageScale(.large)
-            #endif
         }
-        .toggleStyle(.button)
+        .toggleStyle(GlassToggleStyle())
         .help("Select Area")
     }
 }
