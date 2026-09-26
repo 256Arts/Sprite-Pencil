@@ -145,6 +145,16 @@ struct EditorView: View {
                 Task { @MainActor in addImageColorsToRecentColors() }
             }
         )
+        #if os(visionOS)
+        // The tools hang below the window, where visionOS puts a window's
+        // primary controls, leaving the whole window to the canvas.
+        .ornament(attachmentAnchor: .scene(.bottom), contentAlignment: .top) {
+            HStack(spacing: 12) {
+                ToolSelectionBar(selectedTool: $selectedTool)
+                trailingBottomBarItems()
+            }
+        }
+        #else
         .safeAreaInset(edge: .bottom) {
             // Compact stacks the edge items above the tool bar; regular has the
             // horizontal room to overlay the centered tool bar on top of them.
@@ -158,6 +168,7 @@ struct EditorView: View {
             }
             .padding(6)
         }
+        #endif
         .safeAreaPadding(.bottom, horizontalSizeClass == .compact && showingInspector && inspectorDetent == .height(Self.inspectorPeekDetentHeight) ? Self.inspectorPeekDetentHeight : 0)
         .toolbar {
             // Deliberately a look-alike for the document's own close button,
