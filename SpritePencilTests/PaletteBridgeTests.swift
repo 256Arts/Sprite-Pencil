@@ -55,4 +55,25 @@ struct PaletteBridgeTests {
         #expect(bridged == ColorComponents(hex: hex))
         #expect(bridged.opacity == 255)
     }
+
+    /// Remap to Palette keeps palette colors as they are and snaps everything else to its nearest one.
+    @Test func nearestColorMatcherSnapsPerceptually() {
+        let match = SpritePencilKit.Palette.sp16.nearestColorMatcher()
+        let red = ColorComponents(red: 255, green: 51, blue: 41, opacity: 255)
+        #expect(match(red) == red)
+        #expect(match(ColorComponents(red: 250, green: 60, blue: 50, opacity: 255)) == red)
+        #expect(match(ColorComponents(red: 3, green: 2, blue: 4, opacity: 255)) == ColorComponents(red: 0, green: 0, blue: 0, opacity: 255))
+    }
+
+    @Test func nearestColorMatcherKeepsOpacity() {
+        let match = SpritePencilKit.Palette.sp16.nearestColorMatcher()
+        let snapped = match(ColorComponents(red: 250, green: 250, blue: 250, opacity: 128))
+        #expect(snapped == ColorComponents(red: 255, green: 255, blue: 255, opacity: 128))
+    }
+
+    @Test func emptyPaletteLeavesColorsAlone() {
+        let empty = SpritePencilKit.Palette(name: "Empty", specialCase: nil, colors: [], defaultGroupLength: 1)
+        let color = ColorComponents(red: 12, green: 34, blue: 56, opacity: 255)
+        #expect(empty.nearestColorMatcher()(color) == color)
+    }
 }

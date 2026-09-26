@@ -14,6 +14,9 @@ struct ToolOptionsView: View {
     /// Non-nil only while the move tool is active; shows the select-area toggle.
     var selectAreaOn: Binding<Bool>?
 
+    /// Non-nil only while the bucket is active; shows the replace-all toggle.
+    var replaceAllOn: Binding<Bool>?
+
     // Color accessors supplied by parent
     var colorGet: () -> Color
     var colorSet: (Color) -> Void
@@ -41,6 +44,11 @@ struct ToolOptionsView: View {
 
         if let selectAreaOn {
             SelectAreaToggle(isOn: selectAreaOn)
+                .toolOptionToggleStyle(circular: true)
+        }
+
+        if let replaceAllOn {
+            ReplaceAllToggle(isOn: replaceAllOn)
                 .toolOptionToggleStyle(circular: true)
         }
 

@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/256Arts/PaletteKit",
       "state" : {
-        "revision" : "ef290ab15ec52e285346de25656830991d7bf1e6",
-        "version" : "1.0.0"
+        "revision" : "4372a3b2aec33d41225de02323e083e7ddf4b014",
+        "version" : "1.1.0"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/256Arts/SpritePencilKit",
       "state" : {
-        "revision" : "1e29d2e343d0a847723a69fb726bd84243666bcf",
-        "version" : "2.5.3"
+        "revision" : "20afae8b30046557db3850ec26daccd633222b70",
+        "version" : "2.6.0"
       }
     }
   ],

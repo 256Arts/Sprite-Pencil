@@ -237,6 +237,12 @@ struct EditorView: View {
                     Button("Trim Canvas", systemImage: "crop") {
                         documentController.trimCanvas()
                     }
+                    // Snaps every pixel to its perceptually nearest color in the
+                    // current palette — e.g. to bring an imported sprite onto it.
+                    Button("Remap to Palette", systemImage: "paintpalette") {
+                        let palette = documentController.palette ?? .sp16
+                        documentController.remapColors(palette.nearestColorMatcher())
+                    }
                     Divider()
                     Toggle("Pixel Grid", systemImage: "squareshape.split.3x3", isOn: $pixelGridEnabled)
                     Toggle("Tile Grid", systemImage: "squareshape.split.2x2", isOn: $tileGridEnabled)
@@ -547,6 +553,13 @@ struct EditorView: View {
                     // Re-assigning pushes the mode to the canvas (same
                     // pattern as brush width — see EditorTool.setWidth).
                     documentController.tool = documentController.moveTool
+                }
+            ) : nil,
+            replaceAllOn: selectedTool == .fill ? Binding(
+                get: { documentController.fillTool.replacesAllMatching },
+                set: { newValue in
+                    documentController.fillTool.replacesAllMatching = newValue
+                    documentController.tool = documentController.fillTool
                 }
             ) : nil,
             colorGet: { Color(components: documentController.toolColorComponents) },

@@ -44,3 +44,22 @@ extension ColorComponents {
         self.init(red: srgb.red, green: srgb.green, blue: srgb.blue, opacity: 255)
     }
 }
+
+extension SpritePencilKit.Palette {
+
+    /// A function snapping any color to this palette's perceptually nearest color (smallest ΔE₀₀),
+    /// keeping the input's opacity. The palette is converted to Lab once, up front, so the function
+    /// is cheap to run once per distinct canvas color. Returns the input unchanged if the palette is empty.
+    func nearestColorMatcher() -> (ColorComponents) -> ColorComponents {
+        func paletteColor(_ color: ColorComponents) -> PaletteKit.PaletteColor? {
+            PaletteKit.PaletteColor(sRGB8BitRed: Int(color.red), green: Int(color.green), blue: Int(color.blue), colorSpace: bridgingColorSpace)
+        }
+        let candidates = colors.filter { paletteColor($0) != nil }
+        let matcher = PaletteKit.NearestColorMatcher(candidates.compactMap(paletteColor), colorSpace: bridgingColorSpace)
+        return { color in
+            guard let index = paletteColor(color).flatMap(matcher.nearestIndex(to:)) else { return color }
+            let nearest = candidates[index]
+            return ColorComponents(red: nearest.red, green: nearest.green, blue: nearest.blue, opacity: color.opacity)
+        }
+    }
+}
