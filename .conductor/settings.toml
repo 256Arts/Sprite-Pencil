@@ -37,3 +37,16 @@ command = '''"$HOME/Library/Mobile Documents/com~apple~CloudDocs/Repos/Scripts/r
 available_in = ["local"]
 default = true
 icon = "play"
+
+# Xcode Cloud builds of main: pushes a tf/<version> (TestFlight) or v<version> (App Store eligible,
+# never submitted) tag, bumping the version first if App Store Connect has closed it. Refuses a
+# dirty tree. See Repos/Scripts/ship-build; run it with --dry-run to preview.
+[scripts.run.testflight-build]
+command = '"$HOME/Library/Mobile Documents/com~apple~CloudDocs/Repos/Scripts/ship-build" testflight'
+available_in = ["local"]
+icon = "plane-takeoff"
+
+[scripts.run.app-store-build]
+command = '"$HOME/Library/Mobile Documents/com~apple~CloudDocs/Repos/Scripts/ship-build" appstore'
+available_in = ["local"]
+icon = "store"
