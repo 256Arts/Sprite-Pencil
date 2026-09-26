@@ -408,6 +408,10 @@ struct EditorView: View {
         .onAppear {
             applyPersistedPaletteAndColor()
             applyUndoManager()
+            if ScreenshotMode.isActive {
+                showingPaletteChooser = ScreenshotMode.page == .palettes
+                isSettingsPresented = ScreenshotMode.page == .settings
+            }
             // One-time heads-up, restored from the pre-SwiftUI app. Only for
             // documents opened from disk, with copy updated for the autosaving
             // document model.

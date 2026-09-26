@@ -17,6 +17,21 @@ enum ScreenshotMode {
         ProcessInfo.processInfo.arguments.contains("-screenshotMode")
     }
 
+    /// A sheet the editor opens by itself, named by `-screenshotPage <name>`.
+    ///
+    /// The Mac walk's only way to a sheet: on Mac Catalyst XCUITest's synthesized clicks and
+    /// keystrokes arrive and do nothing, so it relaunches once per sheet instead of tapping its way
+    /// there. The Canvas menu has no launch route, so the Mac has no shot of it.
+    enum Page: String {
+        case palettes, settings
+    }
+
+    static var page: Page? {
+        let arguments = ProcessInfo.processInfo.arguments
+        guard let index = arguments.firstIndex(of: "-screenshotPage"), arguments.indices.contains(index + 1) else { return nil }
+        return Page(rawValue: arguments[index + 1])
+    }
+
     /// The Mac window to photograph, in points.
     ///
     /// Chosen to leave a margin inside the runner's 2560x1600 canvas at 2x. Catalyst has no
@@ -36,7 +51,7 @@ enum ScreenshotMode {
         // Only the palettes the app ships. The person's own palettes live in `Documents/Palettes`
         // and would otherwise be in the palette-picker shot.
         PaletteStore.shared.loadPalettes(includingUserPalettes: false)
-        report("ready — pinned defaults, no store to seed; demo sprite \"\(documentName)\", \(PaletteStore.shared.allPalettes.count) shipped palettes")
+        report("ready — pinned defaults, no store to seed; demo sprite \"\(documentName)\", \(PaletteStore.shared.allPalettes.count) shipped palettes, page: \(page?.rawValue ?? "editor")")
     }
 
     // MARK: - Saying what happened
