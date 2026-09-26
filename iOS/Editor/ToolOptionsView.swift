@@ -26,8 +26,6 @@ struct ToolOptionsView: View {
             // have a meaningful curve (3px+); below that it's always a solid block.
             if 3 <= (self.currentBrushWidth ?? 1) {
                 RoundBrushToggle(isOn: Binding(get: { self.roundBrush }, set: { self.roundBrush = $0 }))
-                    .buttonStyle(.glass)
-                    .buttonBorderShape(.circle)
             }
 
             LabeledStepper(min: 1, max: maxBrushWidth, value: Binding<Int>(
@@ -36,12 +34,10 @@ struct ToolOptionsView: View {
             ))
 
             DitherToggle(isOn: Binding(get: { self.ditherOn }, set: { self.ditherOn = $0 }))
-                .buttonBorderShape(.circle)
         }
 
         if let selectAreaOn {
             SelectAreaToggle(isOn: selectAreaOn)
-                .buttonBorderShape(.circle)
         }
 
         ColorPicker("Color", selection: Binding(get: {

@@ -1,6 +1,12 @@
 import SwiftUI
 
 struct ToolSelectionButtonToggleStyle: ToggleStyle {
+
+    /// A circle rather than the tool bar's capsule, for standalone option toggles.
+    var circular = false
+
+    private var width: CGFloat { circular ? 38 : 48 }
+
     func makeBody(configuration: Configuration) -> some View {
         if configuration.isOn {
             Button {
@@ -10,10 +16,10 @@ struct ToolSelectionButtonToggleStyle: ToggleStyle {
             }
             .buttonStyle(.glassProminent)
             // Match the capsule platter; Mac otherwise draws a rounded rectangle.
-            .buttonBorderShape(.capsule)
+            .buttonBorderShape(circular ? .circle : .capsule)
             .tint(.yellowAccent)
             .foregroundStyle(.black)
-            .frame(width: 48, height: 38)
+            .frame(width: width, height: 38)
         } else {
             Button {
                 configuration.isOn.toggle()
@@ -21,8 +27,9 @@ struct ToolSelectionButtonToggleStyle: ToggleStyle {
                 configuration.label
             }
             .buttonStyle(.borderless)
+            .buttonBorderShape(circular ? .circle : .capsule)
             .tint(.primary)
-            .frame(width: 48, height: 38)
+            .frame(width: width, height: 38)
         }
     }
 }
@@ -55,7 +62,11 @@ struct ToolSelectionButtons: View {
             }, set: { isOn in
                 if isOn { selectedTool = tool }
             })) {
-                Label { Text(tool.title) } icon: { tool.icon }
+                Label { Text(tool.title) } icon: {
+                    // Only affects the SF Symbols (Move, Eyedropper), which otherwise
+                    // look small beside the bitmap tool icons.
+                    tool.icon.imageScale(.large)
+                }
             }
         }
     }

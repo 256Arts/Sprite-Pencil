@@ -69,17 +69,25 @@ struct PaletteCollectionView: View {
                     }
                     
                     if let palette = controller.palette {
-                        HStack {
+                        if let onChoosePalette {
+                            // Styled like a menu picker: the name, then an up/down chevron.
+                            Button(action: onChoosePalette) {
+                                HStack(spacing: 4) {
+                                    Text(palette.name)
+                                    Image(systemName: "chevron.up.chevron.down")
+                                        .font(.caption.weight(.semibold))
+                                        .foregroundStyle(.secondary)
+                                }
+                                .font(.headline)
+                            }
+                            .buttonStyle(.borderless)
+                            .foregroundStyle(.primary)
+                            .accessibilityLabel("Choose Palette")
+                            .accessibilityValue(palette.name)
+                            .help("Choose Palette")
+                        } else {
                             Text(palette.name)
                                 .font(.headline)
-                            
-                            if let onChoosePalette {
-                                Button("Choose Palette", systemImage: "pencil", action: onChoosePalette)
-                                    .buttonStyle(.borderless)
-                                    .labelStyle(.iconOnly)
-                                    .foregroundStyle(.secondary)
-                                    .help("Choose Palette")
-                            }
                         }
                         
                         LazyVGrid(

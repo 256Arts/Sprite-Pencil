@@ -34,7 +34,6 @@ struct LabeledStepper: View {
             .disabled(max <= self.value)
         }
         .buttonStyle(StepperButtonStyle())
-        .glassEffect(.regular)
         .overlay {
             Text(String(self.value))
                 .allowsHitTesting(false)

@@ -7,8 +7,10 @@ struct DitherToggle: View {
     var body: some View {
         Toggle(isOn: $isOn) {
             Image(systemName: "checkerboard.rectangle")
+                .imageScale(.large)
         }
-        .toggleStyle(GlassToggleStyle())
+        // Same look as the tool bar's buttons, which it sits beside.
+        .toggleStyle(ToolSelectionButtonToggleStyle())
         .help("Dithering Mode")
         .keyboardShortcut("D")
     }

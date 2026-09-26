@@ -459,13 +459,21 @@ struct EditorView: View {
             HoverReadout(documentController: documentController)
 
             Spacer()
-            
+
+            trailingBottomBarItems()
+        }
+    }
+
+    /// The tool options (and the palette button when the inspector is hidden),
+    /// sharing one glass platter to match the tool bar.
+    @ViewBuilder
+    private func trailingBottomBarItems() -> some View {
+        HStack(spacing: 12) {
             if horizontalSizeClass == .compact, !showingInspector {
                 Button("Palettes", systemImage: "paintpalette") {
                     showingInspector.toggle()
                 }
                 .labelStyle(.iconOnly)
-                .buttonStyle(.glass)
             }
             
             ToolOptionsView(
@@ -491,6 +499,11 @@ struct EditorView: View {
                 }
             )
         }
+        .tint(.primary)
+        .frame(minHeight: 38)
+        .padding(.horizontal, 10)
+        .padding(2)
+        .glassEffect()
     }
 
     // MARK: - Saving
