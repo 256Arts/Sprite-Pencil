@@ -8,33 +8,22 @@ struct ToolSelectionButtonToggleStyle: ToggleStyle {
     private var width: CGFloat { circular ? 38 : 48 }
 
     func makeBody(configuration: Configuration) -> some View {
-        if configuration.isOn {
-            Button {
-                configuration.isOn.toggle()
-            } label: {
-                // Fill the frame so the platter is the same size whatever the icon;
-                // otherwise it hugs the label, and short SF Symbols get a short platter.
-                configuration.label
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-            .buttonStyle(.glassProminent)
-            // Match the capsule platter; Mac otherwise draws a rounded rectangle.
-            .buttonBorderShape(circular ? .circle : .capsule)
-            .tint(.yellowAccent)
-            .foregroundStyle(.black)
-            .frame(width: width, height: 38)
-        } else {
-            Button {
-                configuration.isOn.toggle()
-            } label: {
-                configuration.label
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-            .buttonStyle(.borderless)
-            .buttonBorderShape(circular ? .circle : .capsule)
-            .tint(.primary)
-            .frame(width: width, height: 38)
+        Button {
+            configuration.isOn.toggle()
+        } label: {
+            // An explicit platter size, so every button matches whatever its icon
+            // (a `.glassProminent` platter hugs the label plus padding).
+            configuration.label
+                .frame(width: circular ? 32 : 42, height: 32)
+                .foregroundStyle(configuration.isOn ? AnyShapeStyle(.black) : AnyShapeStyle(.primary))
+                .glassEffect(
+                    configuration.isOn ? .regular.tint(.yellowAccent).interactive() : .identity,
+                    in: circular ? AnyShape(.circle) : AnyShape(.capsule)
+                )
+                .contentShape(circular ? AnyShape(.circle) : AnyShape(.capsule))
         }
+        .buttonStyle(.plain)
+        .frame(width: width, height: 38)
     }
 }
 
