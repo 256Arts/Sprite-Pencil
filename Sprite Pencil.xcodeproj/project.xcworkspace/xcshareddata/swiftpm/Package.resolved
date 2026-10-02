@@ -1,6 +1,15 @@
 {
-  "originHash" : "731d1d5e4f1bb8aafb720c6bef9a057bab394a9db4bf107f207dd13e4926f343",
+  "originHash" : "1c3158a821bb5e91e4652eb4a2a962704520de62fb9ccfe1f629de52e4d70fff",
   "pins" : [
+    {
+      "identity" : "admobswiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dearhui/AdmobSwiftUI.git",
+      "state" : {
+        "revision" : "0ea4367f5b767a67a999d7991633729b5e7b00ee",
+        "version" : "2.1.0"
+      }
+    },
     {
       "identity" : "chromakit",
       "kind" : "remoteSourceControl",
@@ -26,6 +35,24 @@
       "state" : {
         "revision" : "20afae8b30046557db3850ec26daccd633222b70",
         "version" : "2.6.0"
+      }
+    },
+    {
+      "identity" : "swift-package-manager-google-mobile-ads",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
+      "state" : {
+        "revision" : "1239c23464503053c17d37ee5daa70de3455e9c8",
+        "version" : "12.14.0"
+      }
+    },
+    {
+      "identity" : "swift-package-manager-google-user-messaging-platform",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git",
+      "state" : {
+        "revision" : "13b248eaa73b7826f0efb1bcf455e251d65ecb1b",
+        "version" : "3.1.0"
       }
     }
   ],

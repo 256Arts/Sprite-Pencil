@@ -18,6 +18,7 @@
 		1BC7AF002526DEA100AFB499 /* SpriteWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1BC7AEF02526DEA000AFB499 /* SpriteWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1BEEC5C921EEF3F000AB83C3 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1BEEC5C821EEF3F000AB83C3 /* Settings.bundle */; };
 		5F00000000000000000000B2 /* SpritePencilKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5F00000000000000000000B1 /* SpritePencilKit */; };
+		1BAD5A000000000000000001 /* AdmobSwiftUI in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 1BAD5A000000000000000002 /* AdmobSwiftUI */; };
 		5F00000000000000000000C2 /* PaletteKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5F00000000000000000000C1 /* PaletteKit */; };
 		5F00000000000000000000C4 /* PaletteKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5F00000000000000000000C3 /* PaletteKit */; };
 /* End PBXBuildFile section */
@@ -167,6 +168,7 @@
 			files = (
 				1B9BEDD528B2AAC700ECAD66 /* SpritePencilKit in Frameworks */,
 				5F00000000000000000000C2 /* PaletteKit in Frameworks */,
+				1BAD5A000000000000000001 /* AdmobSwiftUI in Frameworks */,
 				1B9067E92473504500335EF5 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,6 +278,7 @@
 			packageProductDependencies = (
 				1B9BEDD428B2AAC700ECAD66 /* SpritePencilKit */,
 				5F00000000000000000000C1 /* PaletteKit */,
+				1BAD5A000000000000000002 /* AdmobSwiftUI */,
 			);
 			productName = "Pixel Canvas";
 			productReference = 1B9C7568215FE88500C3470F /* Sprite Pencil.app */;
@@ -427,6 +430,7 @@
 			packageReferences = (
 				1B9BEDD328B2AAC700ECAD66 /* XCRemoteSwiftPackageReference "SpritePencilKit" */,
 				5F00000000000000000000C0 /* XCRemoteSwiftPackageReference "PaletteKit" */,
+				1BAD5A000000000000000003 /* XCRemoteSwiftPackageReference "AdmobSwiftUI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1B9C7569215FE88500C3470F /* Products */;
@@ -990,6 +994,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1BAD5A000000000000000003 /* XCRemoteSwiftPackageReference "AdmobSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dearhui/AdmobSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		5F00000000000000000000C0 /* XCRemoteSwiftPackageReference "PaletteKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/256Arts/PaletteKit";
@@ -1009,6 +1021,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1BAD5A000000000000000002 /* AdmobSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1BAD5A000000000000000003 /* XCRemoteSwiftPackageReference "AdmobSwiftUI" */;
+			productName = AdmobSwiftUI;
+		};
 		1B2D4FB528B5765800FF9414 /* SpritePencilKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1B9BEDD328B2AAC700ECAD66 /* XCRemoteSwiftPackageReference "SpritePencilKit" */;

@@ -3,6 +3,9 @@ import SpritePencilKit
 import StoreKit
 import SwiftUI
 import UIKit
+#if canImport(AdmobSwiftUI)
+import AdmobSwiftUI
+#endif
 
 struct EditorView: View {
 
@@ -38,6 +41,10 @@ struct EditorView: View {
     @State private var paletteController = PaletteCollectionController()
     
     @State private var documentController = DocumentController()
+
+    #if canImport(AdmobSwiftUI)
+    @StateObject private var paletteAdViewModel = NativeAdViewModel(adUnitID: "ca-app-pub-8282547272443688/6244441699")
+    #endif
 
     @State private var showingInspector = true
     @State private var inspectorDetent: PresentationDetent = .height(Self.inspectorPeekDetentHeight)
@@ -454,9 +461,13 @@ struct EditorView: View {
         }
         .onDisappear {
             documentsClosedCount += 1
-            if [5, 20, 50, 100].contains(documentsClosedCount) {
+            if ExperienceManager.shared.documentsClosedCountsToAskForReview.contains(documentsClosedCount) {
                 requestReview()
             }
+            #if canImport(AdmobSwiftUI)
+            // This document may be the one that qualifies the person for ads
+            Task { await ExperienceManager.shared.requestTrackingThenStartAds() }
+            #endif
         }
         .onChange(of: selectedTool) { _, newTool in
             documentController.tool = newTool.tool(in: documentController)
@@ -502,7 +513,18 @@ struct EditorView: View {
             controller: paletteController,
             selectedColor: $documentController.toolColorComponents,
             onChoosePalette: { showingPaletteChooser = true }
-        )
+        ) {
+            #if canImport(AdmobSwiftUI)
+            if ExperienceManager.shared.shouldShowAds {
+                NativeAdView(nativeViewModel: paletteAdViewModel, style: .banner)
+                    .frame(height: 100)
+                    .clipShape(.rect(cornerRadius: 12))
+                    .onAppear {
+                        paletteAdViewModel.refreshAd()
+                    }
+            }
+            #endif
+        }
     }
 
     /// The tool options (and the palette button when the inspector is hidden).

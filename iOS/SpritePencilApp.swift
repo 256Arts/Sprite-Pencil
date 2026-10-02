@@ -124,6 +124,8 @@ struct SpritePencilApp: App {
         }
     }
 
+    @Environment(\.scenePhase) private var scenePhase
+
     @State var documentCreationContinuation: CheckedContinuation<SpriteSize, any Error>?
     @State var isTemplatePickerPresented = false
     @State var appCoordinator = AppCoordinator()
@@ -208,6 +210,13 @@ struct SpritePencilApp: App {
             return SpriteImageDocument(size: size, configuration: configuration)
             #endif
         })
+        .onChange(of: scenePhase) { _, phase in
+            #if canImport(AdmobSwiftUI)
+            if phase == .active {
+                Task { await ExperienceManager.shared.requestTrackingThenStartAds() }
+            }
+            #endif
+        }
     }
 
 }

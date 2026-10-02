@@ -25,7 +25,7 @@ final class PaletteCollectionController {
     }
 }
 
-struct PaletteCollectionView: View {
+struct PaletteCollectionView<Footer: View>: View {
     var controller: PaletteCollectionController
 
     #if targetEnvironment(macCatalyst)
@@ -44,6 +44,10 @@ struct PaletteCollectionView: View {
     /// nil. Injected so this shared view needs no picker of its own (the
     /// Messages extension has none).
     var onChoosePalette: (() -> Void)? = nil
+
+    /// Shown below the grids. Injected so the shared view stays ad-free in
+    /// the Messages extension.
+    @ViewBuilder var footer: Footer
 
     var body: some View {
         ScrollView {
@@ -137,10 +141,20 @@ struct PaletteCollectionView: View {
                         }
                     }
                 }
+
+                footer
             }
             .scenePadding()
         }
         .tint(.yellowAccent)
+    }
+}
+
+extension PaletteCollectionView where Footer == EmptyView {
+    init(controller: PaletteCollectionController, selectedColor: Binding<ColorComponents>, onChoosePalette: (() -> Void)? = nil) {
+        self.init(controller: controller, selectedColor: selectedColor, onChoosePalette: onChoosePalette) {
+            EmptyView()
+        }
     }
 }
 
