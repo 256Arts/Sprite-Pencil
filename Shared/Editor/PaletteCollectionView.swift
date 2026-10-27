@@ -146,7 +146,6 @@ struct PaletteCollectionView<Footer: View>: View {
             }
             .scenePadding()
         }
-        .tint(.yellowAccent)
     }
 }
 

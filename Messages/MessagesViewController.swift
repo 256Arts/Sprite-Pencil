@@ -22,7 +22,6 @@ class MessagesViewController: MSMessagesAppViewController {
                 }
             })
         )
-        vc.view.tintColor = UIColor(named: "AccentColor")
         
         // Add the hosting controller as a child view controller
         addChild(vc)

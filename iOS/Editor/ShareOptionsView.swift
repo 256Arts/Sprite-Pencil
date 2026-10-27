@@ -54,7 +54,6 @@ struct ExportImageView: View {
                 preview: SharePreview("My Sprite Pencil Art", image: exportedImage)
             )
             .buttonStyle(.borderedProminent)
-            .tint(.yellowAccent)
         }
         .padding()
         .presentationDetents([.medium])

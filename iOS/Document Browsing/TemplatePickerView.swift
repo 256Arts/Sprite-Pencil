@@ -84,7 +84,6 @@ struct TemplatePickerView: View {
                         onComplete(selectedSize)
                         dismiss()
                     }
-                    .tint(.yellowAccent)
                 }
             }
         }
