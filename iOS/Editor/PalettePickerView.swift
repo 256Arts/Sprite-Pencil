@@ -96,7 +96,6 @@ struct PalettePickerView: View, DropDelegate {
         } message: {
             Text("Palette images must have a height of 1px, and not contain clear pixels.")
         }
-        .tint(.yellowAccent)
     }
 
     func selectPalette(_ palette: Palette) {
