@@ -51,6 +51,7 @@ struct AddPaletteView: View {
                 #else
                 .buttonStyle(.glassProminent)
                 #endif
+                .tint(.yellowAccent)
                 .controlSize(.large)
                 .disabled(name.isEmpty)
             }

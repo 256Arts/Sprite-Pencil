@@ -86,6 +86,7 @@ struct PalettePickerView: View, DropDelegate {
                 Button("Done", systemImage: "checkmark") {
                     dismiss()
                 }
+                .tint(.yellowAccent)
             }
         }
         .navigationBarBackButtonHidden()

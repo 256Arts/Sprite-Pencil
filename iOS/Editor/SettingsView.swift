@@ -87,6 +87,7 @@ struct SettingsView: View {
                 Button("Done", systemImage: "checkmark") {
                     dismiss()
                 }
+                .tint(.yellowAccent)
             }
         }
         .imageScale(.large)
