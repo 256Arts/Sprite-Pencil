@@ -63,3 +63,22 @@ extension SpritePencilKit.Palette {
         }
     }
 }
+
+extension SpritePencilKit.Palette {
+
+    /// The mean ΔE₀₀ from each of `colors` to its nearest color in this palette — how far off the
+    /// palette is from artwork drawn in `colors`. `nil` if either side is empty.
+    func meanDistance(from colors: [ColorComponents]) -> Double? {
+        func sample(_ color: ColorComponents) -> PaletteKit.ColorMetrics.Sample? {
+            PaletteKit.PaletteColor(sRGB8BitRed: Int(color.red), green: Int(color.green), blue: Int(color.blue), colorSpace: bridgingColorSpace)
+                .map { PaletteKit.ColorMetrics.sample($0, colorSpace: bridgingColorSpace) }
+        }
+        let candidates = self.colors.compactMap(sample)
+        let targets = colors.compactMap(sample)
+        guard !candidates.isEmpty, !targets.isEmpty else { return nil }
+        let total = targets.reduce(0.0) { sum, target in
+            sum + candidates.lazy.map { PaletteKit.ColorMetrics.deltaE2000(target, $0) }.min()!
+        }
+        return total / Double(targets.count)
+    }
+}

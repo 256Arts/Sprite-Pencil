@@ -49,6 +49,7 @@ struct EditorView: View {
     @State private var showingInspector = true
     @State private var inspectorDetent: PresentationDetent = .height(Self.inspectorPeekDetentHeight)
     @State private var pendingPalette: Palette?
+    @State private var imageMatch: PaletteMatch?
     @State private var isExportPresented = false
     @State private var isSettingsPresented = false
     @State private var showingPaletteChooser = false
@@ -150,6 +151,11 @@ struct EditorView: View {
                 // `Task` hop keeps the `paletteController` mutation off this
                 // view-update pass (see `refreshDocumentDataFromContext`).
                 Task { @MainActor in addImageColorsToRecentColors() }
+
+                // Only for sprites opened from disk: a new sprite has no colors to match yet.
+                if !document.isNewDocument {
+                    Task { await matchPalette(to: image) }
+                }
             }
         )
         #if os(visionOS)
@@ -413,7 +419,7 @@ struct EditorView: View {
         }
         .sheet(isPresented: $showingPaletteChooser) {
             NavigationStack {
-                PalettePickerView(selectedPaletteName: paletteController.palette?.name ?? "") { palette in
+                PalettePickerView(selectedPaletteName: paletteController.palette?.name ?? "", imageMatch: imageMatch) { palette in
                     paletteController.palette = palette
                 }
             }
@@ -666,6 +672,20 @@ struct EditorView: View {
 
     private var currentPalette: Palette {
         PaletteStore.shared.palette(named: colorPaletteName) ?? PaletteStore.shared.defaultPalette
+    }
+
+    /// Finds the palette the sprite was drawn with, for the palette picker to label, and switches
+    /// to it when it holds every color in the sprite.
+    private func matchPalette(to image: UIImage) async {
+        let palettes = PaletteStore.shared.allPalettes
+        let current = paletteController.palette ?? currentPalette
+        let match = await Task.detached(priority: .userInitiated) {
+            PaletteMatch.find(for: image, among: palettes, preferring: current)
+        }.value
+        imageMatch = match
+        if let match, match.kind == .exact, let palette = PaletteStore.shared.palette(named: match.paletteName) {
+            paletteController.palette = palette
+        }
     }
 
     private func addImageColorsToRecentColors() {

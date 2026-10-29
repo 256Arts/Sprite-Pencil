@@ -11,6 +11,9 @@ struct PalettePickerView: View, DropDelegate {
     @State var selectedPaletteName: String
     @State var showingImportError = false
 
+    /// The palette the open sprite is drawn with, labeled in its row.
+    var imageMatch: PaletteMatch? = nil
+
     let onSelect: (Palette) -> Void
 
     private var store: PaletteStore { .shared }
@@ -34,7 +37,7 @@ struct PalettePickerView: View, DropDelegate {
                         Button {
                             selectPalette(palette)
                         } label: {
-                            PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName)
+                            PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName, imageMatch: imageMatchKind(for: palette))
                         }
                         .buttonStyle(.plain)
                         .swipeActions {
@@ -56,7 +59,7 @@ struct PalettePickerView: View, DropDelegate {
                     Button {
                         selectPalette(palette)
                     } label: {
-                        PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName)
+                        PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName, imageMatch: imageMatchKind(for: palette))
                     }
                     .buttonStyle(.plain)
                 }
@@ -66,7 +69,7 @@ struct PalettePickerView: View, DropDelegate {
                     Button {
                         selectPalette(palette)
                     } label: {
-                        PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName)
+                        PalettePreview(palette: palette, selectedPaletteName: $selectedPaletteName, imageMatch: imageMatchKind(for: palette))
                     }
                     .buttonStyle(.plain)
                 }
@@ -96,6 +99,10 @@ struct PalettePickerView: View, DropDelegate {
         } message: {
             Text("Palette images must have a height of 1px, and not contain clear pixels.")
         }
+    }
+
+    private func imageMatchKind(for palette: Palette) -> PaletteMatch.Kind? {
+        imageMatch?.paletteName == palette.name ? imageMatch?.kind : nil
     }
 
     func selectPalette(_ palette: Palette) {

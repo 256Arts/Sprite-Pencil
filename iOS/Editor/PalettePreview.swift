@@ -5,7 +5,11 @@ struct PalettePreview: View {
     
     @State var palette: Palette
     @Binding var selectedPaletteName: String
-    
+    /// Set when this is the palette the open sprite is drawn with (or nearly).
+    var imageMatch: PaletteMatch.Kind? = nil
+
+    private var isSelected: Bool { palette.name == selectedPaletteName }
+
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
@@ -17,15 +21,23 @@ struct PalettePreview: View {
             .frame(height: 16)
             HStack {
                 Text(palette.name)
-                    .foregroundStyle(palette.name == selectedPaletteName ? Color(UIColor.darkText) : Color(UIColor.label))
+                    .foregroundStyle(isSelected ? Color(UIColor.darkText) : Color(UIColor.label))
+                if let imageMatch {
+                    Text(imageMatch == .exact ? "Matches Image" : "Closest Match")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(isSelected ? Color(UIColor.darkText) : Color(UIColor.secondaryLabel))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 2)
+                        .background(isSelected ? AnyShapeStyle(.black.opacity(0.1)) : AnyShapeStyle(.fill.tertiary), in: .capsule)
+                }
                 Spacer()
                 Text("\(palette.colors.count)")
-                    .foregroundStyle(palette.name == selectedPaletteName ? Color(UIColor.darkText) : Color(UIColor.secondaryLabel))
+                    .foregroundStyle(isSelected ? Color(UIColor.darkText) : Color(UIColor.secondaryLabel))
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
         }
-        .background(palette.name == selectedPaletteName ? Color.yellowAccent : Color(UIColor.secondarySystemGroupedBackground))
+        .background(isSelected ? Color.yellowAccent : Color(UIColor.secondarySystemGroupedBackground))
         .clipShape(.rect(cornerRadius: 12))
     }
     
