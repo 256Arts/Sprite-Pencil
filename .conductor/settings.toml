@@ -22,7 +22,7 @@ command = "\"${CONDUCTOR_WORKSPACE_PATH:-.}/Scripts/screenshots.sh\""
 available_in = ["local"]
 icon = "camera"
 
-# Publish the App Store metadata without recapturing: What's New (Raw Assets/WhatsNew.txt, else written from recent commits; translated into
+# Publish the App Store metadata without recapturing: What's New (Raw Assets/release_notes.txt, else written from recent commits; translated into
 # every language the app ships), then the shots already taken, to App Store Connect and the app's
 # page on the 256 Arts site. Writes only a version still being prepared, so it cannot alter a live
 # listing. See Repos/Scripts/app-metadata; add --dry-run to see what would change.
