@@ -32,11 +32,17 @@ available_in = ["local"]
 icon = "cloud-upload"
 
 # Builds the app for this Mac (native, else Catalyst, else Designed for iPad) and runs it.
-[scripts.run.run]
+[scripts.run.run-mac]
 command = '''"$HOME/Library/Mobile Documents/com~apple~CloudDocs/Repos/Scripts/run-mac"'''
 available_in = ["local"]
 default = true
 icon = "play"
+
+# Builds the app for the connected iPhone, installs it, and launches it.
+[scripts.run.run-iphone]
+command = '''"$HOME/Library/Mobile Documents/com~apple~CloudDocs/Repos/Scripts/run-iphone"'''
+available_in = ["local"]
+icon = "smartphone"
 
 # Xcode Cloud builds of main: pushes a tf/<version> (TestFlight) or v<version> (App Store eligible,
 # never submitted) tag, bumping the version first if App Store Connect has closed it. Refuses a
